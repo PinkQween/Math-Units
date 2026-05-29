@@ -21,7 +21,9 @@ let package = Package(
     ],
     dependencies: [
         // Depend on swift-syntax for compiler macros
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "600.0.0")
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "600.0.0"),
+        // Apple's Swift DocC plugin for documentation compilation and generation
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0")
     ],
     targets: [
         // Macro implementation target

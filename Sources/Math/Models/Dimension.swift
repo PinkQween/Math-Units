@@ -5,9 +5,15 @@
 //  Created by Hanna Skairipa on 5/29/26.
 //
 
+/// A type representing a physical dimension as a canonical dictionary of base SI dimension exponents.
+///
+/// Use `PhysicalDimension` to perform dynamic dimension arithmetic (like multiplication and division)
+/// and to verify at runtime that units match the expected physical dimensions.
 public struct PhysicalDimension: Equatable, Hashable, Sendable {
+    /// A dictionary mapping base dimensions (e.g., `"length"`, `"time"`) to their integer exponent powers.
     public let exponents: [String: Int]
     
+    /// Initializes a dimension with an optional exponent mapping.
     public init(exponents: [String: Int] = [:]) {
         // Filter out zero exponents to keep representations canonical
         self.exponents = exponents.filter { $0.value != 0 }
@@ -147,10 +153,13 @@ public struct PhysicalDimension: Equatable, Hashable, Sendable {
 }
 
 // MARK: - Dimension Namespace Enum for Type-Level Safety
+/// A namespace containing type-level structures for compile-time physical dimension verification.
 public enum Dimension {
+    /// The compile-time dimension type representing dimensionless quantities.
     public struct dimensionless: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.dimensionless }
     }
+    /// The compile-time dimension type representing length.
     public struct length: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.length }
     }
