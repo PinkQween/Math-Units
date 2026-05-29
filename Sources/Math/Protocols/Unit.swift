@@ -5,9 +5,15 @@
 //  Created by Hanna Skairipa on 5/29/26.
 //
 
+public protocol DimensionProtocol {
+    static var dimension: PhysicalDimension { get }
+}
+
 public protocol Unit: Sendable {
+    associatedtype Dimension: DimensionProtocol
+    
     var symbol: String { get }
-    var dimension: Dimension { get }
+    var dimension: PhysicalDimension { get }
     var converter: any UnitConverter { get }
 }
 

@@ -109,11 +109,19 @@ public struct PrefixedUnitsMacro: MemberMacro {
             }
         }
         
+        // Map dimension string (e.g. .length) to the type (e.g. Dimension.length)
+        let dimensionTypeName: String
+        if dimension.hasPrefix(".") {
+            dimensionTypeName = "Dimension." + dimension.dropFirst()
+        } else {
+            dimensionTypeName = dimension
+        }
+        
         var members: [DeclSyntax] = []
         
         // 1. Base Unit
         let baseDecl = """
-        public static let \(name) = NamedUnit(
+        public static let \(name) = NamedUnit<\(dimensionTypeName)>(
             symbol: "\(symbol)",
             dimension: \(dimension),
             converter: LinearConverter(coefficient: \(baseCoefficient))
@@ -130,7 +138,7 @@ public struct PrefixedUnitsMacro: MemberMacro {
             let prefSymbol = "\(pref.symbol)\(symbol)"
             let coeffExpr = "(\(baseCoefficient) * \(pref.multiplier))"
             let decl = """
-            public static let \(propName) = NamedUnit(
+            public static let \(propName) = NamedUnit<\(dimensionTypeName)>(
                 symbol: "\(prefSymbol)",
                 dimension: \(dimension),
                 converter: LinearConverter(coefficient: \(coeffExpr))
@@ -146,7 +154,7 @@ public struct PrefixedUnitsMacro: MemberMacro {
                 let prefSymbol = "\(pref.symbol)\(symbol)"
                 let coeffExpr = "(\(baseCoefficient) * \(pref.multiplier))"
                 let decl = """
-                public static let \(propName) = NamedUnit(
+                public static let \(propName) = NamedUnit<\(dimensionTypeName)>(
                     symbol: "\(prefSymbol)",
                     dimension: \(dimension),
                     converter: LinearConverter(coefficient: \(coeffExpr))

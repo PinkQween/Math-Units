@@ -221,37 +221,37 @@
 public enum Units {
     // MARK: - Offset and Constant-based Units
     
-    public static let celsius = NamedUnit(
+    public static let celsius = NamedUnit<Dimension.temperature>(
         symbol: "°C",
         dimension: .temperature,
         converter: OffsetConverter(coefficient: 1.0, constant: 273.15)
     )
     
-    public static let fahrenheit = NamedUnit(
+    public static let fahrenheit = NamedUnit<Dimension.temperature>(
         symbol: "°F",
         dimension: .temperature,
         converter: OffsetConverter(coefficient: 5.0 / 9.0, constant: 255.37222222222222)
     )
     
-    public static let planckLength = NamedUnit(
+    public static let planckLength = NamedUnit<Dimension.length>(
         symbol: "l_P",
         dimension: .length,
         converter: LinearConverter(coefficient: 1.616255e-35)
     )
     
-    public static let planckTime = NamedUnit(
+    public static let planckTime = NamedUnit<Dimension.time>(
         symbol: "t_P",
         dimension: .time,
         converter: LinearConverter(coefficient: 5.391247e-44)
     )
     
-    public static let planckMass = NamedUnit(
+    public static let planckMass = NamedUnit<Dimension.mass>(
         symbol: "m_P",
         dimension: .mass,
         converter: LinearConverter(coefficient: 2.176434e-8)
     )
     
-    public static let planckTemperature = NamedUnit(
+    public static let planckTemperature = NamedUnit<Dimension.temperature>(
         symbol: "T_P",
         dimension: .temperature,
         converter: LinearConverter(coefficient: 1.416784e32)

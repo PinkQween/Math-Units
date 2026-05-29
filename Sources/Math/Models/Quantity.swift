@@ -28,7 +28,7 @@ public struct Quantity<U: Unit> {
         if self.unit.dimension == .temperature && targetUnit.dimension == .energy {
             let tempK = self.converted(to: Units.kelvin)
             let boltzmannJ = tempK.value * 1.380649e-23
-            let jouleQty = Quantity<NamedUnit>(value: boltzmannJ, unit: Units.joule)
+            let jouleQty = Quantity<NamedUnit<Dimension.energy>>(value: boltzmannJ, unit: Units.joule)
             return jouleQty.converted(to: targetUnit)
         }
         
@@ -36,7 +36,7 @@ public struct Quantity<U: Unit> {
         if self.unit.dimension == .energy && targetUnit.dimension == .temperature {
             let energyJ = self.converted(to: Units.joule)
             let tempKVal = energyJ.value / 1.380649e-23
-            let kelvinQty = Quantity<NamedUnit>(value: tempKVal, unit: Units.kelvin)
+            let kelvinQty = Quantity<NamedUnit<Dimension.temperature>>(value: tempKVal, unit: Units.kelvin)
             return kelvinQty.converted(to: targetUnit)
         }
         
@@ -48,10 +48,10 @@ public struct Quantity<U: Unit> {
 public extension Quantity {
     /// The thermal energy equivalent of this temperature quantity (E = k_B * T) in Joules.
     /// Precondition: This quantity must be a temperature.
-    var thermalEnergy: Quantity<NamedUnit> {
+    var thermalEnergy: Quantity<NamedUnit<Dimension.energy>> {
         precondition(self.unit.dimension == .temperature, "Thermal energy can only be calculated for temperature quantities.")
         let tempK = self.converted(to: Units.kelvin)
-        return Quantity<NamedUnit>(value: tempK.value * 1.380649e-23, unit: Units.joule)
+        return Quantity<NamedUnit<Dimension.energy>>(value: tempK.value * 1.380649e-23, unit: Units.joule)
     }
     
     /// The thermal energy equivalent of this temperature quantity (E = k_B * T) in the specified energy unit.
@@ -107,7 +107,7 @@ public extension Quantity {
     }
     
     static func / (lhs: Double, rhs: Quantity<U>) -> Quantity<CompositeUnit> {
-        let newDimension = Dimension.dimensionless - rhs.unit.dimension
+        let newDimension = PhysicalDimension.dimensionless - rhs.unit.dimension
         let newSymbol = "(1/\(rhs.unit.symbol))"
         
         let rhsCoeff = rhs.unit.converter.convertToBase(1.0)

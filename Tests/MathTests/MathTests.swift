@@ -105,17 +105,17 @@ import Foundation
         #expect(energy.unit.symbol == "((kg*m/s^2)*m)")
         
         // Verify SI Derived Dimensions
-        #expect(Dimension.resistance.exponents == ["length": 2, "mass": 1, "time": -3, "electricCurrent": -2])
-        #expect(Dimension.capacitance.exponents == ["length": -2, "mass": -1, "time": 4, "electricCurrent": 2])
-        #expect(Dimension.inductance.exponents == ["length": 2, "mass": 1, "time": -2, "electricCurrent": -2])
-        #expect(Dimension.conductance.exponents == ["length": -2, "mass": -1, "time": 3, "electricCurrent": 2])
+        #expect(PhysicalDimension.resistance.exponents == ["length": 2, "mass": 1, "time": -3, "electricCurrent": -2])
+        #expect(PhysicalDimension.capacitance.exponents == ["length": -2, "mass": -1, "time": 4, "electricCurrent": 2])
+        #expect(PhysicalDimension.inductance.exponents == ["length": 2, "mass": 1, "time": -2, "electricCurrent": -2])
+        #expect(PhysicalDimension.conductance.exponents == ["length": -2, "mass": -1, "time": 3, "electricCurrent": 2])
     }
     
     @Test func testImaginaryAndCustomDimensions() {
-        let usdDimension = Dimension(exponents: ["USD": 1])
-        let usdUnit = NamedUnit(symbol: "$", dimension: usdDimension, converter: LinearConverter(coefficient: 1.0))
+        let usdDimension = PhysicalDimension(exponents: ["USD": 1])
+        let usdUnit = NamedUnit<Math.Dimension.unknown>(symbol: "$", dimension: usdDimension, converter: LinearConverter(coefficient: 1.0))
         
-        let eurUnit = NamedUnit(symbol: "€", dimension: usdDimension, converter: LinearConverter(coefficient: 1.09))
+        let eurUnit = NamedUnit<Math.Dimension.unknown>(symbol: "€", dimension: usdDimension, converter: LinearConverter(coefficient: 1.09))
         
         // Currency conversion
         let tenEur = Quantity(value: 10.0, unit: eurUnit)
@@ -123,8 +123,8 @@ import Foundation
         #expect(abs(inUsd.value - 10.9) < 1e-9)
         
         // User dimension
-        let userDimension = Dimension(exponents: ["user": 1])
-        let userUnit = NamedUnit(symbol: "user", dimension: userDimension, converter: LinearConverter(coefficient: 1.0))
+        let userDimension = PhysicalDimension(exponents: ["user": 1])
+        let userUnit = NamedUnit<Math.Dimension.unknown>(symbol: "user", dimension: userDimension, converter: LinearConverter(coefficient: 1.0))
         
         // Currency per user (USD / user)
         let revenue = Quantity(value: 1000.0, unit: usdUnit)
@@ -134,7 +134,7 @@ import Foundation
         #expect(revenuePerUser.value == 100.0)
         #expect(revenuePerUser.unit.symbol == "($/user)")
         
-        let expectedDimension = Dimension(exponents: ["USD": 1, "user": -1])
+        let expectedDimension = PhysicalDimension(exponents: ["USD": 1, "user": -1])
         #expect(revenuePerUser.unit.dimension == expectedDimension)
     }
     
@@ -311,3 +311,19 @@ import Foundation
         #expect(abs(inPercent.value - 1.0) < 1e-9)
     }
 }
+
+// MARK: - Compilation Test for PlaceService
+#if canImport(CoreLocation)
+import CoreLocation
+
+struct Place {}
+
+protocol PlaceService {
+    func fetchNearbyPlaces<U: Math.Unit>(
+        coordinate: CLLocationCoordinate2D,
+        radius: Math.Quantity<U>,
+        completion: @escaping (Result<[Place], Error>) -> Void
+    ) where U.Dimension == Math.Dimension.length
+}
+#endif
+

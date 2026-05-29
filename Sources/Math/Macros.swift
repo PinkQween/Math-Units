@@ -9,7 +9,7 @@
 public macro PrefixedUnits(
     name: String,
     symbol: String,
-    dimension: Dimension,
+    dimension: PhysicalDimension,
     baseCoefficient: Double = 1.0,
     supportsFractionalPrefixes: Bool = true,
     supportsBinaryPrefixes: Bool = false
