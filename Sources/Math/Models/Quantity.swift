@@ -5,7 +5,7 @@
 //  Created by Hanna Skairipa on 5/29/26.
 //
 
-public struct Quantity<U: Unit> {
+public struct Quantity<U: MathUnit> {
     public let value: Double
     public let unit: U
     
@@ -16,7 +16,7 @@ public struct Quantity<U: Unit> {
     
     /// Converts this quantity to another unit of the same dimension, or converts between
     /// Temperature and Energy using Boltzmann's constant (natural unit conversion).
-    public func converted<TargetUnit: Unit>(to targetUnit: TargetUnit) -> Quantity<TargetUnit> {
+    public func converted<TargetUnit: MathUnit>(to targetUnit: TargetUnit) -> Quantity<TargetUnit> {
         // If dimensions match, convert normally
         if self.unit.dimension == targetUnit.dimension {
             let baseValue = self.unit.converter.convertToBase(self.value)
@@ -28,7 +28,7 @@ public struct Quantity<U: Unit> {
         if self.unit.dimension == .temperature && targetUnit.dimension == .energy {
             let tempK = self.converted(to: Units.kelvin)
             let boltzmannJ = tempK.value * 1.380649e-23
-            let jouleQty = Quantity<NamedUnit<Dimension.energy>>(value: boltzmannJ, unit: Units.joule)
+            let jouleQty = Quantity<NamedUnit<MathDimension.energy>>(value: boltzmannJ, unit: Units.joule)
             return jouleQty.converted(to: targetUnit)
         }
         
@@ -36,7 +36,7 @@ public struct Quantity<U: Unit> {
         if self.unit.dimension == .energy && targetUnit.dimension == .temperature {
             let energyJ = self.converted(to: Units.joule)
             let tempKVal = energyJ.value / 1.380649e-23
-            let kelvinQty = Quantity<NamedUnit<Dimension.temperature>>(value: tempKVal, unit: Units.kelvin)
+            let kelvinQty = Quantity<NamedUnit<MathDimension.temperature>>(value: tempKVal, unit: Units.kelvin)
             return kelvinQty.converted(to: targetUnit)
         }
         
@@ -48,15 +48,15 @@ public struct Quantity<U: Unit> {
 public extension Quantity {
     /// The thermal energy equivalent of this temperature quantity (E = k_B * T) in Joules.
     /// Precondition: This quantity must be a temperature.
-    var thermalEnergy: Quantity<NamedUnit<Dimension.energy>> {
+    var thermalEnergy: Quantity<NamedUnit<MathDimension.energy>> {
         precondition(self.unit.dimension == .temperature, "Thermal energy can only be calculated for temperature quantities.")
         let tempK = self.converted(to: Units.kelvin)
-        return Quantity<NamedUnit<Dimension.energy>>(value: tempK.value * 1.380649e-23, unit: Units.joule)
+        return Quantity<NamedUnit<MathDimension.energy>>(value: tempK.value * 1.380649e-23, unit: Units.joule)
     }
     
     /// The thermal energy equivalent of this temperature quantity (E = k_B * T) in the specified energy unit.
     /// Precondition: This quantity must be a temperature and the target unit must be an energy unit.
-    func thermalEnergy<TargetUnit: Unit>(in targetUnit: TargetUnit) -> Quantity<TargetUnit> {
+    func thermalEnergy<TargetUnit: MathUnit>(in targetUnit: TargetUnit) -> Quantity<TargetUnit> {
         precondition(self.unit.dimension == .temperature, "Thermal energy can only be calculated for temperature quantities.")
         precondition(targetUnit.dimension == .energy, "Target unit must be an energy unit.")
         return self.converted(to: targetUnit)
@@ -70,7 +70,7 @@ extension Quantity: Equatable {
     }
     
     /// Check if this quantity is physically equivalent to another quantity of a potentially different unit type, within a tolerance.
-    public func isEquivalent<U2: Unit>(to other: Quantity<U2>, tolerance: Double = 1e-12) -> Bool {
+    public func isEquivalent<U2: MathUnit>(to other: Quantity<U2>, tolerance: Double = 1e-12) -> Bool {
         guard self.unit.dimension == other.unit.dimension else { return false }
         let otherConverted = other.converted(to: self.unit)
         return abs(self.value - otherConverted.value) <= tolerance
@@ -79,13 +79,13 @@ extension Quantity: Equatable {
 
 // MARK: - Arithmetic Operators (Same Dimension Addition & Subtraction)
 public extension Quantity {
-    static func + <U2: Unit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<U> {
+    static func + <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<U> {
         precondition(lhs.unit.dimension == rhs.unit.dimension, "Cannot add quantities of different dimensions: \(lhs.unit.dimension) and \(rhs.unit.dimension)")
         let rhsConverted = rhs.converted(to: lhs.unit)
         return Quantity(value: lhs.value + rhsConverted.value, unit: lhs.unit)
     }
     
-    static func - <U2: Unit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<U> {
+    static func - <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<U> {
         precondition(lhs.unit.dimension == rhs.unit.dimension, "Cannot subtract quantities of different dimensions: \(lhs.unit.dimension) and \(rhs.unit.dimension)")
         let rhsConverted = rhs.converted(to: lhs.unit)
         return Quantity(value: lhs.value - rhsConverted.value, unit: lhs.unit)
@@ -123,7 +123,7 @@ public extension Quantity {
 
 // MARK: - Dimensional Algebra (Multiplication & Division between Quantities)
 public extension Quantity {
-    static func * <U2: Unit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
+    static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
         let newDimension = lhs.unit.dimension + rhs.unit.dimension
         let newSymbol = "(\(lhs.unit.symbol)*\(rhs.unit.symbol))"
         
@@ -138,7 +138,7 @@ public extension Quantity {
         return Quantity<CompositeUnit>(value: newValue, unit: newUnit)
     }
     
-    static func / <U2: Unit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
+    static func / <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
         let newDimension = lhs.unit.dimension - rhs.unit.dimension
         let newSymbol = "(\(lhs.unit.symbol)/\(rhs.unit.symbol))"
         

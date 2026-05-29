@@ -4,7 +4,7 @@ Learn how to enforce dimension constraints at compile time using unit generic pa
 
 ## Overview
 
-Historically, physical dimensions were evaluated strictly at runtime in the `Math` library. To enable compile-time guarantees, the library now features the ``DimensionProtocol`` and the ``Dimension`` type namespace.
+Historically, physical dimensions were evaluated strictly at runtime in the `Math` library. To enable compile-time guarantees, the library now features the ``DimensionProtocol`` and the ``MathDimension`` type namespace.
 
 ### The Problem
 
@@ -15,15 +15,15 @@ import CoreLocation
 import Math
 
 protocol PlaceService {
-    func fetchNearbyPlaces<U: Unit>(
+    func fetchNearbyPlaces<U: MathUnit>(
         coordinate: CLLocationCoordinate2D,
         radius: Math.Quantity<U>,
         completion: @escaping (Result<[Place], Error>) -> Void
-    ) where U.Dimension == Dimension.length // Compile-time check!
+    ) where U.Dimension == MathDimension.length // Compile-time check!
 }
 ```
 
-By parameterizing ``NamedUnit`` with a compile-time dimension type (e.g., `NamedUnit<Dimension.length>`), Swift's compiler can enforce that you only pass length units into this method.
+By parameterizing ``NamedUnit`` with a compile-time dimension type (e.g., `NamedUnit<MathDimension.length>`), Swift's compiler can enforce that you only pass length units into this method.
 
 ### How to Use It
 

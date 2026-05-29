@@ -8,10 +8,10 @@
 /// A unit type representing derived or dynamically created composite units (e.g. from multiplication/division).
 ///
 /// Composite units do not enforce a specific statically defined compile-time dimension type and default
-/// to the type-level `Dimension.unknown` dimension.
-public struct CompositeUnit: Unit {
+/// to the type-level `MathDimension.unknown` dimension.
+public struct CompositeUnit: MathUnit {
     /// The compile-time dimension type associated with this unit, defaults to `unknown`.
-    public typealias Dimension = Math.Dimension.unknown
+    public typealias Dimension = MathDimension.unknown
     
     /// The symbol representing the composite unit, e.g. `"(m/s)"`.
     public let symbol: String

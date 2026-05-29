@@ -113,9 +113,9 @@ import Foundation
     
     @Test func testImaginaryAndCustomDimensions() {
         let usdDimension = PhysicalDimension(exponents: ["USD": 1])
-        let usdUnit = NamedUnit<Math.Dimension.unknown>(symbol: "$", dimension: usdDimension, converter: LinearConverter(coefficient: 1.0))
+        let usdUnit = NamedUnit<MathDimension.unknown>(symbol: "$", dimension: usdDimension, converter: LinearConverter(coefficient: 1.0))
         
-        let eurUnit = NamedUnit<Math.Dimension.unknown>(symbol: "€", dimension: usdDimension, converter: LinearConverter(coefficient: 1.09))
+        let eurUnit = NamedUnit<MathDimension.unknown>(symbol: "€", dimension: usdDimension, converter: LinearConverter(coefficient: 1.09))
         
         // Currency conversion
         let tenEur = Quantity(value: 10.0, unit: eurUnit)
@@ -124,7 +124,7 @@ import Foundation
         
         // User dimension
         let userDimension = PhysicalDimension(exponents: ["user": 1])
-        let userUnit = NamedUnit<Math.Dimension.unknown>(symbol: "user", dimension: userDimension, converter: LinearConverter(coefficient: 1.0))
+        let userUnit = NamedUnit<MathDimension.unknown>(symbol: "user", dimension: userDimension, converter: LinearConverter(coefficient: 1.0))
         
         // Currency per user (USD / user)
         let revenue = Quantity(value: 1000.0, unit: usdUnit)
@@ -319,11 +319,11 @@ import CoreLocation
 struct Place {}
 
 protocol PlaceService {
-    func fetchNearbyPlaces<U: Math.Unit>(
+    func fetchNearbyPlaces<U: MathUnit>(
         coordinate: CLLocationCoordinate2D,
         radius: Math.Quantity<U>,
         completion: @escaping (Result<[Place], Error>) -> Void
-    ) where U.Dimension == Math.Dimension.length
+    ) where U.Dimension == MathDimension.length
 }
 #endif
 

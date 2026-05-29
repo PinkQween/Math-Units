@@ -9,9 +9,9 @@ The `Math` library provides a powerful system for working with physical quantiti
 ### Core Concepts
 
 * ``Quantity``: A value combined with a unit of measurement (e.g., `5.0 m`).
-* ``Unit``: A protocol representing a unit of measurement.
+* ``MathUnit``: A protocol representing a unit of measurement.
 * ``PhysicalDimension``: A representation of physical dimensions using base SI dimension exponents.
-* ``Dimension``: A compile-time namespace representing dimension types (e.g., `Dimension.length`, `Dimension.time`).
+* ``MathDimension``: A compile-time namespace representing dimension types (e.g., `MathDimension.length`, `MathDimension.time`).
 
 ## Topics
 
@@ -19,11 +19,11 @@ The `Math` library provides a powerful system for working with physical quantiti
 
 - ``Quantity``
 - ``PhysicalDimension``
-- ``Dimension``
+- ``MathDimension``
 
 ### Protocols
 
-- ``Unit``
+- ``MathUnit``
 - ``DimensionProtocol``
 - ``UnitConverter``
 

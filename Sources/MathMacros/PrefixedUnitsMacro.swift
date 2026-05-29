@@ -109,10 +109,10 @@ public struct PrefixedUnitsMacro: MemberMacro {
             }
         }
         
-        // Map dimension string (e.g. .length) to the type (e.g. Dimension.length)
+        // Map dimension string (e.g. .length) to the type (e.g. MathDimension.length)
         let dimensionTypeName: String
         if dimension.hasPrefix(".") {
-            dimensionTypeName = "Dimension." + dimension.dropFirst()
+            dimensionTypeName = "MathDimension." + dimension.dropFirst()
         } else {
             dimensionTypeName = dimension
         }

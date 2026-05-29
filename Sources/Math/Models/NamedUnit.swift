@@ -6,7 +6,7 @@
 //
 
 /// A generic unit implementation representing a measurement unit associated with a specific compile-time dimension type.
-public struct NamedUnit<Dim: DimensionProtocol>: Unit {
+public struct NamedUnit<Dim: DimensionProtocol>: MathUnit {
     /// The compile-time dimension type associated with this unit.
     public typealias Dimension = Dim
     

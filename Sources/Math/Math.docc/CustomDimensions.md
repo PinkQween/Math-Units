@@ -16,16 +16,16 @@ let usdDimension = PhysicalDimension(exponents: ["USD": 1])
 
 ### Defining Custom Units
 
-Once you have a dimension, you can construct custom ``NamedUnit`` instances. Because custom dimensions do not have a pre-defined static type, use the `Dimension.unknown` compile-time type-level parameter:
+Once you have a dimension, you can construct custom ``NamedUnit`` instances. Because custom dimensions do not have a pre-defined static type, use the `MathDimension.unknown` compile-time type-level parameter:
 
 ```swift
-let usdUnit = NamedUnit<Dimension.unknown>(
+let usdUnit = NamedUnit<MathDimension.unknown>(
     symbol: "$",
     dimension: usdDimension,
     converter: LinearConverter(coefficient: 1.0)
 )
 
-let eurUnit = NamedUnit<Dimension.unknown>(
+let eurUnit = NamedUnit<MathDimension.unknown>(
     symbol: "€",
     dimension: usdDimension,
     converter: LinearConverter(coefficient: 1.09) // Conversion rate relative to USD base

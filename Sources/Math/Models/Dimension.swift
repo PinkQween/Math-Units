@@ -154,7 +154,7 @@ public struct PhysicalDimension: Equatable, Hashable, Sendable {
 
 // MARK: - Dimension Namespace Enum for Type-Level Safety
 /// A namespace containing type-level structures for compile-time physical dimension verification.
-public enum Dimension {
+public enum MathDimension {
     /// The compile-time dimension type representing dimensionless quantities.
     public struct dimensionless: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.dimensionless }

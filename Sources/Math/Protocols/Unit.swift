@@ -16,7 +16,7 @@ public protocol DimensionProtocol {
 ///
 /// A unit has a symbol (e.g. `"m"`), a physical dimension (e.g. `PhysicalDimension.length`),
 /// and a converter to transform values to/from the base unit.
-public protocol Unit: Sendable {
+public protocol MathUnit: Sendable {
     /// The compile-time dimension type associated with this unit.
     associatedtype Dimension: DimensionProtocol
     
@@ -31,7 +31,7 @@ public protocol Unit: Sendable {
 }
 
 /// Multiplies two units, returning a new `CompositeUnit` whose dimension is the sum of their exponents.
-public func * <U1: Unit, U2: Unit>(lhs: U1, rhs: U2) -> CompositeUnit {
+public func * <U1: MathUnit, U2: MathUnit>(lhs: U1, rhs: U2) -> CompositeUnit {
     let newDimension = lhs.dimension * rhs.dimension
     let newSymbol = "(\(lhs.symbol)*\(rhs.symbol))"
     let lhsCoeff = lhs.converter.convertToBase(1.0)
@@ -45,7 +45,7 @@ public func * <U1: Unit, U2: Unit>(lhs: U1, rhs: U2) -> CompositeUnit {
 }
 
 /// Divides two units, returning a new `CompositeUnit` whose dimension is the difference of their exponents.
-public func / <U1: Unit, U2: Unit>(lhs: U1, rhs: U2) -> CompositeUnit {
+public func / <U1: MathUnit, U2: MathUnit>(lhs: U1, rhs: U2) -> CompositeUnit {
     let newDimension = lhs.dimension / rhs.dimension
     let newSymbol = "(\(lhs.symbol)/\(rhs.symbol))"
     let lhsCoeff = lhs.converter.convertToBase(1.0)
