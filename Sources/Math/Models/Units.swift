@@ -492,4 +492,13 @@ public enum Units {
         dimension: .currency,
         converter: LinearConverter(coefficient: 3800.0)
     )
+    
+    // MARK: - Currency Symbol Aliases
+    
+    public static let `$` = usd
+    public static let € = eur
+    public static let ₿ = btc
+    public static let ₹ = inr
+    public static let ₽ = rub
+    public static let ₺ = `try`
 }
