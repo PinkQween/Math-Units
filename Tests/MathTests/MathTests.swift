@@ -14,6 +14,12 @@ import Foundation
         #expect(inKm.value == 2.0)
     }
     
+    @Test func testEmptyConverter() {
+        let converter = EmptyConverter()
+        #expect(converter.convertToBase(5.0) == 5.0)
+        #expect(converter.convertFromBase(10.0) == 10.0)
+    }
+    
     @Test func testPlanckToCosmologicalScales() {
         // 1 Megaparsec
         let oneMpc = Quantity(value: 1.0, unit: Units.megaparsec)
