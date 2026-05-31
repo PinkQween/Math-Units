@@ -316,6 +316,27 @@ import Foundation
         let inPercent = risk.converted(to: Units.percent) // 1% = 0.01 probability
         #expect(abs(inPercent.value - 1.0) < 1e-9)
     }
+    
+    @Test func testCurrencyConversion() {
+        // Test standard currency conversion (EUR -> USD)
+        let tenEur = Quantity(value: 10.0, unit: Units.eur)
+        let inUsd = tenEur.converted(to: Units.usd)
+        #expect(abs(inUsd.value - 10.8) < 1e-9)
+        
+        // Test back to EUR
+        let backToEur = inUsd.converted(to: Units.eur)
+        #expect(abs(backToEur.value - 10.0) < 1e-9)
+        
+        // Test cryptocurrency conversion (BTC -> USD)
+        let oneBtc = Quantity(value: 1.0, unit: Units.btc)
+        let btcInUsd = oneBtc.converted(to: Units.usd)
+        #expect(btcInUsd.value == 68000.0)
+        
+        // Test TRY currency escaping
+        let tryValue = Quantity(value: 100.0, unit: Units.`try`)
+        let tryInUsd = tryValue.converted(to: Units.usd)
+        #expect(abs(tryInUsd.value - 3.1) < 1e-9)
+    }
 }
 
 // MARK: - Compilation Test for PlaceService

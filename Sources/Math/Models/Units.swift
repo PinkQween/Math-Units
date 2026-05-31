@@ -256,4 +256,240 @@ public enum Units {
         dimension: .temperature,
         converter: LinearConverter(coefficient: 1.416784e32)
     )
+    
+    // MARK: - Currencies
+    
+    public static let usd = NamedUnit<MathDimension.currency>(
+        symbol: "USD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 1.0)
+    )
+    
+    public static let eur = NamedUnit<MathDimension.currency>(
+        symbol: "EUR",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 1.08)
+    )
+    
+    public static let jpy = NamedUnit<MathDimension.currency>(
+        symbol: "JPY",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.0064)
+    )
+    
+    public static let gbp = NamedUnit<MathDimension.currency>(
+        symbol: "GBP",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 1.27)
+    )
+    
+    public static let aud = NamedUnit<MathDimension.currency>(
+        symbol: "AUD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.66)
+    )
+    
+    public static let cad = NamedUnit<MathDimension.currency>(
+        symbol: "CAD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.73)
+    )
+    
+    public static let chf = NamedUnit<MathDimension.currency>(
+        symbol: "CHF",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 1.11)
+    )
+    
+    public static let cny = NamedUnit<MathDimension.currency>(
+        symbol: "CNY",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.14)
+    )
+    
+    public static let sek = NamedUnit<MathDimension.currency>(
+        symbol: "SEK",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.094)
+    )
+    
+    public static let nzd = NamedUnit<MathDimension.currency>(
+        symbol: "NZD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.61)
+    )
+    
+    public static let mxn = NamedUnit<MathDimension.currency>(
+        symbol: "MXN",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.059)
+    )
+    
+    public static let sgd = NamedUnit<MathDimension.currency>(
+        symbol: "SGD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.74)
+    )
+    
+    public static let hkd = NamedUnit<MathDimension.currency>(
+        symbol: "HKD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.13)
+    )
+    
+    public static let nok = NamedUnit<MathDimension.currency>(
+        symbol: "NOK",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.094)
+    )
+    
+    public static let krw = NamedUnit<MathDimension.currency>(
+        symbol: "KRW",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.00073)
+    )
+    
+    public static let `try` = NamedUnit<MathDimension.currency>(
+        symbol: "TRY",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.031)
+    )
+    
+    public static let inr = NamedUnit<MathDimension.currency>(
+        symbol: "INR",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.012)
+    )
+    
+    public static let rub = NamedUnit<MathDimension.currency>(
+        symbol: "RUB",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.011)
+    )
+    
+    public static let brl = NamedUnit<MathDimension.currency>(
+        symbol: "BRL",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.19)
+    )
+    
+    public static let zar = NamedUnit<MathDimension.currency>(
+        symbol: "ZAR",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.054)
+    )
+    
+    public static let dkk = NamedUnit<MathDimension.currency>(
+        symbol: "DKK",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.15)
+    )
+    
+    public static let pln = NamedUnit<MathDimension.currency>(
+        symbol: "PLN",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.25)
+    )
+    
+    public static let twd = NamedUnit<MathDimension.currency>(
+        symbol: "TWD",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.031)
+    )
+    
+    public static let thb = NamedUnit<MathDimension.currency>(
+        symbol: "THB",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.027)
+    )
+    
+    public static let idr = NamedUnit<MathDimension.currency>(
+        symbol: "IDR",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.000062)
+    )
+    
+    public static let huf = NamedUnit<MathDimension.currency>(
+        symbol: "HUF",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.0028)
+    )
+    
+    public static let czk = NamedUnit<MathDimension.currency>(
+        symbol: "CZK",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.043)
+    )
+    
+    public static let ils = NamedUnit<MathDimension.currency>(
+        symbol: "ILS",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.27)
+    )
+    
+    public static let clp = NamedUnit<MathDimension.currency>(
+        symbol: "CLP",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.0011)
+    )
+    
+    public static let php = NamedUnit<MathDimension.currency>(
+        symbol: "PHP",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.017)
+    )
+    
+    public static let aed = NamedUnit<MathDimension.currency>(
+        symbol: "AED",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.27)
+    )
+    
+    public static let cop = NamedUnit<MathDimension.currency>(
+        symbol: "COP",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.00026)
+    )
+    
+    public static let sar = NamedUnit<MathDimension.currency>(
+        symbol: "SAR",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.27)
+    )
+    
+    public static let myr = NamedUnit<MathDimension.currency>(
+        symbol: "MYR",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.21)
+    )
+    
+    public static let ron = NamedUnit<MathDimension.currency>(
+        symbol: "RON",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.22)
+    )
+    
+    public static let vnd = NamedUnit<MathDimension.currency>(
+        symbol: "VND",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.000039)
+    )
+    
+    public static let ars = NamedUnit<MathDimension.currency>(
+        symbol: "ARS",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 0.0011)
+    )
+    
+    public static let btc = NamedUnit<MathDimension.currency>(
+        symbol: "BTC",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 68000.0)
+    )
+    
+    public static let eth = NamedUnit<MathDimension.currency>(
+        symbol: "ETH",
+        dimension: .currency,
+        converter: LinearConverter(coefficient: 3800.0)
+    )
 }

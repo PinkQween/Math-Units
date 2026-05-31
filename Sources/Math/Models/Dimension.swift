@@ -110,6 +110,8 @@ public struct PhysicalDimension: Equatable, Hashable, Sendable {
     private static var _magneticFluxDensity: Self { _magneticFlux / _area }
     private static var _luminousFlux: Self { _luminousIntensity }
     private static var _illuminance: Self { _luminousIntensity / _area }
+    private static var _currency: Self { Self(exponents: ["currency": 1]) }
+
 
     // SI Base Dimensions
     public static var dimensionless: Self { _dimensionless }
@@ -150,6 +152,7 @@ public struct PhysicalDimension: Equatable, Hashable, Sendable {
     public static var magneticFluxDensity: Self { _magneticFluxDensity }
     public static var luminousFlux: Self { _luminousFlux }
     public static var illuminance: Self { _illuminance }
+    public static var currency: Self { _currency }
 }
 
 // MARK: - Dimension Namespace Enum for Type-Level Safety
@@ -264,6 +267,9 @@ public enum MathDimension {
     }
     public struct illuminance: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.illuminance }
+    }
+    public struct currency: DimensionProtocol {
+        public static var dimension: PhysicalDimension { PhysicalDimension.currency }
     }
     public struct unknown: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.dimensionless }
