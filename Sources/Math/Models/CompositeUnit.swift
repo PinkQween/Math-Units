@@ -22,6 +22,9 @@ public struct CompositeUnit: MathUnit {
     /// The unit converter used to transform values of this unit to and from base units.
     public let converter: any UnitConverter
     
+    /// The position where the unit symbol should be placed when formatting.
+    public var symbolPosition: SymbolPosition { .suffix }
+    
     /// Initializes a new composite unit with a symbol, underlying physical dimension, and converter.
     public init(symbol: String, dimension: PhysicalDimension, converter: any UnitConverter) {
         self.symbol = symbol

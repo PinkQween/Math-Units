@@ -12,12 +12,16 @@ public protocol DimensionProtocol {
     static var dimension: PhysicalDimension { get }
 }
 
+public enum SymbolPosition: String, Sendable, Codable {
+    case prefix
+    case suffix
+}
+
 /// A protocol representing a unit of measurement.
 ///
 /// A unit has a symbol (e.g. `"m"`), a physical dimension (e.g. `PhysicalDimension.length`),
 /// and a converter to transform values to/from the base unit.
 public protocol MathUnit: Sendable {
-    /// The compile-time dimension type associated with this unit.
     associatedtype Dimension: DimensionProtocol
     
     /// The symbol representing the unit, e.g. `"m"`.
@@ -28,6 +32,15 @@ public protocol MathUnit: Sendable {
     
     /// The unit converter used to transform values of this unit to and from base units.
     var converter: any UnitConverter { get }
+    
+    /// The position where the unit symbol should be placed when formatting.
+    var symbolPosition: SymbolPosition { get }
+}
+
+public extension MathUnit {
+    var symbolPosition: SymbolPosition {
+        dimension == .currency ? .prefix : .suffix
+    }
 }
 
 /// Multiplies two units, returning a new `CompositeUnit` whose dimension is the sum of their exponents.

@@ -375,6 +375,33 @@ import Foundation
         let range2 = PriceRange(startPrice: usd2, endPrice: eur)
         #expect(range1 == range2)
     }
+    
+    @Test func testQuantityFormatting() {
+        // Test prefix symbol positioning (e.g. USD)
+        let tenDollars = Quantity(value: 10.1234, unit: Units.usd)
+        #expect(tenDollars.unit.symbolPosition == .prefix)
+        #expect(tenDollars.formatted() == "$10.12")
+        #expect(tenDollars.formatted(decimalPlaces: 3) == "$10.123")
+        #expect(tenDollars.formatted(includeSpace: true) == "$ 10.12")
+        
+        // Test suffix symbol positioning (e.g. meters)
+        let fiveMeters = Quantity(value: 5.5, unit: Units.meter)
+        #expect(fiveMeters.unit.symbolPosition == .suffix)
+        #expect(fiveMeters.formatted() == "5.50 m")
+        #expect(fiveMeters.formatted(decimalPlaces: 1) == "5.5 m")
+        #expect(fiveMeters.formatted(includeSpace: false) == "5.50m")
+        
+        // Test suffix currency symbol positioning (e.g. Swedish Krona)
+        let krona = Quantity(value: 100.0, unit: Units.sek)
+        #expect(krona.unit.symbolPosition == .suffix)
+        #expect(krona.formatted(decimalPlaces: 0) == "100 kr")
+        
+        // Test percent suffix positioning without space
+        let pct = Quantity(value: 75.5, unit: Units.percent)
+        #expect(pct.unit.symbolPosition == .suffix)
+        #expect(pct.formatted(decimalPlaces: 1) == "75.5%")
+        #expect(pct.formatted(decimalPlaces: 1, includeSpace: true) == "75.5 %")
+    }
 }
 
 // MARK: - Compilation Test for PlaceService

@@ -4,6 +4,7 @@
 //
 //  Created by Hanna Skairipa on 5/29/26.
 //
+import Foundation
 
 public struct Quantity<U: MathUnit> {
     public let value: Double
@@ -60,6 +61,32 @@ public extension Quantity {
         precondition(self.unit.dimension == .temperature, "Thermal energy can only be calculated for temperature quantities.")
         precondition(targetUnit.dimension == .energy, "Target unit must be an energy unit.")
         return self.converted(to: targetUnit)
+    }
+}
+
+// MARK: - Formatting
+public extension Quantity {
+    /// Formats the quantity value with its unit symbol placed on the correct side (prefix or suffix).
+    ///
+    /// - Parameters:
+    ///   - decimalPlaces: The number of decimal places to format the numeric value to (default is 2).
+    ///   - includeSpace: An optional boolean. If true, a space is inserted between the value and symbol.
+    ///                   Defaults to `false` for prefix symbols (like `$10.00`), and `true` for suffix symbols
+    ///                   (like `10.00 m` or `10.00 kr`), except for the percent symbol (`%`) which defaults to `false`.
+    /// - Returns: A formatted string representation.
+    func formatted(decimalPlaces: Int = 2, includeSpace: Bool? = nil) -> String {
+        let formattedValue = String(format: "%.\(decimalPlaces)f", value)
+        
+        switch unit.symbolPosition {
+        case .prefix:
+            let space = includeSpace ?? false ? " " : ""
+            return "\(unit.symbol)\(space)\(formattedValue)"
+            
+        case .suffix:
+            let defaultSpace = unit.symbol != "%"
+            let space = includeSpace ?? defaultSpace ? " " : ""
+            return "\(formattedValue)\(space)\(unit.symbol)"
+        }
     }
 }
 

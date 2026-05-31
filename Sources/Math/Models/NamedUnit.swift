@@ -19,11 +19,15 @@ public struct NamedUnit<Dim: DimensionProtocol>: MathUnit {
     /// The unit converter used to transform values of this unit to and from base units.
     public let converter: any UnitConverter
     
+    /// The position where the unit symbol should be placed when formatting.
+    public let symbolPosition: SymbolPosition
+    
     /// Initializes a new unit with a symbol, underlying physical dimension, and converter.
-    public init(symbol: String, dimension: PhysicalDimension, converter: any UnitConverter) {
+    public init(symbol: String, dimension: PhysicalDimension, converter: any UnitConverter, symbolPosition: SymbolPosition? = nil) {
         self.symbol = symbol
         self.dimension = dimension
         self.converter = converter
+        self.symbolPosition = symbolPosition ?? (dimension == .currency ? .prefix : .suffix)
     }
 }
 

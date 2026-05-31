@@ -310,7 +310,8 @@ public enum Units {
     public static let sek = NamedUnit<MathDimension.currency>(
         symbol: "kr",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.094)
+        converter: LinearConverter(coefficient: 0.094),
+        symbolPosition: .suffix
     )
     
     public static let nzd = NamedUnit<MathDimension.currency>(
@@ -340,7 +341,8 @@ public enum Units {
     public static let nok = NamedUnit<MathDimension.currency>(
         symbol: "kr",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.094)
+        converter: LinearConverter(coefficient: 0.094),
+        symbolPosition: .suffix
     )
     
     public static let krw = NamedUnit<MathDimension.currency>(
@@ -382,13 +384,15 @@ public enum Units {
     public static let dkk = NamedUnit<MathDimension.currency>(
         symbol: "kr",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.15)
+        converter: LinearConverter(coefficient: 0.15),
+        symbolPosition: .suffix
     )
     
     public static let pln = NamedUnit<MathDimension.currency>(
         symbol: "zł",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.25)
+        converter: LinearConverter(coefficient: 0.25),
+        symbolPosition: .suffix
     )
     
     public static let twd = NamedUnit<MathDimension.currency>(
@@ -412,13 +416,15 @@ public enum Units {
     public static let huf = NamedUnit<MathDimension.currency>(
         symbol: "Ft",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.0028)
+        converter: LinearConverter(coefficient: 0.0028),
+        symbolPosition: .suffix
     )
     
     public static let czk = NamedUnit<MathDimension.currency>(
         symbol: "Kč",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.043)
+        converter: LinearConverter(coefficient: 0.043),
+        symbolPosition: .suffix
     )
     
     public static let ils = NamedUnit<MathDimension.currency>(
@@ -466,7 +472,8 @@ public enum Units {
     public static let ron = NamedUnit<MathDimension.currency>(
         symbol: "lei",
         dimension: .currency,
-        converter: LinearConverter(coefficient: 0.22)
+        converter: LinearConverter(coefficient: 0.22),
+        symbolPosition: .suffix
     )
     
     public static let vnd = NamedUnit<MathDimension.currency>(
