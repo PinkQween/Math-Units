@@ -26,3 +26,17 @@ public struct NamedUnit<Dim: DimensionProtocol>: MathUnit {
         self.converter = converter
     }
 }
+
+extension NamedUnit: Equatable {
+    public static func == (lhs: NamedUnit<Dim>, rhs: NamedUnit<Dim>) -> Bool {
+        lhs.symbol == rhs.symbol &&
+        lhs.dimension == rhs.dimension
+    }
+}
+
+extension NamedUnit: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(symbol)
+        hasher.combine(dimension)
+    }
+}

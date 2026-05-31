@@ -29,3 +29,17 @@ public struct CompositeUnit: MathUnit {
         self.converter = converter
     }
 }
+
+extension CompositeUnit: Equatable {
+    public static func == (lhs: CompositeUnit, rhs: CompositeUnit) -> Bool {
+        lhs.symbol == rhs.symbol &&
+        lhs.dimension == rhs.dimension
+    }
+}
+
+extension CompositeUnit: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(symbol)
+        hasher.combine(dimension)
+    }
+}

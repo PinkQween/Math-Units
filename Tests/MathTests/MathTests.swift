@@ -344,6 +344,31 @@ import Foundation
         #expect(Units.jpy.symbol == "¥")
         #expect(Units.btc.symbol == "₿")
     }
+    
+    @Test func testUnitEquatableAndHashable() {
+        // Test NamedUnit Equatable
+        let usd1 = Units.usd
+        let usd2 = NamedUnit<MathDimension.currency>(symbol: "$", dimension: .currency, converter: LinearConverter(coefficient: 1.0))
+        let eur = Units.eur
+        #expect(usd1 == usd2)
+        #expect(usd1 != eur)
+        
+        // Test NamedUnit Hashable
+        var unitSet = Set<NamedUnit<MathDimension.currency>>()
+        unitSet.insert(usd1)
+        unitSet.insert(usd2)
+        unitSet.insert(eur)
+        #expect(unitSet.count == 2)
+        
+        // Test PriceRange compiles and uses Equatable synthesized conformance
+        struct PriceRange: Sendable, Equatable {
+            public var startPrice: NamedUnit<MathDimension.currency>
+            public var endPrice: NamedUnit<MathDimension.currency>
+        }
+        let range1 = PriceRange(startPrice: usd1, endPrice: eur)
+        let range2 = PriceRange(startPrice: usd2, endPrice: eur)
+        #expect(range1 == range2)
+    }
 }
 
 // MARK: - Compilation Test for PlaceService
