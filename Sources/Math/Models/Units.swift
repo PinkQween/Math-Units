@@ -260,37 +260,37 @@ public enum Units {
     // MARK: - Currencies
     
     public static let usd = NamedUnit<MathDimension.currency>(
-        symbol: "USD",
+        symbol: "$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 1.0)
     )
     
     public static let eur = NamedUnit<MathDimension.currency>(
-        symbol: "EUR",
+        symbol: "€",
         dimension: .currency,
         converter: LinearConverter(coefficient: 1.08)
     )
     
     public static let jpy = NamedUnit<MathDimension.currency>(
-        symbol: "JPY",
+        symbol: "¥",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.0064)
     )
     
     public static let gbp = NamedUnit<MathDimension.currency>(
-        symbol: "GBP",
+        symbol: "£",
         dimension: .currency,
         converter: LinearConverter(coefficient: 1.27)
     )
     
     public static let aud = NamedUnit<MathDimension.currency>(
-        symbol: "AUD",
+        symbol: "A$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.66)
     )
     
     public static let cad = NamedUnit<MathDimension.currency>(
-        symbol: "CAD",
+        symbol: "C$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.73)
     )
@@ -302,139 +302,139 @@ public enum Units {
     )
     
     public static let cny = NamedUnit<MathDimension.currency>(
-        symbol: "CNY",
+        symbol: "¥",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.14)
     )
     
     public static let sek = NamedUnit<MathDimension.currency>(
-        symbol: "SEK",
+        symbol: "kr",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.094)
     )
     
     public static let nzd = NamedUnit<MathDimension.currency>(
-        symbol: "NZD",
+        symbol: "NZ$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.61)
     )
     
     public static let mxn = NamedUnit<MathDimension.currency>(
-        symbol: "MXN",
+        symbol: "$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.059)
     )
     
     public static let sgd = NamedUnit<MathDimension.currency>(
-        symbol: "SGD",
+        symbol: "S$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.74)
     )
     
     public static let hkd = NamedUnit<MathDimension.currency>(
-        symbol: "HKD",
+        symbol: "HK$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.13)
     )
     
     public static let nok = NamedUnit<MathDimension.currency>(
-        symbol: "NOK",
+        symbol: "kr",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.094)
     )
     
     public static let krw = NamedUnit<MathDimension.currency>(
-        symbol: "KRW",
+        symbol: "₩",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.00073)
     )
     
     public static let `try` = NamedUnit<MathDimension.currency>(
-        symbol: "TRY",
+        symbol: "₺",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.031)
     )
     
     public static let inr = NamedUnit<MathDimension.currency>(
-        symbol: "INR",
+        symbol: "₹",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.012)
     )
     
     public static let rub = NamedUnit<MathDimension.currency>(
-        symbol: "RUB",
+        symbol: "₽",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.011)
     )
     
     public static let brl = NamedUnit<MathDimension.currency>(
-        symbol: "BRL",
+        symbol: "R$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.19)
     )
     
     public static let zar = NamedUnit<MathDimension.currency>(
-        symbol: "ZAR",
+        symbol: "R",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.054)
     )
     
     public static let dkk = NamedUnit<MathDimension.currency>(
-        symbol: "DKK",
+        symbol: "kr",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.15)
     )
     
     public static let pln = NamedUnit<MathDimension.currency>(
-        symbol: "PLN",
+        symbol: "zł",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.25)
     )
     
     public static let twd = NamedUnit<MathDimension.currency>(
-        symbol: "TWD",
+        symbol: "NT$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.031)
     )
     
     public static let thb = NamedUnit<MathDimension.currency>(
-        symbol: "THB",
+        symbol: "฿",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.027)
     )
     
     public static let idr = NamedUnit<MathDimension.currency>(
-        symbol: "IDR",
+        symbol: "Rp",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.000062)
     )
     
     public static let huf = NamedUnit<MathDimension.currency>(
-        symbol: "HUF",
+        symbol: "Ft",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.0028)
     )
     
     public static let czk = NamedUnit<MathDimension.currency>(
-        symbol: "CZK",
+        symbol: "Kč",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.043)
     )
     
     public static let ils = NamedUnit<MathDimension.currency>(
-        symbol: "ILS",
+        symbol: "₪",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.27)
     )
     
     public static let clp = NamedUnit<MathDimension.currency>(
-        symbol: "CLP",
+        symbol: "$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.0011)
     )
     
     public static let php = NamedUnit<MathDimension.currency>(
-        symbol: "PHP",
+        symbol: "₱",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.017)
     )
@@ -446,59 +446,50 @@ public enum Units {
     )
     
     public static let cop = NamedUnit<MathDimension.currency>(
-        symbol: "COP",
+        symbol: "$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.00026)
     )
     
     public static let sar = NamedUnit<MathDimension.currency>(
-        symbol: "SAR",
+        symbol: "SR",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.27)
     )
     
     public static let myr = NamedUnit<MathDimension.currency>(
-        symbol: "MYR",
+        symbol: "RM",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.21)
     )
     
     public static let ron = NamedUnit<MathDimension.currency>(
-        symbol: "RON",
+        symbol: "lei",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.22)
     )
     
     public static let vnd = NamedUnit<MathDimension.currency>(
-        symbol: "VND",
+        symbol: "₫",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.000039)
     )
     
     public static let ars = NamedUnit<MathDimension.currency>(
-        symbol: "ARS",
+        symbol: "$",
         dimension: .currency,
         converter: LinearConverter(coefficient: 0.0011)
     )
     
     public static let btc = NamedUnit<MathDimension.currency>(
-        symbol: "BTC",
+        symbol: "₿",
         dimension: .currency,
         converter: LinearConverter(coefficient: 68000.0)
     )
     
     public static let eth = NamedUnit<MathDimension.currency>(
-        symbol: "ETH",
+        symbol: "Ξ",
         dimension: .currency,
         converter: LinearConverter(coefficient: 3800.0)
     )
-    
-    // MARK: - Currency Symbol Aliases
-    
-    public static let `$` = usd
-    public static let € = eur
-    public static let ₿ = btc
-    public static let ₹ = inr
-    public static let ₽ = rub
-    public static let ₺ = `try`
 }

@@ -337,14 +337,12 @@ import Foundation
         let tryInUsd = tryValue.converted(to: Units.usd)
         #expect(abs(tryInUsd.value - 3.1) < 1e-9)
         
-        // Test currency symbol aliases
-        let dollars = Quantity(value: 50.0, unit: Units.`$`)
-        let euros = Quantity(value: 50.0, unit: Units.€)
-        let bitcoin = Quantity(value: 1.0, unit: Units.₿)
-        
-        #expect(dollars.unit.symbol == "USD")
-        #expect(euros.unit.symbol == "EUR")
-        #expect(bitcoin.unit.symbol == "BTC")
+        // Test currency symbols inside the units
+        #expect(Units.usd.symbol == "$")
+        #expect(Units.eur.symbol == "€")
+        #expect(Units.gbp.symbol == "£")
+        #expect(Units.jpy.symbol == "¥")
+        #expect(Units.btc.symbol == "₿")
     }
 }
 
