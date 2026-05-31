@@ -492,4 +492,22 @@ public enum Units {
         dimension: .currency,
         converter: LinearConverter(coefficient: 3800.0)
     )
+    
+    // MARK: - Currency Resolution
+    
+    /// A dictionary mapping ISO 4217 uppercase currency codes to their corresponding NamedUnit.
+    public static let currencyByCode: [String: NamedUnit<MathDimension.currency>] = [
+        "USD": usd, "EUR": eur, "JPY": jpy, "GBP": gbp, "AUD": aud, "CAD": cad,
+        "CHF": chf, "CNY": cny, "SEK": sek, "NZD": nzd, "MXN": mxn, "SGD": sgd,
+        "HKD": hkd, "NOK": nok, "KRW": krw, "TRY": `try`, "INR": inr, "RUB": rub,
+        "BRL": brl, "ZAR": zar, "DKK": dkk, "PLN": pln, "TWD": twd, "THB": thb,
+        "IDR": idr, "HUF": huf, "CZK": czk, "ILS": ils, "CLP": clp, "PHP": php,
+        "AED": aed, "COP": cop, "SAR": sar, "MYR": myr, "RON": ron, "VND": vnd,
+        "ARS": ars, "BTC": btc, "ETH": eth
+    ]
+    
+    /// Resolves an ISO 4217 currency code (case-insensitive) to a NamedUnit.
+    public static func currency(for code: String) -> NamedUnit<MathDimension.currency>? {
+        currencyByCode[code.uppercased()]
+    }
 }

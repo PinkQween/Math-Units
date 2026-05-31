@@ -343,6 +343,12 @@ import Foundation
         #expect(Units.gbp.symbol == "£")
         #expect(Units.jpy.symbol == "¥")
         #expect(Units.btc.symbol == "₿")
+        
+        // Test currency resolution helpers
+        #expect(Units.currency(for: "USD") == Units.usd)
+        #expect(Units.currency(for: "eur") == Units.eur)
+        #expect(Units.currency(for: "btc") == Units.btc)
+        #expect(Units.currency(for: "INVALID") == nil)
     }
     
     @Test func testUnitEquatableAndHashable() {
