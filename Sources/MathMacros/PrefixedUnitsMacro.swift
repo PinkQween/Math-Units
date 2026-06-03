@@ -1,5 +1,6 @@
 import SwiftSyntax
 import SwiftSyntaxMacros
+import Foundation
 
 enum MacroError: Error, CustomStringConvertible {
     case missingArguments
