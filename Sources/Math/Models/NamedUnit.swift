@@ -29,6 +29,10 @@ public struct NamedUnit<Dim: DimensionProtocol>: MathUnit {
         self.converter = converter
         self.symbolPosition = symbolPosition ?? (dimension == .currency ? .prefix : .suffix)
     }
+    
+    public var base: NamedUnit<Dim> {
+        NamedUnit(symbol: symbol, dimension: dimension, converter: LinearConverter(coefficient: 1.0), symbolPosition: symbolPosition)
+    }
 }
 
 extension NamedUnit: Equatable {

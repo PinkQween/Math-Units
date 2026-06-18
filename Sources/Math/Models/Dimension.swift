@@ -78,7 +78,6 @@ public struct PhysicalDimension: Equatable, Hashable, Sendable {
     private static var _mass: Self { Self(exponents: ["mass": 1]) }
     private static var _time: Self { Self(exponents: ["time": 1]) }
     private static var _electricCurrent: Self { Self(exponents: ["electricCurrent": 1]) }
-    private static var _temperature: Self { Self(exponents: ["temperature": 1]) }
     private static var _amountOfSubstance: Self { Self(exponents: ["amountOfSubstance": 1]) }
     private static var _luminousIntensity: Self { Self(exponents: ["luminousIntensity": 1]) }
     private static var _data: Self { Self(exponents: ["data": 1]) }
@@ -119,7 +118,6 @@ public struct PhysicalDimension: Equatable, Hashable, Sendable {
     public static var mass: Self { _mass }
     public static var time: Self { _time }
     public static var electricCurrent: Self { _electricCurrent }
-    public static var temperature: Self { _temperature }
     public static var amountOfSubstance: Self { _amountOfSubstance }
     public static var luminousIntensity: Self { _luminousIntensity }
     public static var data: Self { _data }
@@ -174,9 +172,6 @@ public enum MathDimension {
     }
     public struct electricCurrent: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.electricCurrent }
-    }
-    public struct temperature: DimensionProtocol {
-        public static var dimension: PhysicalDimension { PhysicalDimension.temperature }
     }
     public struct amountOfSubstance: DimensionProtocol {
         public static var dimension: PhysicalDimension { PhysicalDimension.amountOfSubstance }

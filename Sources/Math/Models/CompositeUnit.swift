@@ -9,7 +9,7 @@
 ///
 /// Composite units do not enforce a specific statically defined compile-time dimension type and default
 /// to the type-level `MathDimension.unknown` dimension.
-public struct CompositeUnit: MathUnit {
+public struct CompositeUnit: MathUnit, CustomStringConvertible {
     /// The compile-time dimension type associated with this unit, defaults to `unknown`.
     public typealias Dimension = MathDimension.unknown
     
@@ -30,6 +30,14 @@ public struct CompositeUnit: MathUnit {
         self.symbol = symbol
         self.dimension = dimension
         self.converter = converter
+    }
+    
+    public var base: CompositeUnit {
+        CompositeUnit(symbol: symbol, dimension: dimension, converter: LinearConverter(coefficient: 1.0))
+    }
+    
+    public var description: String {
+        return symbol
     }
 }
 

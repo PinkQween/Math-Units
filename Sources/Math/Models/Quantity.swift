@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct Quantity<U: MathUnit> {
+public struct Quantity<U: MathUnit>: CustomStringConvertible {
     public let value: Double
     public let unit: U
     
@@ -25,42 +25,11 @@ public struct Quantity<U: MathUnit> {
             return Quantity<TargetUnit>(value: targetValue, unit: targetUnit)
         }
         
-        // If converting temperature to energy (natural units conversion)
-        if self.unit.dimension == .temperature && targetUnit.dimension == .energy {
-            let tempK = self.converted(to: Units.kelvin)
-            let boltzmannJ = tempK.value * 1.380649e-23
-            let jouleQty = Quantity<NamedUnit<MathDimension.energy>>(value: boltzmannJ, unit: Units.joule)
-            return jouleQty.converted(to: targetUnit)
-        }
-        
-        // If converting energy to temperature (natural units conversion)
-        if self.unit.dimension == .energy && targetUnit.dimension == .temperature {
-            let energyJ = self.converted(to: Units.joule)
-            let tempKVal = energyJ.value / 1.380649e-23
-            let kelvinQty = Quantity<NamedUnit<MathDimension.temperature>>(value: tempKVal, unit: Units.kelvin)
-            return kelvinQty.converted(to: targetUnit)
-        }
-        
         preconditionFailure("Cannot convert quantity to a unit of a different dimension. Source dimension: \(self.unit.dimension), Target dimension: \(targetUnit.dimension)")
     }
-}
-
-// MARK: - Thermal Energy Helpers
-public extension Quantity {
-    /// The thermal energy equivalent of this temperature quantity (E = k_B * T) in Joules.
-    /// Precondition: This quantity must be a temperature.
-    var thermalEnergy: Quantity<NamedUnit<MathDimension.energy>> {
-        precondition(self.unit.dimension == .temperature, "Thermal energy can only be calculated for temperature quantities.")
-        let tempK = self.converted(to: Units.kelvin)
-        return Quantity<NamedUnit<MathDimension.energy>>(value: tempK.value * 1.380649e-23, unit: Units.joule)
-    }
     
-    /// The thermal energy equivalent of this temperature quantity (E = k_B * T) in the specified energy unit.
-    /// Precondition: This quantity must be a temperature and the target unit must be an energy unit.
-    func thermalEnergy<TargetUnit: MathUnit>(in targetUnit: TargetUnit) -> Quantity<TargetUnit> {
-        precondition(self.unit.dimension == .temperature, "Thermal energy can only be calculated for temperature quantities.")
-        precondition(targetUnit.dimension == .energy, "Target unit must be an energy unit.")
-        return self.converted(to: targetUnit)
+    public var description: String {
+        return self.formatted()
     }
 }
 
@@ -180,3 +149,64 @@ public extension Quantity {
         return Quantity<CompositeUnit>(value: newValue, unit: newUnit)
     }
 }
+
+// MARK: - Smart Dimensional Overloads
+public extension Quantity where U.Dimension == MathDimension.power {
+    static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.energy>> where U2.Dimension == MathDimension.time {
+        let newDimension = MathDimension.energy.dimension
+        let newSymbol = "\(lhs.unit.symbol)\(rhs.unit.symbol)"
+        
+        let lhsCoeff = lhs.unit.converter.convertToBase(1.0)
+        let rhsCoeff = rhs.unit.converter.convertToBase(1.0)
+        let compositeCoeff = lhsCoeff * rhsCoeff
+        
+        let newConverter = LinearConverter(coefficient: compositeCoeff)
+        let newUnit = NamedUnit<MathDimension.energy>(symbol: newSymbol, dimension: newDimension, converter: newConverter)
+        let newValue = lhs.value * rhs.value
+        
+        return Quantity<NamedUnit<MathDimension.energy>>(value: newValue, unit: newUnit)
+    }
+}
+
+public extension Quantity where U.Dimension == MathDimension.time {
+    static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.energy>> where U2.Dimension == MathDimension.power {
+        let newDimension = MathDimension.energy.dimension
+        // Standard convention puts power before time (e.g., kWh, Ws)
+        let newSymbol = "\(rhs.unit.symbol)\(lhs.unit.symbol)"
+        
+        let lhsCoeff = lhs.unit.converter.convertToBase(1.0)
+        let rhsCoeff = rhs.unit.converter.convertToBase(1.0)
+        let compositeCoeff = lhsCoeff * rhsCoeff
+        
+        let newConverter = LinearConverter(coefficient: compositeCoeff)
+        let newUnit = NamedUnit<MathDimension.energy>(symbol: newSymbol, dimension: newDimension, converter: newConverter)
+        let newValue = lhs.value * rhs.value
+        
+        return Quantity<NamedUnit<MathDimension.energy>>(value: newValue, unit: newUnit)
+    }
+}
+
+public extension Quantity where U.Dimension == MathDimension.energy {
+    static func / <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.power>> where U2.Dimension == MathDimension.time {
+        let newDimension = MathDimension.power.dimension
+        // Extract the power unit symbol if it ends with the time unit symbol, else fall back to generic (E/T)
+        var newSymbol = "(\(lhs.unit.symbol)/\(rhs.unit.symbol))"
+        if lhs.unit.symbol.hasSuffix(rhs.unit.symbol) {
+            let potentialPowerSymbol = String(lhs.unit.symbol.dropLast(rhs.unit.symbol.count))
+            if !potentialPowerSymbol.isEmpty {
+                newSymbol = potentialPowerSymbol
+            }
+        }
+        
+        let lhsCoeff = lhs.unit.converter.convertToBase(1.0)
+        let rhsCoeff = rhs.unit.converter.convertToBase(1.0)
+        let compositeCoeff = lhsCoeff / rhsCoeff
+        
+        let newConverter = LinearConverter(coefficient: compositeCoeff)
+        let newUnit = NamedUnit<MathDimension.power>(symbol: newSymbol, dimension: newDimension, converter: newConverter)
+        let newValue = lhs.value / rhs.value
+        
+        return Quantity<NamedUnit<MathDimension.power>>(value: newValue, unit: newUnit)
+    }
+}
+

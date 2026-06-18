@@ -35,6 +35,9 @@ public protocol MathUnit: Sendable {
     
     /// The position where the unit symbol should be placed when formatting.
     var symbolPosition: SymbolPosition { get }
+    
+    /// The base unit for this unit's dimension.
+    var base: Self { get }
 }
 
 public extension MathUnit {
