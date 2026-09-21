@@ -526,4 +526,44 @@ public extension Units.Weight {
 public extension MathUnit where Self == Units.Currency {
     /// The `currency` unit namespace, e.g. `Units.Currency.usd`.
     static var currency: Units.Currency.Type { Units.Currency.self }
+
+    static var usd: NamedUnit<MathDimension.currency> { Units.usd }
+    static var eur: NamedUnit<MathDimension.currency> { Units.eur }
+    static var jpy: NamedUnit<MathDimension.currency> { Units.jpy }
+    static var gbp: NamedUnit<MathDimension.currency> { Units.gbp }
+    static var aud: NamedUnit<MathDimension.currency> { Units.aud }
+    static var cad: NamedUnit<MathDimension.currency> { Units.cad }
+    static var chf: NamedUnit<MathDimension.currency> { Units.chf }
+    static var cny: NamedUnit<MathDimension.currency> { Units.cny }
+    static var sek: NamedUnit<MathDimension.currency> { Units.sek }
+    static var nzd: NamedUnit<MathDimension.currency> { Units.nzd }
+    static var mxn: NamedUnit<MathDimension.currency> { Units.mxn }
+    static var sgd: NamedUnit<MathDimension.currency> { Units.sgd }
+    static var hkd: NamedUnit<MathDimension.currency> { Units.hkd }
+    static var nok: NamedUnit<MathDimension.currency> { Units.nok }
+    static var krw: NamedUnit<MathDimension.currency> { Units.krw }
+    static var `try`: NamedUnit<MathDimension.currency> { Units.`try` }
+    static var inr: NamedUnit<MathDimension.currency> { Units.inr }
+    static var rub: NamedUnit<MathDimension.currency> { Units.rub }
+    static var brl: NamedUnit<MathDimension.currency> { Units.brl }
+    static var zar: NamedUnit<MathDimension.currency> { Units.zar }
+    static var dkk: NamedUnit<MathDimension.currency> { Units.dkk }
+    static var pln: NamedUnit<MathDimension.currency> { Units.pln }
+    static var twd: NamedUnit<MathDimension.currency> { Units.twd }
+    static var thb: NamedUnit<MathDimension.currency> { Units.thb }
+    static var idr: NamedUnit<MathDimension.currency> { Units.idr }
+    static var huf: NamedUnit<MathDimension.currency> { Units.huf }
+    static var czk: NamedUnit<MathDimension.currency> { Units.czk }
+    static var ils: NamedUnit<MathDimension.currency> { Units.ils }
+    static var clp: NamedUnit<MathDimension.currency> { Units.clp }
+    static var php: NamedUnit<MathDimension.currency> { Units.php }
+    static var aed: NamedUnit<MathDimension.currency> { Units.aed }
+    static var cop: NamedUnit<MathDimension.currency> { Units.cop }
+    static var sar: NamedUnit<MathDimension.currency> { Units.sar }
+    static var myr: NamedUnit<MathDimension.currency> { Units.myr }
+    static var ron: NamedUnit<MathDimension.currency> { Units.ron }
+    static var vnd: NamedUnit<MathDimension.currency> { Units.vnd }
+    static var ars: NamedUnit<MathDimension.currency> { Units.ars }
+    static var btc: NamedUnit<MathDimension.currency> { Units.btc }
+    static var eth: NamedUnit<MathDimension.currency> { Units.eth }
 }

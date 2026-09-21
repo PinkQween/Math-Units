@@ -63,11 +63,19 @@ let force = Quantity(value: 150, unit: .weight.pound)
 ```
 
 The first member (`.volume`, `.mass`, `.weight`, ...) resolves to that
-dimension's namespace, and the second member chains onto one of its base units.
-The mass-versus-weight rule still applies: `.mass.pound` is a mass unit and
-`.weight.pound` is a force unit. Prefixed units such as `milliliter` keep their
-flat `Units.*` spelling and live inside their dimension's namespace only when
-they are base units.
+dimension's namespace, and the second member chains onto any of its units —
+base or prefixed. The mass-versus-weight rule still applies: `.mass.pound` is a
+mass unit and `.weight.pound` is a force unit.
+
+```swift
+let precise = Quantity(value: 1, unit: .voltage.nanovolt) // nV
+let sticky  = Quantity(value: 500, unit: .volume.milliliter)
+let disk    = Quantity(value: 1, unit: .data.gibibyte)    // GiB
+```
+
+Every unit is also available bare, without the dimension name: `.nanovolt` and
+`.voltage.nanovolt` are the same unit. The `Units.units(for:)` catalog keeps
+listing just the base units of each dimension, so the pickers stay compact.
 
 ### Looking units up at runtime
 

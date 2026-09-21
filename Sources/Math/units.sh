@@ -177,20 +177,59 @@ done
 
 echo "}" >> "$OUTPUT_FILE"
 
-# Leading-dot member lookup: for `Quantity(value: 2, unit: .volume.cup)` to
-# type-check, the first member (`.volume`) must be resolvable on the generic
-# `U: MathUnit` parameter. SE-0299 implicit member lookup finds members that live
-# in a `where Self ==`-constrained extension of the protocol, so each namespace
-# gets a tiny proxy that returns its metatype.
+# Leading-dot member lookup: for `Quantity(value: 2, unit: .voltage.nanovolt)` to
+# type-check, the first member (`.voltage`) must be resolvable on the generic
+# `U: MathUnit` parameter, and the second (`.nanovolt`) must chain onto the
+# namespace. SE-0299 implicit member lookup finds members that live in a
+# `where Self ==`-constrained extension of the protocol, so each namespace gets a
+# proxy returning its metatype plus one alias for every unit that exists flat in
+# that dimension (base and SI/binary prefixed). Because the aliases live in the
+# extension, both `.voltage.nanovolt` and bare `.nanovolt` resolve.
 for ns in "${ns_order[@]}"; do
     proxy="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
+    if [[ "$ns" == "Weight" ]]; then
+        aliasedim="force"
+    else
+        aliasedim="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
+    fi
+
+    aliases=""
+    while read -r line; do
+        dimension=$(echo "$line" | grep -o 'dimension: \.[^,)]*' | cut -d'.' -f2)
+        [[ "$dimension" != "$aliasedim" ]] && continue
+        name=$(echo "$line" | grep -o 'name: "[^"]*"' | cut -d'"' -f2)
+        s_frac=$(echo "$line" | grep -o 'supportsFractionalPrefixes: [^,)]*' | awk '{print $2}')
+        s_frac=${s_frac:-true}
+        s_bin=$(echo "$line" | grep -o 'supportsBinaryPrefixes: [^,)]*' | awk '{print $2}')
+        s_bin=${s_bin:-true}
+
+        aliases+=$(printf '\n    static var %s: NamedUnit<MathDimension.%s> { Units.%s }' "$name" "$dimension" "$name")
+        for p in "${si_prefixes[@]}"; do
+            IFS=',' read -r pn ps pv <<< "$p"
+            is_frac=$(echo "$pv < 1" | bc -l)
+            if [[ "$is_frac" == "0" ]] || [[ "$s_frac" == "true" ]]; then
+                aliases+=$(printf '\n    static var %s%s: NamedUnit<MathDimension.%s> { Units.%s%s }' "$pn" "$name" "$dimension" "$pn" "$name")
+            fi
+        done
+        if [[ "$s_bin" == "true" ]]; then
+            for p in "${binary_prefixes[@]}"; do
+                IFS=',' read -r pn ps pv <<< "$p"
+                aliases+=$(printf '\n    static var %s%s: NamedUnit<MathDimension.%s> { Units.%s%s }' "$pn" "$name" "$dimension" "$pn" "$name")
+            done
+        fi
+    done < <(grep "@PrefixedUnits" "$INPUT_FILE")
+
     cat <<EOF >> "$OUTPUT_FILE"
 
 // MARK: - Dimension-Scoped Member Lookup
-/// Enables leading-dot unit access like \`Quantity(value: 2, unit: .$proxy.all[0])\`.
+/// Enables leading-dot unit access like \`Quantity(value: 2, unit: .$proxy.nanovolt)\`.
+///
+/// Every unit of the \`$ns\` dimension is exposed both as a bare member
+/// (\`.nanovolt\`) and chained off the dimension (\`.$proxy.nanovolt\`).
 public extension MathUnit where Self == Units.$ns {
     /// The \`$ns\` unit namespace, e.g. \`Units.$ns.all\`.
     static var $proxy: Units.$ns.Type { Units.$ns.self }
+$aliases
 }
 EOF
 done

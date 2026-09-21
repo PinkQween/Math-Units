@@ -544,6 +544,23 @@ import Foundation
         let cash = Quantity(value: 5, unit: .currency.usd)
         #expect(cash.unit == Units.usd)
 
+        // Prefixed units resolve both bare and filtered by dimension.
+        let precise = Quantity(value: 1, unit: .voltage.nanovolt)
+        #expect(precise.unit == Units.nanovolt)
+        let bareVolt = Quantity(value: 1, unit: .nanovolt)
+        #expect(bareVolt.unit == Units.nanovolt)
+
+        let tiny = Quantity(value: 1, unit: .volume.milliliter)
+        #expect(tiny.unit == Units.milliliter)
+        let bareMilli = Quantity(value: 1, unit: .milliliter)
+        #expect(bareMilli.unit == Units.milliliter)
+        let positionalMilli = Quantity(1, .milliliter)
+        #expect(positionalMilli.unit == Units.milliliter)
+
+        // Binary-prefixed units are reachable the same way.
+        let disk = Quantity(value: 1, unit: .data.gibibyte)
+        #expect(disk.unit == Units.gibibyte)
+
         // Mixing mass and weight stays impossible even through leading-dot lookup.
         #expect(Quantity(value: 1, unit: .mass.ounce).unit.dimension !=
                 Quantity(value: 1, unit: .weight.ounce).unit.dimension)
