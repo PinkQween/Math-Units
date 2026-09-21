@@ -40,6 +40,22 @@ public struct Quantity<U: MathUnit>: CustomStringConvertible {
         self.value = value
         self.unit = unit
     }
+
+    /// Creates a quantity from a bare value and unit, for one-line construction.
+    ///
+    /// Use the dimension-scoped namespaces in ``Units`` to stay explicit about
+    /// which quantity you mean. This is especially important for mass versus
+    /// weight: `Quantity(16, Units.Mass.ounce)` is 16 ounces of mass, while
+    /// `Quantity(16, Units.Weight.ounce)` is 16 ounce-force—two entirely
+    /// different dimensions that happen to share the name "ounce".
+    ///
+    /// ```swift
+    /// let water = Quantity(2, Units.Volume.cup)
+    /// let thrust = Quantity(480, Units.Weight.poundForce)
+    /// ```
+    public init(_ value: Double, _ unit: U) {
+        self.init(value: value, unit: unit)
+    }
     
     /// Converts this quantity to another unit of the same dimension.
     ///

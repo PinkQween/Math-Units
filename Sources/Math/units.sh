@@ -113,5 +113,54 @@ EOF
     fi
 done
 
+# ---------------------------------------------------------------------------
+# Dimension namespaces: group base units under a per-dimension namespace so
+# they can be browsed as a set (Units.Volume.cup) or listed for a picker via
+# Units.units(for:). The currency dimension is hand-maintained in Units.swift,
+# and offset/temperature units (celsius, fahrenheit, planck constants) are added
+# to their generated namespaces by hand.
+# ---------------------------------------------------------------------------
+ns_order=()
+while read -r line; do
+    dimension=$(echo "$line" | grep -o 'dimension: \.[^,)]*' | cut -d'.' -f2)
+    ns="$(printf '%s' "$dimension" | tr '[:lower:]' '[:upper:]' | cut -c1)$(printf '%s' "$dimension" | cut -c2-)"
+    [[ "$ns" == "Force" ]] && ns="Weight"
+    found=""
+    for e in "${ns_order[@]}"; do
+        if [[ "$e" == "$ns" ]]; then found=1; break; fi
+    done
+    if [[ -z "$found" ]]; then ns_order+=("$ns"); fi
+done < <(grep "@PrefixedUnits" "$INPUT_FILE")
+
+for ns in "${ns_order[@]}"; do
+    if [[ "$ns" == "Weight" ]]; then
+        dim="force"
+    else
+        dim="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
+    fi
+
+    members=""
+    list=""
+    while read -r line; do
+        dimension=$(echo "$line" | grep -o 'dimension: \.[^,)]*' | cut -d'.' -f2)
+        [[ "$dimension" != "$dim" ]] && continue
+        name=$(echo "$line" | grep -o 'name: "[^"]*"' | cut -d'"' -f2)
+        members+=$(printf '\n    static let %s = Units.%s' "$name" "$name")
+        if [[ -n "$list" ]]; then list+=", "; fi
+        list+="$name"
+    done < <(grep "@PrefixedUnits" "$INPUT_FILE")
+
+    members="$members"$'\n'
+    cat <<EOF >> "$OUTPUT_FILE"
+
+    // MARK: - $ns units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum $ns {
+$members        /// All base units of the $ns dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [$list]
+    }
+EOF
+done
+
 echo "}" >> "$OUTPUT_FILE"
 echo "Generated $OUTPUT_FILE"

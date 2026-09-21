@@ -466,6 +466,64 @@ import Foundation
             [String: Quantity<NamedUnit<MathDimension.mass>>].self, from: recipeData)
         #expect(recipeDecoded == recipe)
     }
+    
+    // MARK: - Units by Dimension
+    
+    @Test func testDimensionNamespaces() {
+        // Volume units are grouped under Units.Volume
+        let water = Quantity(2, Units.Volume.cup)
+        #expect(water.unit.dimension == .volume)
+        let inPints = water.converted(to: Units.Volume.usPint)
+        #expect(abs(inPints.value - 1.0) < 1e-9)
+        
+        // Mass and weight (force) are distinct dimensions that must not mix.
+        let massOunce = Quantity(16, Units.Mass.ounce)
+        let weightOunce = Quantity(16, Units.Weight.ounce)
+        #expect(massOunce.unit.dimension == .mass)
+        #expect(weightOunce.unit.dimension == .force)
+        #expect(massOunce.unit.dimension != weightOunce.unit.dimension)
+        #expect(massOunce.unit.symbol == "oz")
+        #expect(weightOunce.unit.symbol == "ozf")
+        
+        // The canonical force names are available alongside the colloquial ones.
+        #expect(Units.Weight.poundForce.symbol == "lbf")
+        #expect(Units.Weight.pound == Units.poundForce)
+    }
+    
+    @Test func testUnitsForDimension() {
+        // Browsing volume units returns exactly the volume catalog.
+        let volumeUnits = Units.units(for: .volume)
+        #expect(volumeUnits.contains { $0.symbol == "fl_oz" })
+        #expect(volumeUnits.contains { $0.symbol == "L" })
+        #expect(!volumeUnits.contains { $0.symbol == "lb" })
+        
+        // Force and mass never appear in each other's listings.
+        let forceUnits = Units.units(for: .force)
+        #expect(forceUnits.contains { $0.symbol == "lbf" })
+        #expect(!forceUnits.contains { $0.symbol == "lb" })
+        
+        // The energy namespace includes the temperature scales.
+        let energyUnits = Units.units(for: .energy)
+        #expect(energyUnits.contains { $0.symbol == "K" })
+        #expect(energyUnits.contains { $0.symbol == "°C" })
+        
+        // Currency units are browsable via their own dimension.
+        let currencyUnits = Units.units(for: .currency)
+        #expect(currencyUnits.contains { $0.symbol == "$" })
+    }
+    
+    @Test func testConvenienceInit() {
+        let marathon = Quantity(42.195, Units.Length.mile)
+        #expect(marathon.value == 42.195)
+        #expect(marathon.unit == Units.mile)
+        
+        let thrust = Quantity(480, Units.Weight.poundForce)
+        #expect(thrust.value == 480)
+        #expect(thrust.unit == Units.poundForce)
+        
+        let cup = Quantity(1, Units.Volume.cup)
+        #expect(cup.unit == Units.cup)
+    }
 }
 
 // MARK: - Compilation Test for PlaceService

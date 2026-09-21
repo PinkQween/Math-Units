@@ -16856,4 +16856,399 @@ public extension Units {
     static let kibibutt = NamedUnit<MathDimension.volume>(
         symbol: "Kibutt", dimension: .volume, converter: LinearConverter(coefficient: 502.76118528), symbolPosition: .suffix
     )
+
+    // MARK: - Length units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Length {
+
+    static let meter = Units.meter
+    static let inch = Units.inch
+    static let foot = Units.foot
+    static let yard = Units.yard
+    static let mile = Units.mile
+    static let thou = Units.thou
+    static let fathom = Units.fathom
+    static let nauticalMile = Units.nauticalMile
+    static let astronomicalUnit = Units.astronomicalUnit
+    static let lightYear = Units.lightYear
+    static let parsec = Units.parsec
+    static let angstrom = Units.angstrom
+    static let hand = Units.hand
+    static let furlong = Units.furlong
+    static let chain = Units.chain
+    static let link = Units.link
+    static let beardSecond = Units.beardSecond
+    static let poronkusema = Units.poronkusema
+    static let cable = Units.cable
+    static let league = Units.league
+    static let point = Units.point
+    static let pica = Units.pica
+    static let caliber = Units.caliber
+    static let rod = Units.rod
+        /// All base units of the Length dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [meter, inch, foot, yard, mile, thou, fathom, nauticalMile, astronomicalUnit, lightYear, parsec, angstrom, hand, furlong, chain, link, beardSecond, poronkusema, cable, league, point, pica, caliber, rod]
+    }
+
+    // MARK: - Time units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Time {
+
+    static let second = Units.second
+    static let minute = Units.minute
+    static let hour = Units.hour
+    static let day = Units.day
+    static let week = Units.week
+    static let year = Units.year
+    static let fortnight = Units.fortnight
+    static let century = Units.century
+    static let millennium = Units.millennium
+    static let shake = Units.shake
+    static let svedberg = Units.svedberg
+    static let jiffy = Units.jiffy
+    static let physicsJiffy = Units.physicsJiffy
+    static let siderealDay = Units.siderealDay
+    static let siderealYear = Units.siderealYear
+    static let month = Units.month
+    static let decade = Units.decade
+        /// All base units of the Time dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [second, minute, hour, day, week, year, fortnight, century, millennium, shake, svedberg, jiffy, physicsJiffy, siderealDay, siderealYear, month, decade]
+    }
+
+    // MARK: - Mass units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Mass {
+
+    static let gram = Units.gram
+    static let grain = Units.grain
+    static let ounce = Units.ounce
+    static let pound = Units.pound
+    static let stone = Units.stone
+    static let shortTon = Units.shortTon
+    static let longTon = Units.longTon
+    static let slug = Units.slug
+    static let carat = Units.carat
+    static let dram = Units.dram
+    static let troyDram = Units.troyDram
+    static let troyOunce = Units.troyOunce
+    static let troyPound = Units.troyPound
+    static let pennyweight = Units.pennyweight
+    static let hundredweight = Units.hundredweight
+    static let longHundredweight = Units.longHundredweight
+    static let dalton = Units.dalton
+    static let electronRestMass = Units.electronRestMass
+    static let protonRestMass = Units.protonRestMass
+    static let solarMass = Units.solarMass
+        /// All base units of the Mass dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [gram, grain, ounce, pound, stone, shortTon, longTon, slug, carat, dram, troyDram, troyOunce, troyPound, pennyweight, hundredweight, longHundredweight, dalton, electronRestMass, protonRestMass, solarMass]
+    }
+
+    // MARK: - Area units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Area {
+
+    static let squareMeter = Units.squareMeter
+    static let acre = Units.acre
+    static let hectare = Units.hectare
+    static let barn = Units.barn
+    static let squareMile = Units.squareMile
+    static let squareYard = Units.squareYard
+    static let squareFoot = Units.squareFoot
+    static let squareInch = Units.squareInch
+        /// All base units of the Area dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [squareMeter, acre, hectare, barn, squareMile, squareYard, squareFoot, squareInch]
+    }
+
+    // MARK: - Data units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Data {
+
+    static let byte = Units.byte
+    static let bit = Units.bit
+        /// All base units of the Data dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [byte, bit]
+    }
+
+    // MARK: - Energy units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Energy {
+
+    static let kelvin = Units.kelvin
+    static let rankine = Units.rankine
+    static let joule = Units.joule
+    static let erg = Units.erg
+    static let calorie = Units.calorie
+    static let britishThermalUnit = Units.britishThermalUnit
+    static let electronVolt = Units.electronVolt
+    static let footPound = Units.footPound
+    static let wattHour = Units.wattHour
+    static let therm = Units.therm
+    static let tonOfTNT = Units.tonOfTNT
+    static let hartree = Units.hartree
+    static let rydberg = Units.rydberg
+        /// All base units of the Energy dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [kelvin, rankine, joule, erg, calorie, britishThermalUnit, electronVolt, footPound, wattHour, therm, tonOfTNT, hartree, rydberg]
+    }
+
+    // MARK: - Weight units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Weight {
+
+    static let newton = Units.newton
+    static let dyne = Units.dyne
+    static let poundal = Units.poundal
+    static let poundForce = Units.poundForce
+    static let ounceForce = Units.ounceForce
+    static let kip = Units.kip
+    static let tonForce = Units.tonForce
+    static let kilogramForce = Units.kilogramForce
+        /// All base units of the Weight dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [newton, dyne, poundal, poundForce, ounceForce, kip, tonForce, kilogramForce]
+    }
+
+    // MARK: - Pressure units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Pressure {
+
+    static let pascal = Units.pascal
+    static let bar = Units.bar
+    static let atmosphere = Units.atmosphere
+    static let torr = Units.torr
+    static let psi = Units.psi
+    static let barye = Units.barye
+    static let millimeterOfMercury = Units.millimeterOfMercury
+    static let inchOfMercury = Units.inchOfMercury
+        /// All base units of the Pressure dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [pascal, bar, atmosphere, torr, psi, barye, millimeterOfMercury, inchOfMercury]
+    }
+
+    // MARK: - Power units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Power {
+
+    static let watt = Units.watt
+    static let horsepower = Units.horsepower
+        /// All base units of the Power dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [watt, horsepower]
+    }
+
+    // MARK: - Speed units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Speed {
+
+    static let meterPerSecond = Units.meterPerSecond
+    static let kilometerPerHour = Units.kilometerPerHour
+    static let milePerHour = Units.milePerHour
+    static let knot = Units.knot
+    static let speedOfLight = Units.speedOfLight
+        /// All base units of the Speed dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [meterPerSecond, kilometerPerHour, milePerHour, knot, speedOfLight]
+    }
+
+    // MARK: - Acceleration units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Acceleration {
+
+    static let meterPerSecondSquared = Units.meterPerSecondSquared
+    static let gravity = Units.gravity
+        /// All base units of the Acceleration dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [meterPerSecondSquared, gravity]
+    }
+
+    // MARK: - ElectricCurrent units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum ElectricCurrent {
+
+    static let ampere = Units.ampere
+        /// All base units of the ElectricCurrent dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [ampere]
+    }
+
+    // MARK: - Charge units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Charge {
+
+    static let coulomb = Units.coulomb
+        /// All base units of the Charge dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [coulomb]
+    }
+
+    // MARK: - Voltage units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Voltage {
+
+    static let volt = Units.volt
+        /// All base units of the Voltage dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [volt]
+    }
+
+    // MARK: - Resistance units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Resistance {
+
+    static let ohm = Units.ohm
+        /// All base units of the Resistance dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [ohm]
+    }
+
+    // MARK: - Capacitance units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Capacitance {
+
+    static let farad = Units.farad
+        /// All base units of the Capacitance dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [farad]
+    }
+
+    // MARK: - Inductance units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Inductance {
+
+    static let henry = Units.henry
+        /// All base units of the Inductance dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [henry]
+    }
+
+    // MARK: - Conductance units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Conductance {
+
+    static let siemens = Units.siemens
+        /// All base units of the Conductance dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [siemens]
+    }
+
+    // MARK: - Frequency units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Frequency {
+
+    static let hertz = Units.hertz
+    static let becquerel = Units.becquerel
+    static let curie = Units.curie
+        /// All base units of the Frequency dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [hertz, becquerel, curie]
+    }
+
+    // MARK: - LuminousIntensity units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum LuminousIntensity {
+
+    static let candela = Units.candela
+        /// All base units of the LuminousIntensity dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [candela]
+    }
+
+    // MARK: - MagneticFlux units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum MagneticFlux {
+
+    static let weber = Units.weber
+    static let maxwell = Units.maxwell
+        /// All base units of the MagneticFlux dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [weber, maxwell]
+    }
+
+    // MARK: - MagneticFluxDensity units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum MagneticFluxDensity {
+
+    static let tesla = Units.tesla
+    static let gauss = Units.gauss
+        /// All base units of the MagneticFluxDensity dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [tesla, gauss]
+    }
+
+    // MARK: - LuminousFlux units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum LuminousFlux {
+
+    static let lumen = Units.lumen
+        /// All base units of the LuminousFlux dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [lumen]
+    }
+
+    // MARK: - Illuminance units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Illuminance {
+
+    static let lux = Units.lux
+    static let phot = Units.phot
+    static let footCandle = Units.footCandle
+        /// All base units of the Illuminance dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [lux, phot, footCandle]
+    }
+
+    // MARK: - SpecificEnergy units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum SpecificEnergy {
+
+    static let gray = Units.gray
+    static let rad = Units.rad
+    static let sievert = Units.sievert
+    static let rem = Units.rem
+        /// All base units of the SpecificEnergy dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [gray, rad, sievert, rem]
+    }
+
+    // MARK: - AmountOfSubstance units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum AmountOfSubstance {
+
+    static let mole = Units.mole
+        /// All base units of the AmountOfSubstance dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [mole]
+    }
+
+    // MARK: - Dimensionless units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Dimensionless {
+
+    static let radian = Units.radian
+    static let degree = Units.degree
+    static let gradian = Units.gradian
+    static let arcminute = Units.arcminute
+    static let arcsecond = Units.arcsecond
+    static let percent = Units.percent
+    static let partsPerMillion = Units.partsPerMillion
+    static let partsPerBillion = Units.partsPerBillion
+    static let micromort = Units.micromort
+        /// All base units of the Dimensionless dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [radian, degree, gradian, arcminute, arcsecond, percent, partsPerMillion, partsPerBillion, micromort]
+    }
+
+    // MARK: - Volume units
+    /// Units grouped by dimension for convenient, dimension-scoped access.
+    public enum Volume {
+
+    static let liter = Units.liter
+    static let fluidOunce = Units.fluidOunce
+    static let usFluidOunce = Units.usFluidOunce
+    static let imperialFluidOunce = Units.imperialFluidOunce
+    static let cup = Units.cup
+    static let usCup = Units.usCup
+    static let usLegalCup = Units.usLegalCup
+    static let metricCup = Units.metricCup
+    static let imperialCup = Units.imperialCup
+    static let britishBreakfastCup = Units.britishBreakfastCup
+    static let japaneseCup = Units.japaneseCup
+    static let pint = Units.pint
+    static let usPint = Units.usPint
+    static let imperialPint = Units.imperialPint
+    static let quart = Units.quart
+    static let usQuart = Units.usQuart
+    static let imperialQuart = Units.imperialQuart
+    static let gallon = Units.gallon
+    static let usGallon = Units.usGallon
+    static let imperialGallon = Units.imperialGallon
+    static let teaspoon = Units.teaspoon
+    static let tablespoon = Units.tablespoon
+    static let barrel = Units.barrel
+    static let imperialBarrel = Units.imperialBarrel
+    static let peck = Units.peck
+    static let bushel = Units.bushel
+    static let tablespoonMetric = Units.tablespoonMetric
+    static let teaspoonMetric = Units.teaspoonMetric
+    static let butt = Units.butt
+        /// All base units of the Volume dimension, for pickers and listings.
+        public static let all: [any MathUnit] = [liter, fluidOunce, usFluidOunce, imperialFluidOunce, cup, usCup, usLegalCup, metricCup, imperialCup, britishBreakfastCup, japaneseCup, pint, usPint, imperialPint, quart, usQuart, imperialQuart, gallon, usGallon, imperialGallon, teaspoon, tablespoon, barrel, imperialBarrel, peck, bushel, tablespoonMetric, teaspoonMetric, butt]
+    }
 }

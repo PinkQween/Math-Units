@@ -60,11 +60,13 @@ reject mismatched dimensions when you build your app—not when it runs. Read
 - <doc:GettingStarted>
 - <doc:WorkingWithQuantity>
 - <doc:StoringAndEncodingQuantities>
+- <doc:UnitsByDimension>
 - ``Quantity``
 
 ### Creating and Converting Quantities
 
 - ``Quantity/init(value:unit:)``
+- ``Quantity/init(_:_:)``
 - ``Quantity/converted(to:)``
 - ``Quantity/isEquivalent(to:tolerance:)``
 
