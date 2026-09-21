@@ -69,7 +69,16 @@ grep "@PrefixedUnits" "$INPUT_FILE" | while read -r line; do
     symbol=$(echo "$line" | grep -o 'symbol: "[^"]*"' | cut -d'"' -f2)
     dimension=$(echo "$line" | grep -o 'dimension: \.[^,)]*' | cut -d'.' -f2)
     raw_coeff=$(echo "$line" | grep -o 'baseCoefficient: [^,)]*' | awk '{print $2}')
-    coeff=$(sanitize_coeff "${raw_coeff:-1.0}")
+    raw_coeff="${raw_coeff:-1.0}"
+
+    # Evaluate arithmetic expressions (e.g. "1.0 / 60.0") with bc; otherwise
+    # keep the literal value (bc can't parse scientific notation like 1e-10).
+    if [[ "$raw_coeff" == *[*+/]* ]]; then
+        coeff=$(echo "$raw_coeff" | bc -l)
+    else
+        coeff="$raw_coeff"
+    fi
+    coeff=$(sanitize_coeff "$coeff")
     
     # Extract flags, defaulting to true if not present
     s_frac=$(echo "$line" | grep -o 'supportsFractionalPrefixes: [^,)]*' | awk '{print $2}')

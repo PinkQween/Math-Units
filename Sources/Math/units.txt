@@ -36,7 +36,7 @@
 @PrefixedUnits(name: "millennium", symbol: "millennium", dimension: .time, baseCoefficient: 31556952000.0)
 @PrefixedUnits(name: "shake", symbol: "shake", dimension: .time, baseCoefficient: 1e-8)
 @PrefixedUnits(name: "svedberg", symbol: "S_time", dimension: .time, baseCoefficient: 1e-13)
-@PrefixedUnits(name: "jiffy", symbol: "jiffy", dimension: .time, baseCoefficient: 1.0 / 60.0)
+@PrefixedUnits(name: "jiffy", symbol: "jiffy", dimension: .time, baseCoefficient: 0.016666666666666666)
 @PrefixedUnits(name: "physicsJiffy", symbol: "phys_jiffy", dimension: .time, baseCoefficient: 3.33564095198e-11)
 @PrefixedUnits(name: "siderealDay", symbol: "sday", dimension: .time, baseCoefficient: 86164.0905)
 @PrefixedUnits(name: "siderealYear", symbol: "syr", dimension: .time, baseCoefficient: 31558149.763)

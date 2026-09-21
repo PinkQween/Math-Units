@@ -3465,103 +3465,103 @@ public extension Units {
         symbol: "KiS_time", dimension: .time, converter: LinearConverter(coefficient: 0.0000000001024), symbolPosition: .suffix
     )
     static let jiffy = NamedUnit<MathDimension.time>(
-        symbol: "jiffy", dimension: .time, converter: LinearConverter(coefficient: 1.0), symbolPosition: .suffix
+        symbol: "jiffy", dimension: .time, converter: LinearConverter(coefficient: 0.016666666666666666), symbolPosition: .suffix
     )
     static let quettajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Qjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000000000000000000000.0), symbolPosition: .suffix
+        symbol: "Qjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666666666000000000000.000000000000000000), symbolPosition: .suffix
     )
     static let ronnajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Rjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000000000000000000.0), symbolPosition: .suffix
+        symbol: "Rjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666666666000000000.000000000000000000), symbolPosition: .suffix
     )
     static let yottajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Yjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000000000000000.0), symbolPosition: .suffix
+        symbol: "Yjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666666666000000.000000000000000000), symbolPosition: .suffix
     )
     static let zettajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Zjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000000000000.0), symbolPosition: .suffix
+        symbol: "Zjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666666666000.000000000000000000), symbolPosition: .suffix
     )
     static let exajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Ejiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000000000.0), symbolPosition: .suffix
+        symbol: "Ejiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666666666.000000000000000000), symbolPosition: .suffix
     )
     static let petajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Pjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000000.0), symbolPosition: .suffix
+        symbol: "Pjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666666.666000000000000000), symbolPosition: .suffix
     )
     static let terajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Tjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000000.0), symbolPosition: .suffix
+        symbol: "Tjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666666.666666000000000000), symbolPosition: .suffix
     )
     static let gigajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Gjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000000.0), symbolPosition: .suffix
+        symbol: "Gjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666666.666666666000000000), symbolPosition: .suffix
     )
     static let megajiffy = NamedUnit<MathDimension.time>(
-        symbol: "Mjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000000.0), symbolPosition: .suffix
+        symbol: "Mjiffy", dimension: .time, converter: LinearConverter(coefficient: 16666.666666666666000000), symbolPosition: .suffix
     )
     static let kilojiffy = NamedUnit<MathDimension.time>(
-        symbol: "kjiffy", dimension: .time, converter: LinearConverter(coefficient: 1000.0), symbolPosition: .suffix
+        symbol: "kjiffy", dimension: .time, converter: LinearConverter(coefficient: 16.666666666666666000), symbolPosition: .suffix
     )
     static let hectojiffy = NamedUnit<MathDimension.time>(
-        symbol: "hjiffy", dimension: .time, converter: LinearConverter(coefficient: 100.0), symbolPosition: .suffix
+        symbol: "hjiffy", dimension: .time, converter: LinearConverter(coefficient: 1.666666666666666600), symbolPosition: .suffix
     )
     static let decajiffy = NamedUnit<MathDimension.time>(
-        symbol: "dajiffy", dimension: .time, converter: LinearConverter(coefficient: 10.0), symbolPosition: .suffix
+        symbol: "dajiffy", dimension: .time, converter: LinearConverter(coefficient: 0.166666666666666660), symbolPosition: .suffix
     )
     static let decijiffy = NamedUnit<MathDimension.time>(
-        symbol: "djiffy", dimension: .time, converter: LinearConverter(coefficient: 0.10), symbolPosition: .suffix
+        symbol: "djiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0016666666666666666), symbolPosition: .suffix
     )
     static let centijiffy = NamedUnit<MathDimension.time>(
-        symbol: "cjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.010), symbolPosition: .suffix
+        symbol: "cjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00016666666666666666), symbolPosition: .suffix
     )
     static let millijiffy = NamedUnit<MathDimension.time>(
-        symbol: "mjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0010), symbolPosition: .suffix
+        symbol: "mjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00001666666666666666), symbolPosition: .suffix
     )
     static let microjiffy = NamedUnit<MathDimension.time>(
-        symbol: "ujiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0000010), symbolPosition: .suffix
+        symbol: "ujiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00000001666666666666), symbolPosition: .suffix
     )
     static let nanojiffy = NamedUnit<MathDimension.time>(
-        symbol: "njiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0000000010), symbolPosition: .suffix
+        symbol: "njiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00000000001666666666), symbolPosition: .suffix
     )
     static let picojiffy = NamedUnit<MathDimension.time>(
-        symbol: "pjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0000000000010), symbolPosition: .suffix
+        symbol: "pjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00000000000001666666), symbolPosition: .suffix
     )
     static let femtojiffy = NamedUnit<MathDimension.time>(
-        symbol: "fjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0000000000000010), symbolPosition: .suffix
+        symbol: "fjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00000000000000001666), symbolPosition: .suffix
     )
     static let attojiffy = NamedUnit<MathDimension.time>(
-        symbol: "ajiffy", dimension: .time, converter: LinearConverter(coefficient: 0.0000000000000000010), symbolPosition: .suffix
+        symbol: "ajiffy", dimension: .time, converter: LinearConverter(coefficient: 0.00000000000000000001), symbolPosition: .suffix
     )
     static let zeptojiffy = NamedUnit<MathDimension.time>(
-        symbol: "zjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.000000000000000000001), symbolPosition: .suffix
+        symbol: "zjiffy", dimension: .time, converter: LinearConverter(coefficient: 0), symbolPosition: .suffix
     )
     static let yoctojiffy = NamedUnit<MathDimension.time>(
-        symbol: "yjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.000000000000000000000001), symbolPosition: .suffix
+        symbol: "yjiffy", dimension: .time, converter: LinearConverter(coefficient: 0), symbolPosition: .suffix
     )
     static let rontojiffy = NamedUnit<MathDimension.time>(
-        symbol: "rjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.000000000000000000000000001), symbolPosition: .suffix
+        symbol: "rjiffy", dimension: .time, converter: LinearConverter(coefficient: 0), symbolPosition: .suffix
     )
     static let quectojiffy = NamedUnit<MathDimension.time>(
-        symbol: "qjiffy", dimension: .time, converter: LinearConverter(coefficient: 0.000000000000000000000000000001), symbolPosition: .suffix
+        symbol: "qjiffy", dimension: .time, converter: LinearConverter(coefficient: 0), symbolPosition: .suffix
     )
     static let yobijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Yijiffy", dimension: .time, converter: LinearConverter(coefficient: 1208925819614629174706176.0), symbolPosition: .suffix
+        symbol: "Yijiffy", dimension: .time, converter: LinearConverter(coefficient: 20148763660243818772485.720256913883529216), symbolPosition: .suffix
     )
     static let zebijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Zijiffy", dimension: .time, converter: LinearConverter(coefficient: 1180591620717411303424.0), symbolPosition: .suffix
+        symbol: "Zijiffy", dimension: .time, converter: LinearConverter(coefficient: 19676527011956854270.005586188392464384), symbolPosition: .suffix
     )
     static let exbijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Eijiffy", dimension: .time, converter: LinearConverter(coefficient: 1152921504606846976.0), symbolPosition: .suffix
+        symbol: "Eijiffy", dimension: .time, converter: LinearConverter(coefficient: 19215358410114115.498052330262102016), symbolPosition: .suffix
     )
     static let pebijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Pijiffy", dimension: .time, converter: LinearConverter(coefficient: 1125899906842624.0), symbolPosition: .suffix
+        symbol: "Pijiffy", dimension: .time, converter: LinearConverter(coefficient: 18764998447377.065916066728771584), symbolPosition: .suffix
     )
     static let tebijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Tijiffy", dimension: .time, converter: LinearConverter(coefficient: 1099511627776.0), symbolPosition: .suffix
+        symbol: "Tijiffy", dimension: .time, converter: LinearConverter(coefficient: 18325193796.266665933658914816), symbolPosition: .suffix
     )
     static let gibijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Gijiffy", dimension: .time, converter: LinearConverter(coefficient: 1073741824.0), symbolPosition: .suffix
+        symbol: "Gijiffy", dimension: .time, converter: LinearConverter(coefficient: 17895697.066666665950838784), symbolPosition: .suffix
     )
     static let mebijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Mijiffy", dimension: .time, converter: LinearConverter(coefficient: 1048576.0), symbolPosition: .suffix
+        symbol: "Mijiffy", dimension: .time, converter: LinearConverter(coefficient: 17476.266666666665967616), symbolPosition: .suffix
     )
     static let kibijiffy = NamedUnit<MathDimension.time>(
-        symbol: "Kijiffy", dimension: .time, converter: LinearConverter(coefficient: 1024.0), symbolPosition: .suffix
+        symbol: "Kijiffy", dimension: .time, converter: LinearConverter(coefficient: 17.066666666666665984), symbolPosition: .suffix
     )
     static let physicsJiffy = NamedUnit<MathDimension.time>(
         symbol: "phys_jiffy", dimension: .time, converter: LinearConverter(coefficient: 3.33564095198e-11), symbolPosition: .suffix
