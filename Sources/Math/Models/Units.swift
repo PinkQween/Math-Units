@@ -328,7 +328,36 @@ public struct Units {
         dimension: .currency,
         converter: LinearConverter(coefficient: 3800.0)
     )
-    
+
+    // MARK: - Common-Name Currency Aliases
+
+    // Colloquial names for currencies whose common name is unambiguous. Ambiguous
+    // names such as "dollar" (USD/CAD/AUD/...) or "peso" (MXN/CLP/.../PHP) stay
+    // explicit: use `Units.usd`, `Units.cad`, and so on.
+
+    public static let pounds = gbp
+    public static let poundsSterling = gbp
+    public static let poundSterling = gbp
+    public static let sterling = gbp
+    public static let yen = jpy
+    public static let yuan = cny
+    public static let renminbi = cny
+    public static let franc = chf
+    public static let francs = chf
+    public static let won = krw
+    public static let rupee = inr
+    public static let ruble = rub
+    public static let rand = zar
+    public static let real = brl
+    public static let zloty = pln
+    public static let baht = thb
+    public static let koruna = czk
+    public static let shekel = ils
+    public static let dirham = aed
+    public static let ringgit = myr
+    public static let forint = huf
+    public static let lira = `try`
+
     // MARK: - Currency Resolution
 
     /// A dictionary mapping ISO 4217 uppercase currency codes to their corresponding ``NamedUnit``.
@@ -429,6 +458,31 @@ public extension Units {
         public static let ars = Units.ars
         public static let btc = Units.btc
         public static let eth = Units.eth
+
+        // Common-name aliases for currencies whose name is unambiguous. Ambiguous
+        // names ("dollar", "peso", "krona") stay explicit: use `usd`, `cad`, ...
+        public static let pounds = Units.pounds
+        public static let poundsSterling = Units.poundsSterling
+        public static let poundSterling = Units.poundSterling
+        public static let sterling = Units.sterling
+        public static let yen = Units.yen
+        public static let yuan = Units.yuan
+        public static let renminbi = Units.renminbi
+        public static let franc = Units.franc
+        public static let francs = Units.francs
+        public static let won = Units.won
+        public static let rupee = Units.rupee
+        public static let ruble = Units.ruble
+        public static let rand = Units.rand
+        public static let real = Units.real
+        public static let zloty = Units.zloty
+        public static let baht = Units.baht
+        public static let koruna = Units.koruna
+        public static let shekel = Units.shekel
+        public static let dirham = Units.dirham
+        public static let ringgit = Units.ringgit
+        public static let forint = Units.forint
+        public static let lira = Units.lira
 
         /// All currency units.
         public static let all: [any MathUnit] = [
@@ -566,4 +620,29 @@ public extension MathUnit where Self == Units.Currency {
     static var ars: NamedUnit<MathDimension.currency> { Units.ars }
     static var btc: NamedUnit<MathDimension.currency> { Units.btc }
     static var eth: NamedUnit<MathDimension.currency> { Units.eth }
+
+    // Common-name aliases. Ambiguous names ("dollar", "peso", "krona") are left
+    // out on purpose: use `.usd`, `.cad`, or `.currency.usd` for those.
+    static var pounds: NamedUnit<MathDimension.currency> { Units.pounds }
+    static var poundsSterling: NamedUnit<MathDimension.currency> { Units.poundsSterling }
+    static var poundSterling: NamedUnit<MathDimension.currency> { Units.poundSterling }
+    static var sterling: NamedUnit<MathDimension.currency> { Units.sterling }
+    static var yen: NamedUnit<MathDimension.currency> { Units.yen }
+    static var yuan: NamedUnit<MathDimension.currency> { Units.yuan }
+    static var renminbi: NamedUnit<MathDimension.currency> { Units.renminbi }
+    static var franc: NamedUnit<MathDimension.currency> { Units.franc }
+    static var francs: NamedUnit<MathDimension.currency> { Units.francs }
+    static var won: NamedUnit<MathDimension.currency> { Units.won }
+    static var rupee: NamedUnit<MathDimension.currency> { Units.rupee }
+    static var ruble: NamedUnit<MathDimension.currency> { Units.ruble }
+    static var rand: NamedUnit<MathDimension.currency> { Units.rand }
+    static var real: NamedUnit<MathDimension.currency> { Units.real }
+    static var zloty: NamedUnit<MathDimension.currency> { Units.zloty }
+    static var baht: NamedUnit<MathDimension.currency> { Units.baht }
+    static var koruna: NamedUnit<MathDimension.currency> { Units.koruna }
+    static var shekel: NamedUnit<MathDimension.currency> { Units.shekel }
+    static var dirham: NamedUnit<MathDimension.currency> { Units.dirham }
+    static var ringgit: NamedUnit<MathDimension.currency> { Units.ringgit }
+    static var forint: NamedUnit<MathDimension.currency> { Units.forint }
+    static var lira: NamedUnit<MathDimension.currency> { Units.lira }
 }

@@ -33,6 +33,17 @@ for unit in Units.Volume.all {
 }
 ```
 
+#### Currency common names
+
+The currency dimension is special: most names are only meaningful with their
+country code, so the explicit spellings stay (`Units.usd`, `Units.cad`,
+`Units.currency.mxn`, ...). Currencies whose common name is unambiguous get
+colloquial aliases in every access style — `Units.pounds`, `Units.Currency.sterling`,
+and `Quantity(value: 100, unit: .poundsSterling)` all refer to the British pound
+(GBP), `.yen` to JPY, `.franc` to CHF, `.rupee` to INR, and so on. There is
+deliberately no bare `.dollar` or `.peso`, because those names span several
+currencies.
+
 ### Mass versus weight
 
 Mass and weight are different things, and the namespaces make the distinction

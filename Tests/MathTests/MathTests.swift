@@ -565,6 +565,35 @@ import Foundation
         #expect(Quantity(value: 1, unit: .mass.ounce).unit.dimension !=
                 Quantity(value: 1, unit: .weight.ounce).unit.dimension)
     }
+
+    @Test func testCurrencyCommonNameAliases() {
+        // Unambiguous common names resolve, in all three access styles.
+        #expect(Units.pounds == Units.gbp)
+        #expect(Units.Currency.poundsSterling == Units.gbp)
+        #expect(Units.Currency.sterling == Units.gbp)
+
+        let salary = Quantity(value: 100, unit: .poundsSterling)
+        #expect(salary.unit == Units.gbp)
+        let barePounds = Quantity(value: 100, unit: .currency.pounds)
+        #expect(barePounds.unit == Units.gbp)
+
+        let yen = Quantity(value: 100, unit: .yen)
+        #expect(yen.unit == Units.jpy)
+        let rupee = Quantity(value: 100, unit: .rupee)
+        #expect(rupee.unit == Units.inr)
+        let lira = Quantity(value: 100, unit: .lira)
+        #expect(lira.unit == Units.`try`)
+        let franc = Quantity(value: 100, unit: .franc)
+        #expect(franc.unit == Units.chf)
+        #expect(Units.Currency.real == Units.brl)
+
+        // Ambiguous common names are deliberately NOT provided thinly: the clear
+        // code-based spellings are the explicit ones.
+        #expect(Units.Currency.usd == Units.usd)
+        #expect(Units.Currency.cad == Units.cad)
+        let peso = Quantity(value: 100, unit: .currency.mxn)
+        #expect(peso.unit == Units.mxn)
+    }
 }
 
 // MARK: - Compilation Test for PlaceService
