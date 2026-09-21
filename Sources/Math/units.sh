@@ -138,6 +138,7 @@ for ns in "${ns_order[@]}"; do
     else
         dim="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
     fi
+    proxy="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
 
     members=""
     list=""
@@ -155,7 +156,19 @@ for ns in "${ns_order[@]}"; do
 
     // MARK: - $ns units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum $ns {
+    ///
+    /// A namespace conforms to \`MathUnit\` only so that leading-dot lookups like
+    /// \`Quantity(value: 2, unit: .$proxy.all[0])\` resolve; its instance members
+    /// are never used.
+    public enum $ns: MathUnit {
+        public typealias Dimension = MathDimension.$dim
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .$dim }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 $members        /// All base units of the $ns dimension, for pickers and listings.
         public static let all: [any MathUnit] = [$list]
     }
@@ -163,4 +176,23 @@ EOF
 done
 
 echo "}" >> "$OUTPUT_FILE"
+
+# Leading-dot member lookup: for `Quantity(value: 2, unit: .volume.cup)` to
+# type-check, the first member (`.volume`) must be resolvable on the generic
+# `U: MathUnit` parameter. SE-0299 implicit member lookup finds members that live
+# in a `where Self ==`-constrained extension of the protocol, so each namespace
+# gets a tiny proxy that returns its metatype.
+for ns in "${ns_order[@]}"; do
+    proxy="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
+    cat <<EOF >> "$OUTPUT_FILE"
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like \`Quantity(value: 2, unit: .$proxy.all[0])\`.
+public extension MathUnit where Self == Units.$ns {
+    /// The \`$ns\` unit namespace, e.g. \`Units.$ns.all\`.
+    static var $proxy: Units.$ns.Type { Units.$ns.self }
+}
+EOF
+done
+
 echo "Generated $OUTPUT_FILE"

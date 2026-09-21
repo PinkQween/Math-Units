@@ -19,7 +19,8 @@
 /// browse or build a picker for a single dimension: ``Units/Volume`` contains
 /// the volume units (`Units.Volume.cup`, `Units.Volume.liter`), ``Units/Mass``
 /// the mass units, and ``Units/Weight`` the force units. `Units.units(for:)`
-/// lists them at runtime.
+/// lists them at runtime. Inside a ``Quantity`` initializer you can reach the
+/// same groups with leading-dot syntax: `Quantity(value: 1, unit: .volume.cup)`.
 ///
 /// The namespaces keep mass and weight explicitly separate: `Units.Mass.ounce`
 /// is the ounce of mass, while `Units.Weight.ounce` is the ounce-force. See
@@ -376,7 +377,19 @@ public struct Units {
 
 public extension Units {
     /// Units of the `currency` dimension, indexed by ISO code.
-    enum Currency {
+    ///
+    /// Conforms to `MathUnit` only so leading-dot lookups like
+    /// `Quantity(value: 100, unit: .currency.usd)` resolve; the instance members
+    /// are never used.
+    enum Currency: MathUnit {
+        public typealias Dimension = MathDimension.currency
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .currency }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
         public static let usd = Units.usd
         public static let eur = Units.eur
         public static let jpy = Units.jpy
@@ -493,8 +506,24 @@ public extension Units.Energy {
 
 /// Colloquial weight names. These are force units, not mass: `ounce` here is
 /// ounce-force and `pound` is pound-force. For the mass units use
-/// ``Units.mass.ounce`` and ``Units.mass.pound``.
+/// `Units.Weight.ounce`'s sibling namespace `Units.Mass.ounce` and
+/// `Units.Mass.pound`.
 public extension Units.Weight {
     static let ounce = Units.ounceForce
     static let pound = Units.poundForce
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+
+// The generated namespaces (Units.Length, Units.Volume, ...) emit a
+// `where Self == Units.X` proxy on MathUnit from units.sh, so leading-dot unit
+// access like `Quantity(value: 2, unit: .volume.fluidOunce)` type-checks: the
+// `unit:` parameter is a generic `U: MathUnit`, and Swift's implicit member
+// lookup (SE-0299) resolves the first member (`.volume`) through the constrained
+// extension, returning the namespace metatype for the second member
+// (`.fluidOunce`) to chain onto. The hand-maintained currency namespace gets its
+// proxy here.
+public extension MathUnit where Self == Units.Currency {
+    /// The `currency` unit namespace, e.g. `Units.Currency.usd`.
+    static var currency: Units.Currency.Type { Units.Currency.self }
 }

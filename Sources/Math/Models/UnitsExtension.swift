@@ -16859,7 +16859,19 @@ public extension Units {
 
     // MARK: - Length units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Length {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Length: MathUnit {
+        public typealias Dimension = MathDimension.length
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .length }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let meter = Units.meter
     static let inch = Units.inch
@@ -16891,7 +16903,19 @@ public extension Units {
 
     // MARK: - Time units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Time {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Time: MathUnit {
+        public typealias Dimension = MathDimension.time
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .time }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let second = Units.second
     static let minute = Units.minute
@@ -16916,7 +16940,19 @@ public extension Units {
 
     // MARK: - Mass units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Mass {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Mass: MathUnit {
+        public typealias Dimension = MathDimension.mass
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .mass }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let gram = Units.gram
     static let grain = Units.grain
@@ -16944,7 +16980,19 @@ public extension Units {
 
     // MARK: - Area units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Area {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Area: MathUnit {
+        public typealias Dimension = MathDimension.area
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .area }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let squareMeter = Units.squareMeter
     static let acre = Units.acre
@@ -16960,7 +17008,19 @@ public extension Units {
 
     // MARK: - Data units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Data {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Data: MathUnit {
+        public typealias Dimension = MathDimension.data
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .data }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let byte = Units.byte
     static let bit = Units.bit
@@ -16970,7 +17030,19 @@ public extension Units {
 
     // MARK: - Energy units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Energy {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Energy: MathUnit {
+        public typealias Dimension = MathDimension.energy
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .energy }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let kelvin = Units.kelvin
     static let rankine = Units.rankine
@@ -16991,7 +17063,19 @@ public extension Units {
 
     // MARK: - Weight units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Weight {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Weight: MathUnit {
+        public typealias Dimension = MathDimension.force
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .force }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let newton = Units.newton
     static let dyne = Units.dyne
@@ -17007,7 +17091,19 @@ public extension Units {
 
     // MARK: - Pressure units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Pressure {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Pressure: MathUnit {
+        public typealias Dimension = MathDimension.pressure
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .pressure }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let pascal = Units.pascal
     static let bar = Units.bar
@@ -17023,7 +17119,19 @@ public extension Units {
 
     // MARK: - Power units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Power {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Power: MathUnit {
+        public typealias Dimension = MathDimension.power
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .power }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let watt = Units.watt
     static let horsepower = Units.horsepower
@@ -17033,7 +17141,19 @@ public extension Units {
 
     // MARK: - Speed units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Speed {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Speed: MathUnit {
+        public typealias Dimension = MathDimension.speed
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .speed }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let meterPerSecond = Units.meterPerSecond
     static let kilometerPerHour = Units.kilometerPerHour
@@ -17046,7 +17166,19 @@ public extension Units {
 
     // MARK: - Acceleration units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Acceleration {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Acceleration: MathUnit {
+        public typealias Dimension = MathDimension.acceleration
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .acceleration }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let meterPerSecondSquared = Units.meterPerSecondSquared
     static let gravity = Units.gravity
@@ -17056,7 +17188,19 @@ public extension Units {
 
     // MARK: - ElectricCurrent units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum ElectricCurrent {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum ElectricCurrent: MathUnit {
+        public typealias Dimension = MathDimension.electricCurrent
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .electricCurrent }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let ampere = Units.ampere
         /// All base units of the ElectricCurrent dimension, for pickers and listings.
@@ -17065,7 +17209,19 @@ public extension Units {
 
     // MARK: - Charge units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Charge {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Charge: MathUnit {
+        public typealias Dimension = MathDimension.charge
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .charge }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let coulomb = Units.coulomb
         /// All base units of the Charge dimension, for pickers and listings.
@@ -17074,7 +17230,19 @@ public extension Units {
 
     // MARK: - Voltage units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Voltage {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Voltage: MathUnit {
+        public typealias Dimension = MathDimension.voltage
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .voltage }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let volt = Units.volt
         /// All base units of the Voltage dimension, for pickers and listings.
@@ -17083,7 +17251,19 @@ public extension Units {
 
     // MARK: - Resistance units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Resistance {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Resistance: MathUnit {
+        public typealias Dimension = MathDimension.resistance
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .resistance }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let ohm = Units.ohm
         /// All base units of the Resistance dimension, for pickers and listings.
@@ -17092,7 +17272,19 @@ public extension Units {
 
     // MARK: - Capacitance units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Capacitance {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Capacitance: MathUnit {
+        public typealias Dimension = MathDimension.capacitance
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .capacitance }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let farad = Units.farad
         /// All base units of the Capacitance dimension, for pickers and listings.
@@ -17101,7 +17293,19 @@ public extension Units {
 
     // MARK: - Inductance units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Inductance {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Inductance: MathUnit {
+        public typealias Dimension = MathDimension.inductance
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .inductance }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let henry = Units.henry
         /// All base units of the Inductance dimension, for pickers and listings.
@@ -17110,7 +17314,19 @@ public extension Units {
 
     // MARK: - Conductance units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Conductance {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Conductance: MathUnit {
+        public typealias Dimension = MathDimension.conductance
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .conductance }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let siemens = Units.siemens
         /// All base units of the Conductance dimension, for pickers and listings.
@@ -17119,7 +17335,19 @@ public extension Units {
 
     // MARK: - Frequency units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Frequency {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Frequency: MathUnit {
+        public typealias Dimension = MathDimension.frequency
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .frequency }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let hertz = Units.hertz
     static let becquerel = Units.becquerel
@@ -17130,7 +17358,19 @@ public extension Units {
 
     // MARK: - LuminousIntensity units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum LuminousIntensity {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum LuminousIntensity: MathUnit {
+        public typealias Dimension = MathDimension.luminousIntensity
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .luminousIntensity }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let candela = Units.candela
         /// All base units of the LuminousIntensity dimension, for pickers and listings.
@@ -17139,7 +17379,19 @@ public extension Units {
 
     // MARK: - MagneticFlux units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum MagneticFlux {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum MagneticFlux: MathUnit {
+        public typealias Dimension = MathDimension.magneticFlux
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .magneticFlux }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let weber = Units.weber
     static let maxwell = Units.maxwell
@@ -17149,7 +17401,19 @@ public extension Units {
 
     // MARK: - MagneticFluxDensity units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum MagneticFluxDensity {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum MagneticFluxDensity: MathUnit {
+        public typealias Dimension = MathDimension.magneticFluxDensity
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .magneticFluxDensity }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let tesla = Units.tesla
     static let gauss = Units.gauss
@@ -17159,7 +17423,19 @@ public extension Units {
 
     // MARK: - LuminousFlux units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum LuminousFlux {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum LuminousFlux: MathUnit {
+        public typealias Dimension = MathDimension.luminousFlux
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .luminousFlux }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let lumen = Units.lumen
         /// All base units of the LuminousFlux dimension, for pickers and listings.
@@ -17168,7 +17444,19 @@ public extension Units {
 
     // MARK: - Illuminance units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Illuminance {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Illuminance: MathUnit {
+        public typealias Dimension = MathDimension.illuminance
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .illuminance }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let lux = Units.lux
     static let phot = Units.phot
@@ -17179,7 +17467,19 @@ public extension Units {
 
     // MARK: - SpecificEnergy units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum SpecificEnergy {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum SpecificEnergy: MathUnit {
+        public typealias Dimension = MathDimension.specificEnergy
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .specificEnergy }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let gray = Units.gray
     static let rad = Units.rad
@@ -17191,7 +17491,19 @@ public extension Units {
 
     // MARK: - AmountOfSubstance units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum AmountOfSubstance {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum AmountOfSubstance: MathUnit {
+        public typealias Dimension = MathDimension.amountOfSubstance
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .amountOfSubstance }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let mole = Units.mole
         /// All base units of the AmountOfSubstance dimension, for pickers and listings.
@@ -17200,7 +17512,19 @@ public extension Units {
 
     // MARK: - Dimensionless units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Dimensionless {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Dimensionless: MathUnit {
+        public typealias Dimension = MathDimension.dimensionless
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .dimensionless }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let radian = Units.radian
     static let degree = Units.degree
@@ -17217,7 +17541,19 @@ public extension Units {
 
     // MARK: - Volume units
     /// Units grouped by dimension for convenient, dimension-scoped access.
-    public enum Volume {
+    ///
+    /// A namespace conforms to `MathUnit` only so that leading-dot lookups like
+    /// `Quantity(value: 2, unit: .volume.cup)` resolve; its instance members are
+    /// never used.
+    public enum Volume: MathUnit {
+        public typealias Dimension = MathDimension.volume
+
+        // Browse-only marker; never instantiated.
+        public var symbol: String { "" }
+        public var dimension: PhysicalDimension { .volume }
+        public var converter: any UnitConverter { EmptyConverter() }
+        public var base: Self { fatalError("Unit namespaces cannot be used as standalone units") }
+
 
     static let liter = Units.liter
     static let fluidOunce = Units.fluidOunce
@@ -17251,4 +17587,200 @@ public extension Units {
         /// All base units of the Volume dimension, for pickers and listings.
         public static let all: [any MathUnit] = [liter, fluidOunce, usFluidOunce, imperialFluidOunce, cup, usCup, usLegalCup, metricCup, imperialCup, britishBreakfastCup, japaneseCup, pint, usPint, imperialPint, quart, usQuart, imperialQuart, gallon, usGallon, imperialGallon, teaspoon, tablespoon, barrel, imperialBarrel, peck, bushel, tablespoonMetric, teaspoonMetric, butt]
     }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .length.cup)`.
+public extension MathUnit where Self == Units.Length {
+    /// The `Length` unit namespace, e.g. `Units.Length.all`.
+    static var length: Units.Length.Type { Units.Length.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .time.cup)`.
+public extension MathUnit where Self == Units.Time {
+    /// The `Time` unit namespace, e.g. `Units.Time.all`.
+    static var time: Units.Time.Type { Units.Time.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .mass.cup)`.
+public extension MathUnit where Self == Units.Mass {
+    /// The `Mass` unit namespace, e.g. `Units.Mass.all`.
+    static var mass: Units.Mass.Type { Units.Mass.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .area.cup)`.
+public extension MathUnit where Self == Units.Area {
+    /// The `Area` unit namespace, e.g. `Units.Area.all`.
+    static var area: Units.Area.Type { Units.Area.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .data.cup)`.
+public extension MathUnit where Self == Units.Data {
+    /// The `Data` unit namespace, e.g. `Units.Data.all`.
+    static var data: Units.Data.Type { Units.Data.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .energy.cup)`.
+public extension MathUnit where Self == Units.Energy {
+    /// The `Energy` unit namespace, e.g. `Units.Energy.all`.
+    static var energy: Units.Energy.Type { Units.Energy.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .weight.cup)`.
+public extension MathUnit where Self == Units.Weight {
+    /// The `Weight` unit namespace, e.g. `Units.Weight.all`.
+    static var weight: Units.Weight.Type { Units.Weight.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .pressure.cup)`.
+public extension MathUnit where Self == Units.Pressure {
+    /// The `Pressure` unit namespace, e.g. `Units.Pressure.all`.
+    static var pressure: Units.Pressure.Type { Units.Pressure.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .power.cup)`.
+public extension MathUnit where Self == Units.Power {
+    /// The `Power` unit namespace, e.g. `Units.Power.all`.
+    static var power: Units.Power.Type { Units.Power.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .speed.cup)`.
+public extension MathUnit where Self == Units.Speed {
+    /// The `Speed` unit namespace, e.g. `Units.Speed.all`.
+    static var speed: Units.Speed.Type { Units.Speed.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .acceleration.cup)`.
+public extension MathUnit where Self == Units.Acceleration {
+    /// The `Acceleration` unit namespace, e.g. `Units.Acceleration.all`.
+    static var acceleration: Units.Acceleration.Type { Units.Acceleration.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .electricCurrent.cup)`.
+public extension MathUnit where Self == Units.ElectricCurrent {
+    /// The `ElectricCurrent` unit namespace, e.g. `Units.ElectricCurrent.all`.
+    static var electricCurrent: Units.ElectricCurrent.Type { Units.ElectricCurrent.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .charge.cup)`.
+public extension MathUnit where Self == Units.Charge {
+    /// The `Charge` unit namespace, e.g. `Units.Charge.all`.
+    static var charge: Units.Charge.Type { Units.Charge.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .voltage.cup)`.
+public extension MathUnit where Self == Units.Voltage {
+    /// The `Voltage` unit namespace, e.g. `Units.Voltage.all`.
+    static var voltage: Units.Voltage.Type { Units.Voltage.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .resistance.cup)`.
+public extension MathUnit where Self == Units.Resistance {
+    /// The `Resistance` unit namespace, e.g. `Units.Resistance.all`.
+    static var resistance: Units.Resistance.Type { Units.Resistance.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .capacitance.cup)`.
+public extension MathUnit where Self == Units.Capacitance {
+    /// The `Capacitance` unit namespace, e.g. `Units.Capacitance.all`.
+    static var capacitance: Units.Capacitance.Type { Units.Capacitance.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .inductance.cup)`.
+public extension MathUnit where Self == Units.Inductance {
+    /// The `Inductance` unit namespace, e.g. `Units.Inductance.all`.
+    static var inductance: Units.Inductance.Type { Units.Inductance.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .conductance.cup)`.
+public extension MathUnit where Self == Units.Conductance {
+    /// The `Conductance` unit namespace, e.g. `Units.Conductance.all`.
+    static var conductance: Units.Conductance.Type { Units.Conductance.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .frequency.cup)`.
+public extension MathUnit where Self == Units.Frequency {
+    /// The `Frequency` unit namespace, e.g. `Units.Frequency.all`.
+    static var frequency: Units.Frequency.Type { Units.Frequency.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .luminousIntensity.cup)`.
+public extension MathUnit where Self == Units.LuminousIntensity {
+    /// The `LuminousIntensity` unit namespace, e.g. `Units.LuminousIntensity.all`.
+    static var luminousIntensity: Units.LuminousIntensity.Type { Units.LuminousIntensity.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .magneticFlux.cup)`.
+public extension MathUnit where Self == Units.MagneticFlux {
+    /// The `MagneticFlux` unit namespace, e.g. `Units.MagneticFlux.all`.
+    static var magneticFlux: Units.MagneticFlux.Type { Units.MagneticFlux.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .magneticFluxDensity.cup)`.
+public extension MathUnit where Self == Units.MagneticFluxDensity {
+    /// The `MagneticFluxDensity` unit namespace, e.g. `Units.MagneticFluxDensity.all`.
+    static var magneticFluxDensity: Units.MagneticFluxDensity.Type { Units.MagneticFluxDensity.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .luminousFlux.cup)`.
+public extension MathUnit where Self == Units.LuminousFlux {
+    /// The `LuminousFlux` unit namespace, e.g. `Units.LuminousFlux.all`.
+    static var luminousFlux: Units.LuminousFlux.Type { Units.LuminousFlux.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .illuminance.cup)`.
+public extension MathUnit where Self == Units.Illuminance {
+    /// The `Illuminance` unit namespace, e.g. `Units.Illuminance.all`.
+    static var illuminance: Units.Illuminance.Type { Units.Illuminance.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .specificEnergy.cup)`.
+public extension MathUnit where Self == Units.SpecificEnergy {
+    /// The `SpecificEnergy` unit namespace, e.g. `Units.SpecificEnergy.all`.
+    static var specificEnergy: Units.SpecificEnergy.Type { Units.SpecificEnergy.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .amountOfSubstance.cup)`.
+public extension MathUnit where Self == Units.AmountOfSubstance {
+    /// The `AmountOfSubstance` unit namespace, e.g. `Units.AmountOfSubstance.all`.
+    static var amountOfSubstance: Units.AmountOfSubstance.Type { Units.AmountOfSubstance.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .dimensionless.cup)`.
+public extension MathUnit where Self == Units.Dimensionless {
+    /// The `Dimensionless` unit namespace, e.g. `Units.Dimensionless.all`.
+    static var dimensionless: Units.Dimensionless.Type { Units.Dimensionless.self }
+}
+
+// MARK: - Dimension-Scoped Member Lookup
+/// Enables leading-dot unit access like `Quantity(value: 2, unit: .volume.cup)`.
+public extension MathUnit where Self == Units.Volume {
+    /// The `Volume` unit namespace, e.g. `Units.Volume.all`.
+    static var volume: Units.Volume.Type { Units.Volume.self }
 }

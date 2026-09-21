@@ -524,6 +524,30 @@ import Foundation
         let cup = Quantity(1, Units.Volume.cup)
         #expect(cup.unit == Units.cup)
     }
+    
+    @Test func testLeadingDotUnitNamespaces() {
+        // SE-0299 member lookup: `.volume` resolves against the generic `U: MathUnit`
+        // constraint, then `.fluidOunce` chains onto the Volume namespace.
+        let oil = Quantity(value: 2, unit: .volume.fluidOunce)
+        #expect(oil.unit == Units.fluidOunce)
+        #expect(oil.unit.dimension == .volume)
+
+        let recipeWater = Quantity(value: 12, unit: .mass.ounce)
+        #expect(recipeWater.unit == Units.ounce)
+
+        let load = Quantity(value: 150, unit: .weight.pound)
+        #expect(load.unit == Units.poundForce)
+
+        let fuel = Quantity(value: 10, unit: .energy.calorie)
+        #expect(fuel.unit == Units.calorie)
+
+        let cash = Quantity(value: 5, unit: .currency.usd)
+        #expect(cash.unit == Units.usd)
+
+        // Mixing mass and weight stays impossible even through leading-dot lookup.
+        #expect(Quantity(value: 1, unit: .mass.ounce).unit.dimension !=
+                Quantity(value: 1, unit: .weight.ounce).unit.dimension)
+    }
 }
 
 // MARK: - Compilation Test for PlaceService

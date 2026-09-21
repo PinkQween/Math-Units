@@ -51,6 +51,24 @@ let flour = Quantity(16, Units.Mass.ounce)   // 16 oz of mass
 let force = Quantity(16, Units.Weight.ounce) // 16 ozf of force
 ```
 
+## Leading-dot lookup
+
+Inside a `Quantity` initializer — whose `unit:` parameter is a generic
+`U: MathUnit` — the dimensions are available as leading-dot namespaces:
+
+```swift
+let oil = Quantity(value: 10, unit: .volume.fluidOunce)
+let punch = Quantity(value: 2, unit: .volume.liter).converted(to: .volume.cup)
+let force = Quantity(value: 150, unit: .weight.pound)
+```
+
+The first member (`.volume`, `.mass`, `.weight`, ...) resolves to that
+dimension's namespace, and the second member chains onto one of its base units.
+The mass-versus-weight rule still applies: `.mass.pound` is a mass unit and
+`.weight.pound` is a force unit. Prefixed units such as `milliliter` keep their
+flat `Units.*` spelling and live inside their dimension's namespace only when
+they are base units.
+
 ### Looking units up at runtime
 
 `Units.units(for:)` returns every base unit of a dimension as `[any MathUnit]`:
