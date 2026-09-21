@@ -19,6 +19,7 @@ private enum UnitConverterKind: String, Codable {
     case linear
     case offset
     case empty
+    case powerLaw
 }
 
 /// A `Codable` box around the erased `any UnitConverter` value. Encoding tags
@@ -42,6 +43,11 @@ private struct AnyUnitConverterCodable: Codable {
             )
         case .empty:
             converter = EmptyConverter()
+        case .powerLaw:
+            converter = PowerLawConverter(
+                base: try container.decode(Double.self, forKey: .coefficient),
+                reference: try container.decode(Double.self, forKey: .constant)
+            )
         }
     }
 
@@ -57,6 +63,10 @@ private struct AnyUnitConverterCodable: Codable {
             try container.encode(offset.constant, forKey: .constant)
         case let empty as EmptyConverter:
             try container.encode(UnitConverterKind.empty, forKey: .kind)
+        case let powerLaw as PowerLawConverter:
+            try container.encode(UnitConverterKind.powerLaw, forKey: .kind)
+            try container.encode(powerLaw.base, forKey: .coefficient)
+            try container.encode(powerLaw.reference, forKey: .constant)
         default:
             throw EncodingError.invalidValue(
                 converter,

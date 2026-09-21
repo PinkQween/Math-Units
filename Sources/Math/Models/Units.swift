@@ -384,6 +384,78 @@ public struct Units {
         symbolPosition: .suffix
     )
 
+    // MARK: - Decibel (Logarithmic) Units
+
+    // Decibels are logarithmic, so every one of these uses a power-law
+    // converter rather than a linear scale. Relative decibels are dimensionless
+    // power ratios (10·log10); absolute scales fix a reference at the zero
+    // reading, so converting dB → the linear base (ratio, watt, volt, pascal)
+    // stays exact. Field (amplitude) decibels step by 10^(1/20) instead of the
+    // 10^(1/10) used by power-ratio decibels.
+
+    /// The bel, a dimensionless logarithmic power ratio: one bel is a factor of
+    /// ten in power (`1 B = 10·log10(P₁/P₂)`).
+    public static let bel = NamedUnit<MathDimension.dimensionless>(
+        symbol: "B",
+        dimension: .dimensionless,
+        converter: PowerLawConverter(base: 10.0, reference: 1.0)
+    )
+
+    /// The decibel, one tenth of a bel — a dimensionless power ratio of
+    /// `10·log10(P₁/P₂)`, so `10 dB` is a tenfold power increase.
+    public static let decibel = NamedUnit<MathDimension.dimensionless>(
+        symbol: "dB",
+        dimension: .dimensionless,
+        converter: PowerLawConverter(base: 1.2589254117941673, reference: 1.0)
+    )
+
+    /// The `dBm` scale: power in decibels relative to one milliwatt
+    /// (`0 dBm = 1 mW`, `30 dBm = 1 W`).
+    public static let decibelMilliwatt = NamedUnit<MathDimension.power>(
+        symbol: "dBm",
+        dimension: .power,
+        converter: PowerLawConverter(base: 1.2589254117941673, reference: 1e-3)
+    )
+
+    /// The `dBW` scale: power in decibels relative to one watt (`0 dBW = 1 W`).
+    public static let decibelWatt = NamedUnit<MathDimension.power>(
+        symbol: "dBW",
+        dimension: .power,
+        converter: PowerLawConverter(base: 1.2589254117941673, reference: 1.0)
+    )
+
+    /// The `dBV` scale: voltage in decibels relative to one volt, using the
+    /// field convention `20·log10(V)` (`0 dBV = 1 V`, `20 dBV = 10 V`).
+    public static let decibelVolt = NamedUnit<MathDimension.voltage>(
+        symbol: "dBV",
+        dimension: .voltage,
+        converter: PowerLawConverter(base: 1.1220184543019633, reference: 1.0)
+    )
+
+    /// The `dBµV` scale: voltage in decibels relative to one microvolt
+    /// (`0 dBµV = 1 µV`, `120 dBµV = 1 V`), the basis of receiver and
+    /// antenna sensitivity measurements.
+    public static let decibelMicrovolt = NamedUnit<MathDimension.voltage>(
+        symbol: "dBµV",
+        dimension: .voltage,
+        converter: PowerLawConverter(base: 1.1220184543019633, reference: 1e-6)
+    )
+
+    /// The `dB SPL` scale: sound pressure level in decibels relative to the
+    /// reference pressure of 20 µPa (`0 dB SPL` is the threshold of hearing,
+    /// `94 dB SPL ≈ 1 Pa`).
+    public static let decibelSoundPressureLevel = NamedUnit<MathDimension.pressure>(
+        symbol: "dBSPL",
+        dimension: .pressure,
+        converter: PowerLawConverter(base: 1.1220184543019633, reference: 2e-5)
+    )
+
+    // Convenience abbreviations for the absolute scales.
+    public static let dBm = decibelMilliwatt
+    public static let dBW = decibelWatt
+    public static let dBV = decibelVolt
+    public static let dBSPL = decibelSoundPressureLevel
+
     // MARK: - Currency Resolution
 
     /// A dictionary mapping ISO 4217 uppercase currency codes to their corresponding ``NamedUnit``.
@@ -531,13 +603,13 @@ public extension Units {
         if dimension == .data { return Units.Data.all }
         if dimension == .energy { return Units.Energy.all + Units.Energy.extras }
         if dimension == .force { return Units.Weight.all + Units.Weight.extras }
-        if dimension == .pressure { return Units.Pressure.all }
-        if dimension == .power { return Units.Power.all }
+        if dimension == .pressure { return Units.Pressure.all + Units.Pressure.extras }
+        if dimension == .power { return Units.Power.all + Units.Power.extras }
         if dimension == .speed { return Units.Speed.all }
         if dimension == .acceleration { return Units.Acceleration.all }
         if dimension == .electricCurrent { return Units.ElectricCurrent.all }
         if dimension == .charge { return Units.Charge.all }
-        if dimension == .voltage { return Units.Voltage.all }
+        if dimension == .voltage { return Units.Voltage.all + Units.Voltage.extras }
         if dimension == .resistance { return Units.Resistance.all }
         if dimension == .capacitance { return Units.Capacitance.all }
         if dimension == .inductance { return Units.Inductance.all }
@@ -550,7 +622,7 @@ public extension Units {
         if dimension == .illuminance { return Units.Illuminance.all }
         if dimension == .specificEnergy { return Units.SpecificEnergy.all }
         if dimension == .amountOfSubstance { return Units.AmountOfSubstance.all }
-        if dimension == .dimensionless { return Units.Dimensionless.all }
+        if dimension == .dimensionless { return Units.Dimensionless.all + Units.Dimensionless.extras }
         if dimension == .volume { return Units.Volume.all + Units.Volume.extras }
         if dimension == .currency { return Units.Currency.all }
         return []
@@ -606,6 +678,43 @@ public extension Units.Volume {
 
     /// The hand-built volume units not represented in ``Units/Volume/all``.
     static let extras: [any MathUnit] = [fluidDram]
+}
+
+// MARK: - Decibel Namespaces
+
+// Relative decibels are dimensionless; the absolute scales belong to their
+// physical dimension (power, voltage, pressure). Each namespace gets an
+// `extras` list so ``Units.units(for:)`` pickers include them.
+
+public extension Units.Dimensionless {
+    static let bel = Units.bel
+    static let decibel = Units.decibel
+
+    /// The dimensionless decibel scales not represented in ``Units/Dimensionless/all``.
+    static let extras: [any MathUnit] = [bel, decibel]
+}
+
+public extension Units.Power {
+    static let decibelMilliwatt = Units.decibelMilliwatt
+    static let decibelWatt = Units.decibelWatt
+
+    /// The logarithmic power scales not represented in ``Units/Power/all``.
+    static let extras: [any MathUnit] = [decibelMilliwatt, decibelWatt]
+}
+
+public extension Units.Voltage {
+    static let decibelVolt = Units.decibelVolt
+    static let decibelMicrovolt = Units.decibelMicrovolt
+
+    /// The logarithmic voltage scales not represented in ``Units/Voltage/all``.
+    static let extras: [any MathUnit] = [decibelVolt, decibelMicrovolt]
+}
+
+public extension Units.Pressure {
+    static let decibelSoundPressureLevel = Units.decibelSoundPressureLevel
+
+    /// The logarithmic pressure scales not represented in ``Units/Pressure/all``.
+    static let extras: [any MathUnit] = [decibelSoundPressureLevel]
 }
 
 // MARK: - Dimension-Scoped Member Lookup
@@ -686,4 +795,25 @@ public extension MathUnit where Self == Units.Currency {
     static var ringgit: NamedUnit<MathDimension.currency> { Units.ringgit }
     static var forint: NamedUnit<MathDimension.currency> { Units.forint }
     static var lira: NamedUnit<MathDimension.currency> { Units.lira }
+}
+
+// MARK: - Decibel Leading-Dot Lookup
+
+public extension MathUnit where Self == Units.Dimensionless {
+    static var bel: NamedUnit<MathDimension.dimensionless> { Units.bel }
+    static var decibel: NamedUnit<MathDimension.dimensionless> { Units.decibel }
+}
+
+public extension MathUnit where Self == Units.Power {
+    static var decibelMilliwatt: NamedUnit<MathDimension.power> { Units.decibelMilliwatt }
+    static var decibelWatt: NamedUnit<MathDimension.power> { Units.decibelWatt }
+}
+
+public extension MathUnit where Self == Units.Voltage {
+    static var decibelVolt: NamedUnit<MathDimension.voltage> { Units.decibelVolt }
+    static var decibelMicrovolt: NamedUnit<MathDimension.voltage> { Units.decibelMicrovolt }
+}
+
+public extension MathUnit where Self == Units.Pressure {
+    static var decibelSoundPressureLevel: NamedUnit<MathDimension.pressure> { Units.decibelSoundPressureLevel }
 }

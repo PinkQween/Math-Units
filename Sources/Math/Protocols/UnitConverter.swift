@@ -13,11 +13,14 @@
 /// the base unit with ``convertToBase(_:)``, combined, and then converted
 /// *from* the base unit back into the desired unit.
 ///
-/// `Math` ships with three ready-made converters:
+/// `Math` ships with four ready-made converters:
 ///
 /// * ``LinearConverter`` — a simple scale factor, used by most units (e.g. `1 km = 1000 m`).
 /// * ``OffsetConverter`` — a scale factor plus an additive offset, used by scales
 ///   that don't share zero, such as Celsius and Fahrenheit.
+/// * ``PowerLawConverter`` — a logarithmic scale where each step of a reading
+///   multiplies the base value by a fixed factor, used by decibel units
+///   (dimensionless dB, `dBm`, `dBV`, `dB SPL`, ...).
 /// * ``EmptyConverter`` — the identity conversion, for units that are already
 ///   expressed in the base unit.
 ///

@@ -44,6 +44,32 @@ and `Quantity(value: 100, unit: .poundsSterling)` all refer to the British pound
 deliberately no bare `.dollar` or `.peso`, because those names span several
 currencies.
 
+#### Decibels
+
+Decibels are logarithmic, so they are modeled with a
+``PowerLawConverter`` rather than a linear scale. Relative decibels are
+dimensionless power ratios (`10 dB = 10·log10(P₁/P₂)`, i.e. a tenfold power
+increase) and live in ``Units/Dimensionless`` as `bel` and `decibel`.
+Absolute scales pin a reference at the zero reading and belong to the
+dimension they measure, so they convert exactly to the linear units of that
+dimension:
+
+```swift
+let power = Quantity(value: 30, unit: .decibelMilliwatt) // 30 dBm
+print(power.converted(to: .watt).value)                  // 1.0  (0 dBm = 1 mW)
+
+let voltage = Quantity(value: 120, unit: .decibelMicrovolt)
+print(voltage.converted(to: .volt).value)                // 1.0  (120 dBµV = 1 V)
+
+let quiet = Quantity(value: 0, unit: .decibelSoundPressureLevel)
+print(quiet.converted(to: .pascal).value)                // 2e-5 (0 dB SPL = 20 µPa)
+```
+
+Power-ratio scales (`decibelMilliwatt`, `decibelWatt`, the dimensionless
+`decibel`) step by `10^(1/10)`; voltage and pressure scales
+(`decibelVolt`, `decibelMicrovolt`, `decibelSoundPressureLevel`) use the
+field convention `10^(1/20)` since they are squared into power.
+
 ### Mass versus weight
 
 Mass and weight are different things, and the namespaces make the distinction

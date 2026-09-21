@@ -621,6 +621,58 @@ import Foundation
         #expect(Units.units(for: .force).contains { ($0 as? NamedUnit<MathDimension.force>)?.symbol == "dramf" })
         #expect(Units.units(for: .volume).contains { ($0 as? NamedUnit<MathDimension.volume>)?.symbol == "fl_dr" })
     }
+
+    @Test func testDecibels() throws {
+        // Relative decibels are dimensionless power ratios (10·log10).
+        #expect(abs(Quantity(value: 10, unit: Units.decibel).converted(to: Units.bel).value - 1) < 1e-9)
+        #expect(abs(Quantity(value: 20, unit: Units.decibel).converted(to: Units.bel).value - 2) < 1e-9)
+        #expect(Quantity(value: 0, unit: Units.decibel).converted(to: Units.bel).value == 0)
+        #expect(abs(Quantity(value: 1, unit: Units.bel).converted(to: Units.decibel).value - 10) < 1e-9)
+        #expect(abs(Quantity(value: 20, unit: .decibel).converted(to: Units.percent).value - 10000) < 1e-4)
+
+        // 3 dB is (almost exactly) a doubling of power.
+        let tripleOSS = Quantity(value: 3, unit: Units.decibel).converted(to: Units.percent)
+        #expect(abs(tripleOSS.value - 199.52623) / 199.52623 < 1e-5)
+
+        // Absolute power scales: dBm, dBW.
+        #expect(Quantity(value: 0, unit: Units.decibelMilliwatt).converted(to: Units.watt).value == 0.001)
+        #expect(abs(Quantity(value: 30, unit: Units.decibelMilliwatt).converted(to: Units.watt).value - 1) < 1e-12)
+        #expect(abs(Quantity(value: 10, unit: Units.decibelMilliwatt).converted(to: Units.milliwatt).value - 10) < 1e-9)
+        #expect(Quantity(value: 0, unit: Units.decibelWatt).converted(to: Units.watt).value == 1)
+        #expect(abs(Quantity(value: 20, unit: Units.decibelWatt).converted(to: Units.watt).value - 100) < 1e-10)
+        #expect(Units.dBm == Units.decibelMilliwatt)
+
+        // Voltage scales use the field convention (20·log10).
+        #expect(Quantity(value: 0, unit: Units.decibelVolt).converted(to: Units.volt).value == 1)
+        #expect(abs(Quantity(value: 20, unit: Units.decibelVolt).converted(to: Units.volt).value - 10) < 1e-12)
+        #expect(abs(Quantity(value: 120, unit: Units.decibelMicrovolt).converted(to: Units.volt).value - 1) < 1e-9)
+        #expect(abs(Quantity(value: 60, unit: Units.decibelMicrovolt).converted(to: Units.millivolt).value - 1) < 1e-8)
+
+        // Sound pressure level is referenced to 20 µPa.
+        #expect(Quantity(value: 0, unit: Units.decibelSoundPressureLevel).converted(to: Units.pascal).value == 2e-5)
+        let onePascalSPL = Quantity(value: 94, unit: Units.decibelSoundPressureLevel).converted(to: Units.pascal)
+        #expect(abs(onePascalSPL.value - 1.00237) / 1.00237 < 1e-4)
+        let backToSPL = Quantity(value: 1.00237, unit: Units.pascal).converted(to: Units.decibelSoundPressureLevel)
+        #expect(abs(backToSPL.value - 94) < 1e-3)
+
+        // Round trips and leading-dot lookup.
+        let wattReading = Quantity(value: 0.5, unit: Units.watt)
+        let asDbm = wattReading.converted(to: Units.decibelMilliwatt)
+        let back = asDbm.converted(to: Units.watt)
+        #expect(abs(asDbm.value - 26.9897) < 1e-3)
+        #expect(abs(back.value - 0.5) < 1e-12)
+
+        // Picker surfaces the decibel scales.
+        #expect(Units.units(for: .dimensionless).contains { ($0 as? NamedUnit<MathDimension.dimensionless>)?.symbol == "dB" })
+        #expect(Units.units(for: .power).contains { ($0 as? NamedUnit<MathDimension.power>)?.symbol == "dBm" })
+        #expect(Units.units(for: .voltage).contains { ($0 as? NamedUnit<MathDimension.voltage>)?.symbol == "dBµV" })
+        #expect(Units.units(for: .pressure).contains { ($0 as? NamedUnit<MathDimension.pressure>)?.symbol == "dBSPL" })
+
+        // A dB unit round-trips through Codable.
+        let encoded = try JSONEncoder().encode(Quantity(value: 30, unit: Units.decibelMilliwatt))
+        let decoded = try JSONDecoder().decode(Quantity<NamedUnit<MathDimension.power>>.self, from: encoded)
+        #expect(decoded.isEquivalent(to: Quantity(value: 30, unit: Units.decibelMilliwatt), tolerance: 1e-12))
+    }
 }
 
 // MARK: - Compilation Test for PlaceService
