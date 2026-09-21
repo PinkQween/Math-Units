@@ -6,17 +6,62 @@
 //
 import Foundation
 
+/// A measurement of some physical quantity, made up of a numeric value and a unit.
+///
+/// ``Quantity`` is the central type in `Math`. You create one by pairing a
+/// `value` with a ``MathUnit``, then convert it between units, combine it with
+/// other quantities, compare it for physical equivalence, and format it for
+/// display.
+///
+/// The structure mirrors Foundation's `Measurement`, but adds compile-time
+/// dimension checking: the `U` generic parameter carries a `Dimension` type
+/// (see ``DimensionProtocol``), so Swift can reject quantities of mismatched
+/// dimensions before your app runs. Read <doc:CompileTimeSafety> for more.
+///
+/// ```swift
+/// let marathon = Quantity(value: 42.195, unit: Units.kilometer)
+/// let inMiles = marathon.converted(to: Units.mile)
+/// print(inMiles) // 26.22 mi
+/// ```
+///
+/// - SeeAlso: <doc:WorkingWithQuantity>
 public struct Quantity<U: MathUnit>: CustomStringConvertible {
+    /// The numeric magnitude of the quantity in `unit`.
     public let value: Double
+
+    /// The unit of measure for `value`.
     public let unit: U
-    
+
+    /// Creates a quantity with a value and a unit.
+    /// - Parameters:
+    ///   - value: The magnitude of the quantity.
+    ///   - unit: The unit of measure for the value.
     public init(value: Double, unit: U) {
         self.value = value
         self.unit = unit
     }
     
-    /// Converts this quantity to another unit of the same dimension, or converts between
-    /// Temperature and Energy using Boltzmann's constant (natural unit conversion).
+    /// Converts this quantity to another unit of the same dimension.
+    ///
+    /// This method converts through the unit's base unit, so you can convert
+    /// between any two units that share a dimension—even ones that combine
+    /// offset converters (like ``Units/fahrenheit``) with linear ones.
+    ///
+    /// In `Math`, temperature is modeled as the dimension of thermal energy, so
+    /// converting between, say, degrees Fahrenheit and joules is a normal
+    /// same-dimension conversion. For an explicit way to extract a
+    /// temperature's energy, see ``Quantity/thermalEnergy``.
+    ///
+    /// - Parameters:
+    ///   - targetUnit: The unit to convert to. It must have the same dimension
+    ///     as this quantity's unit.
+    /// - Returns: A new quantity whose value is expressed in `targetUnit`.
+    ///
+    /// ```swift
+    /// let distance = Quantity(value: 10.5, unit: Units.kilometer)
+    /// let inMiles = distance.converted(to: Units.mile)
+    /// print(inMiles.value) // 6.524...
+    /// ```
     public func converted<TargetUnit: MathUnit>(to targetUnit: TargetUnit) -> Quantity<TargetUnit> {
         // If dimensions match, convert normally
         if self.unit.dimension == targetUnit.dimension {
@@ -43,6 +88,15 @@ public extension Quantity {
     ///                   Defaults to `false` for prefix symbols (like `$10.00`), and `true` for suffix symbols
     ///                   (like `10.00 m` or `10.00 kr`), except for the percent symbol (`%`) which defaults to `false`.
     /// - Returns: A formatted string representation.
+    ///
+    /// ```swift
+    /// let price = Quantity(value: 10.1234, unit: Units.usd)
+    /// price.formatted()                  // "$10.12"
+    /// price.formatted(decimalPlaces: 3)  // "$10.123"
+    ///
+    /// let length = Quantity(value: 5.5, unit: Units.meter)
+    /// length.formatted()                 // "5.50 m"
+    /// ```
     func formatted(decimalPlaces: Int = 2, includeSpace: Bool? = nil) -> String {
         let formattedValue = String(format: "%.\(decimalPlaces)f", value)
         
@@ -61,11 +115,31 @@ public extension Quantity {
 
 // MARK: - Equatable
 extension Quantity: Equatable {
+    /// Returns a Boolean value indicating whether two quantities of the same
+    /// unit type have the same value. To compare quantities in different
+    /// units of the same dimension, use ``Quantity/isEquivalent(to:tolerance:)``.
     public static func == (lhs: Quantity<U>, rhs: Quantity<U>) -> Bool {
         lhs.value == rhs.value
     }
     
     /// Check if this quantity is physically equivalent to another quantity of a potentially different unit type, within a tolerance.
+    ///
+    /// Unlike `==`, which compares raw values, this method converts `other` to
+    /// this quantity's unit first—so quantities in different units of the same
+    /// dimension can be compared for physical equality.
+    ///
+    /// - Parameters:
+    ///   - other: The quantity to compare against. It must share this
+    ///     quantity's dimension.
+    ///   - tolerance: The maximum absolute difference (in this quantity's
+    ///     unit) for the values to be considered equivalent. Defaults to `1e-12`.
+    /// - Returns: `true` if the quantities are physically equal within
+    ///   `tolerance`.
+    ///
+    /// ```swift
+    /// let mile = Quantity(value: 1.0, unit: Units.mile)
+    /// mile.isEquivalent(to: Quantity(value: 1609.344, unit: Units.meter)) // true
+    /// ```
     public func isEquivalent<U2: MathUnit>(to other: Quantity<U2>, tolerance: Double = 1e-12) -> Bool {
         guard self.unit.dimension == other.unit.dimension else { return false }
         let otherConverted = other.converted(to: self.unit)
@@ -75,12 +149,20 @@ extension Quantity: Equatable {
 
 // MARK: - Arithmetic Operators (Same Dimension Addition & Subtraction)
 public extension Quantity {
+    /// Adds two quantities of the same dimension, converting `rhs` to the
+    /// left-hand side's unit. The result keeps `lhs`'s unit. Requires matching
+    /// dimensions at runtime (or compile time, for statically-dimensioned units).
+    /// - Warning: Traps with a `preconditionFailure` if the dimensions differ.
     static func + <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<U> {
         precondition(lhs.unit.dimension == rhs.unit.dimension, "Cannot add quantities of different dimensions: \(lhs.unit.dimension) and \(rhs.unit.dimension)")
         let rhsConverted = rhs.converted(to: lhs.unit)
         return Quantity(value: lhs.value + rhsConverted.value, unit: lhs.unit)
     }
     
+    /// Subtracts a quantity of the same dimension from another, converting
+    /// `rhs` to the left-hand side's unit. The result keeps `lhs`'s unit.
+    /// Requires matching dimensions.
+    /// - Warning: Traps with a `preconditionFailure` if the dimensions differ.
     static func - <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<U> {
         precondition(lhs.unit.dimension == rhs.unit.dimension, "Cannot subtract quantities of different dimensions: \(lhs.unit.dimension) and \(rhs.unit.dimension)")
         let rhsConverted = rhs.converted(to: lhs.unit)
@@ -90,18 +172,23 @@ public extension Quantity {
 
 // MARK: - Scalar Multiplication & Division
 public extension Quantity {
+    /// Scales a quantity by a `Double`, preserving its unit.
     static func * (lhs: Quantity<U>, rhs: Double) -> Quantity<U> {
         Quantity(value: lhs.value * rhs, unit: lhs.unit)
     }
     
+    /// Scales a quantity by a `Double` on the left, preserving its unit.
     static func * (lhs: Double, rhs: Quantity<U>) -> Quantity<U> {
         Quantity(value: lhs * rhs.value, unit: rhs.unit)
     }
     
+    /// Divides a quantity by a `Double`, preserving its unit.
     static func / (lhs: Quantity<U>, rhs: Double) -> Quantity<U> {
         Quantity(value: lhs.value / rhs, unit: lhs.unit)
     }
     
+    /// Returns the reciprocal dimension of a quantity (a `Double` divided by a
+    /// quantity), producing a ``CompositeUnit`` (for example `1 / time`).
     static func / (lhs: Double, rhs: Quantity<U>) -> Quantity<CompositeUnit> {
         let newDimension = PhysicalDimension.dimensionless - rhs.unit.dimension
         let newSymbol = "(1/\(rhs.unit.symbol))"
@@ -119,6 +206,9 @@ public extension Quantity {
 
 // MARK: - Dimensional Algebra (Multiplication & Division between Quantities)
 public extension Quantity {
+    /// Multiplies two quantities, combining their dimensions. The result is a
+    /// ``CompositeUnit`` (for example `(m*s)` when multiplying meters by seconds),
+    /// and both the value and the unit coefficient are adjusted correctly.
     static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
         let newDimension = lhs.unit.dimension + rhs.unit.dimension
         let newSymbol = "(\(lhs.unit.symbol)*\(rhs.unit.symbol))"
@@ -134,6 +224,9 @@ public extension Quantity {
         return Quantity<CompositeUnit>(value: newValue, unit: newUnit)
     }
     
+    /// Divides two quantities, dividing their dimensions. The result is a
+    /// ``CompositeUnit`` (for example `(m/s)` when dividing meters by seconds),
+    /// and both the value and the unit coefficient are adjusted correctly.
     static func / <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
         let newDimension = lhs.unit.dimension - rhs.unit.dimension
         let newSymbol = "(\(lhs.unit.symbol)/\(rhs.unit.symbol))"
@@ -152,6 +245,8 @@ public extension Quantity {
 
 // MARK: - Smart Dimensional Overloads
 public extension Quantity where U.Dimension == MathDimension.power {
+    /// Multiplies a power quantity by a time quantity, producing an energy
+    /// quantity with the conventional symbol ordering (for example `kWh`).
     static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.energy>> where U2.Dimension == MathDimension.time {
         let newDimension = MathDimension.energy.dimension
         let newSymbol = "\(lhs.unit.symbol)\(rhs.unit.symbol)"
@@ -169,6 +264,8 @@ public extension Quantity where U.Dimension == MathDimension.power {
 }
 
 public extension Quantity where U.Dimension == MathDimension.time {
+    /// Multiplies a time quantity by a power quantity, producing an energy
+    /// quantity with the conventional symbol ordering (for example `kWh`).
     static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.energy>> where U2.Dimension == MathDimension.power {
         let newDimension = MathDimension.energy.dimension
         // Standard convention puts power before time (e.g., kWh, Ws)
@@ -187,6 +284,8 @@ public extension Quantity where U.Dimension == MathDimension.time {
 }
 
 public extension Quantity where U.Dimension == MathDimension.energy {
+    /// Divides an energy quantity by a time quantity, producing a power quantity
+    /// with a cleaned-up symbol when possible (for example `kW` from `kWh / h`).
     static func / <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.power>> where U2.Dimension == MathDimension.time {
         let newDimension = MathDimension.power.dimension
         // Extract the power unit symbol if it ends with the time unit symbol, else fall back to generic (E/T)
@@ -207,6 +306,41 @@ public extension Quantity where U.Dimension == MathDimension.energy {
         let newValue = lhs.value / rhs.value
         
         return Quantity<NamedUnit<MathDimension.power>>(value: newValue, unit: newUnit)
+    }
+}
+
+// MARK: - Thermal Energy (Natural Units)
+public extension Quantity where U.Dimension == MathDimension.energy {
+    /// The thermal energy equivalent of this quantity, in joules.
+    ///
+    /// `Math` models temperature using the dimension of thermal energy, where the
+    /// base unit is the joule and one kelvin equals `1.380649 × 10⁻²³`
+    /// joules (Boltzmann's constant). This property expresses the quantity as an
+    /// energy in joules directly:
+    ///
+    /// ```swift
+    /// let roomTemp = Quantity(value: 293.15, unit: Units.kelvin)
+    /// print(roomTemp.thermalEnergy) // 0.00 J  (≈ 4.0468 × 10⁻²¹ J)
+    /// ```
+    ///
+    /// Use ``thermalEnergy(in:)`` to get the value in a specific energy unit.
+    /// - SeeAlso: ``converted(to:)``
+    var thermalEnergy: Quantity<NamedUnit<MathDimension.energy>> {
+        converted(to: Units.joule)
+    }
+    
+    /// The thermal energy equivalent of this quantity, expressed in a given energy unit.
+    ///
+    /// - Parameter unit: An energy unit to express the result in, such as
+    ///   ``Units/britishThermalUnit``.
+    /// - Returns: This quantity converted to `unit`.
+    ///
+    /// ```swift
+    /// let hotDay = Quantity(value: 310.0, unit: Units.kelvin)
+    /// print(hotDay.thermalEnergy(in: Units.britishThermalUnit)) // 0.00 BTU
+    /// ```
+    func thermalEnergy(in unit: NamedUnit<MathDimension.energy>) -> Quantity<NamedUnit<MathDimension.energy>> {
+        thermalEnergy.converted(to: unit)
     }
 }
 

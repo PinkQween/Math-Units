@@ -5,8 +5,33 @@
 //  Created by Hanna Skairipa on 5/29/26.
 //
 
+/// A namespace of ready-made units for every dimension in the framework.
+///
+/// ``Units`` provides hundreds of predefined `NamedUnit` values—from base SI
+/// units (`Units.meter`, `Units.second`, `Units.kelvin`) through derived units
+/// (`Units.newton`, `Units.joule`, `Units.watt`), imperial and customary units
+/// (`Units.inch`, `Units.mile`, `Units.pound`, `Units.gallon`), astronomy and
+/// physics constants (`Units.lightYear`, `Units.planckLength`), digital data
+/// (`Units.byte`, `Units.gibibyte`), world currencies (`Units.usd`), and even
+/// a few playful ones (`Units.beardSecond`, `Units.micromort`).
+///
+/// Use a unit to create a ``Quantity``:
+///
+/// ```swift
+/// let marathon = Quantity(value: 42.195, unit: Units.kilometer)
+/// let inMiles  = marathon.converted(to: Units.mile)
+/// ```
+///
+/// Each unit is parameterized by its compile-time dimension type, so
+/// `Units.meter` is a `NamedUnit<MathDimension.length>` and `Units.hour` is a
+/// `NamedUnit<MathDimension.time>`—the compiler can catch mismatched dimensions
+/// before your app runs (see <doc:CompileTimeSafety>).
 public struct Units {
     // MARK: - Offset and Constant-based Units
+    /// Degrees Celsius, modeled as a thermal-energy unit.
+    ///
+    /// The symbol is `°C`. Because temperature is an energy dimension, a Celsius
+    /// quantity converts directly into joules (see ``Quantity/thermalEnergy``).
     public static let celsius = NamedUnit<MathDimension.energy>(
         symbol: "°C",
         dimension: .energy,
@@ -16,6 +41,7 @@ public struct Units {
         )
     )
 
+    /// Degrees Fahrenheit, modeled as a thermal-energy unit. The symbol is `°F`.
     public static let fahrenheit = NamedUnit<MathDimension.energy>(
         symbol: "°F",
         dimension: .energy,
@@ -293,8 +319,11 @@ public struct Units {
     )
     
     // MARK: - Currency Resolution
-    
-    /// A dictionary mapping ISO 4217 uppercase currency codes to their corresponding NamedUnit.
+
+    /// A dictionary mapping ISO 4217 uppercase currency codes to their corresponding ``NamedUnit``.
+    ///
+    /// Includes both fiat currencies (`"USD"`, `"EUR"`, ...) and cryptocurrencies
+    /// (`"BTC"`, `"ETH"`).
     public static let currencyByCode: [String: NamedUnit<MathDimension.currency>] = [
         "USD": usd, "EUR": eur, "JPY": jpy, "GBP": gbp, "AUD": aud, "CAD": cad,
         "CHF": chf, "CNY": cny, "SEK": sek, "NZD": nzd, "MXN": mxn, "SGD": sgd,
@@ -304,11 +333,26 @@ public struct Units {
         "AED": aed, "COP": cop, "SAR": sar, "MYR": myr, "RON": ron, "VND": vnd,
         "ARS": ars, "BTC": btc, "ETH": eth
     ]
-    
-    /// Resolves an ISO 4217 currency code (case-insensitive) to a NamedUnit.
+
+    /// Resolves an ISO 4217 currency code (case-insensitive) to a ``NamedUnit``
+    /// for the currency dimension.
+    ///
+    /// Use this when you receive a currency code at runtime, for example from a
+    /// `Locale` or a server response:
+    ///
+    /// ```swift
+    /// if let unit = Units.currency(for: "SEK") {
+    ///     let amount = Quantity(value: 250, unit: unit)
+    ///     print(amount.formatted()) // "250.00 kr"
+    /// }
+    /// ```
+    ///
+    /// - Parameter code: An ISO 4217 currency code such as `"USD"`, `"eur"`,
+    ///   or `"BTC"`. The lookup is case-insensitive.
+    /// - Returns: The matching currency unit, or `nil` if the code is unknown.
     public static func currency(for code: String) -> NamedUnit<MathDimension.currency>? {
         currencyByCode[code.uppercased()]
     }
-    
+
     private init() {}
 }

@@ -5,43 +5,64 @@
 //  Created by Hanna Skairipa on 5/29/26.
 //
 
-/// A unit type representing derived or dynamically created composite units (e.g. from multiplication/division).
+/// A unit representing a derived, dynamically-created combination of other units.
 ///
-/// Composite units do not enforce a specific statically defined compile-time dimension type and default
-/// to the type-level `MathDimension.unknown` dimension.
+/// Multiplying or dividing quantities (or units) produces a `CompositeUnit`.
+/// For example, dividing a meter by a second yields the composite unit `(m/s)`
+/// with a speed dimension, and multiplying two meters yields `(m*m)` with an
+/// area dimension.
+///
+/// Composite units carry no specific compile-time dimension: their type-level
+/// dimension is always ``MathDimension/unknown``. You typically encounter them
+/// as the result of dimensional arithmetic and then convert the result into a
+/// named unit when you know what it should be:
+///
+/// ```swift
+/// let speed = distance / duration          // Quantity<CompositeUnit>, (m/s)
+/// let inMilesPerHour = speed.converted(to: Units.mile / Units.hour)
+/// ```
 public struct CompositeUnit: MathUnit, CustomStringConvertible {
     /// The compile-time dimension type associated with this unit, defaults to `unknown`.
     public typealias Dimension = MathDimension.unknown
-    
+
     /// The symbol representing the composite unit, e.g. `"(m/s)"`.
     public let symbol: String
-    
+
     /// The underlying physical dimension of this unit.
     public let dimension: PhysicalDimension
-    
+
     /// The unit converter used to transform values of this unit to and from base units.
     public let converter: any UnitConverter
-    
-    /// The position where the unit symbol should be placed when formatting.
+
+    /// Composite units always place their symbol after the value.
     public var symbolPosition: SymbolPosition { .suffix }
-    
-    /// Initializes a new composite unit with a symbol, underlying physical dimension, and converter.
+
+    /// Creates a composite unit from a symbol, dimension, and converter.
+    ///
+    /// - Parameters:
+    ///   - symbol: The textual representation, e.g. `"(m/s)"`.
+    ///   - dimension: The physical dimension of the combined unit.
+    ///   - converter: How values convert to and from the base unit.
     public init(symbol: String, dimension: PhysicalDimension, converter: any UnitConverter) {
         self.symbol = symbol
         self.dimension = dimension
         self.converter = converter
     }
-    
+
+    /// The base unit for this symbol: the same symbol and dimension with an
+    /// identity ``LinearConverter``.
     public var base: CompositeUnit {
         CompositeUnit(symbol: symbol, dimension: dimension, converter: LinearConverter(coefficient: 1.0))
     }
-    
+
+    /// The composite unit's symbol, e.g. `"(m/s)"`.
     public var description: String {
         return symbol
     }
 }
 
 extension CompositeUnit: Equatable {
+    /// Two composite units are equal when they share a symbol and dimension.
     public static func == (lhs: CompositeUnit, rhs: CompositeUnit) -> Bool {
         lhs.symbol == rhs.symbol &&
         lhs.dimension == rhs.dimension
