@@ -43,3 +43,5 @@ public struct LinearConverter: UnitConverter {
         value / coefficient
     }
 }
+
+extension LinearConverter: Codable {}

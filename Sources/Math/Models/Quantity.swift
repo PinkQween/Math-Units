@@ -78,6 +78,23 @@ public struct Quantity<U: MathUnit>: CustomStringConvertible {
     }
 }
 
+// MARK: - Codable
+extension Quantity: Codable where U: Codable {
+    /// Encodes this quantity's value and unit. The unit is encoded with its
+    /// symbol, dimension, symbol position, and a tagged converter, so decoding
+    /// reconstructs an identical unit. Requires the unit type `U` to be
+    /// `Codable` (``NamedUnit``, ``CompositeUnit``, and the built-in units all
+    /// are).
+    ///
+    /// ```swift
+    /// let distance = Quantity(value: 26.2, unit: Units.mile)
+    /// let data = try JSONEncoder().encode(distance)
+    /// let decoded = try JSONDecoder().decode(
+    ///     Quantity<NamedUnit<MathDimension.length>>.self, from: data)
+    /// decoded == distance // true
+    /// ```
+}
+
 // MARK: - Formatting
 public extension Quantity {
     /// Formats the quantity value with its unit symbol placed on the correct side (prefix or suffix).
@@ -113,13 +130,16 @@ public extension Quantity {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Equatable & Hashable
 extension Quantity: Equatable {
-    /// Returns a Boolean value indicating whether two quantities of the same
-    /// unit type have the same value. To compare quantities in different
-    /// units of the same dimension, use ``Quantity/isEquivalent(to:tolerance:)``.
+    /// Returns a Boolean value indicating whether two quantities have the same
+    /// value *and* the same unit (symbol and dimension). To compare quantities
+    /// in different units of the same dimension—for example, one mile versus
+    /// 1609.344 meters—use ``Quantity/isEquivalent(to:tolerance:)``.
     public static func == (lhs: Quantity<U>, rhs: Quantity<U>) -> Bool {
-        lhs.value == rhs.value
+        lhs.value == rhs.value &&
+        lhs.unit.symbol == rhs.unit.symbol &&
+        lhs.unit.dimension == rhs.unit.dimension
     }
     
     /// Check if this quantity is physically equivalent to another quantity of a potentially different unit type, within a tolerance.
@@ -144,6 +164,17 @@ extension Quantity: Equatable {
         guard self.unit.dimension == other.unit.dimension else { return false }
         let otherConverted = other.converted(to: self.unit)
         return abs(self.value - otherConverted.value) <= tolerance
+    }
+}
+
+extension Quantity: Hashable {
+    /// Hashes the value and unit identity (symbol and dimension), matching
+    /// ``Quantity/==(_:_:)`` so quantities work correctly as dictionary keys
+    /// and set members.
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(value)
+        hasher.combine(unit.symbol)
+        hasher.combine(unit.dimension)
     }
 }
 

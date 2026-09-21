@@ -31,7 +31,7 @@
 ///
 /// - SeeAlso: ``MathDimension`` is the compile-time counterpart of this type,
 ///   used to enforce dimension correctness at build time.
-public struct PhysicalDimension: Equatable, Hashable, Sendable {
+public struct PhysicalDimension: Equatable, Hashable, Sendable, Codable {
     /// A dictionary mapping base dimensions (e.g., `"length"`, `"time"`) to their integer exponent powers.
     public let exponents: [String: Int]
     

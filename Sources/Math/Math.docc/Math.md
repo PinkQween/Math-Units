@@ -59,6 +59,7 @@ reject mismatched dimensions when you build your app—not when it runs. Read
 
 - <doc:GettingStarted>
 - <doc:WorkingWithQuantity>
+- <doc:StoringAndEncodingQuantities>
 - ``Quantity``
 
 ### Creating and Converting Quantities

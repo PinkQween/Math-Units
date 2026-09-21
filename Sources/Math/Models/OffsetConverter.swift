@@ -53,3 +53,5 @@ public struct OffsetConverter: UnitConverter {
         (value - constant) / coefficient
     }
 }
+
+extension OffsetConverter: Codable {}

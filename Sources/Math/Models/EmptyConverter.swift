@@ -32,3 +32,5 @@ public struct EmptyConverter: UnitConverter {
         value
     }
 }
+
+extension EmptyConverter: Codable {}

@@ -403,6 +403,69 @@ import Foundation
         #expect(pct.formatted(decimalPlaces: 1) == "75.5%")
         #expect(pct.formatted(decimalPlaces: 1, includeSpace: true) == "75.5 %")
     }
+    
+    @Test func testQuantityHashable() {
+        let fiveMeters = Quantity(value: 5.0, unit: Units.meter)
+        let fiveMetersAgain = Quantity(value: 5.0, unit: Units.meter)
+        let fiveMiles = Quantity(value: 5.0, unit: Units.mile)
+        let threeMeters = Quantity(value: 3.0, unit: Units.meter)
+
+        // Unit-aware equality: compares value AND unit (symbol + dimension)
+        #expect(fiveMeters == fiveMetersAgain)
+        #expect(fiveMeters != fiveMiles)    // same value, different unit
+        #expect(fiveMeters != threeMeters)  // same unit, different value
+
+        // Dictionary key / set member behavior
+        let lookup: [Quantity<NamedUnit<MathDimension.length>>: String] = [
+            fiveMeters: "five meters",
+            fiveMiles: "five miles",
+            threeMeters: "three meters",
+        ]
+        #expect(lookup[fiveMetersAgain] == "five meters")
+        #expect(lookup[Quantity(value: 5.0, unit: Units.mile)] == "five miles")
+        #expect(Set([fiveMeters, fiveMetersAgain, fiveMiles, threeMeters]).count == 3)
+    }
+    
+    @Test func testQuantityCodableRoundTrip() throws {
+        // Linear converter unit (mile -> meter)
+        let distance = Quantity(value: 26.2, unit: Units.mile)
+        let distanceData = try JSONEncoder().encode(distance)
+        let distanceDecoded = try JSONDecoder().decode(
+            Quantity<NamedUnit<MathDimension.length>>.self, from: distanceData)
+        #expect(distanceDecoded == distance)
+        #expect(distanceDecoded.converted(to: Units.kilometer).value > 42.0)
+
+        // Empty converter unit (gram)
+        let mass = Quantity(value: 500.0, unit: Units.gram)
+        let massData = try JSONEncoder().encode(mass)
+        let massDecoded = try JSONDecoder().decode(
+            Quantity<NamedUnit<MathDimension.mass>>.self, from: massData)
+        #expect(massDecoded == mass)
+
+        // Offset converter unit (Fahrenheit) — preserves the offset
+        let temp = Quantity(value: 77.0, unit: Units.fahrenheit)
+        let tempData = try JSONEncoder().encode(temp)
+        let tempDecoded = try JSONDecoder().decode(
+            Quantity<NamedUnit<MathDimension.energy>>.self, from: tempData)
+        #expect(tempDecoded == temp)
+        #expect(tempDecoded.isEquivalent(to: Quantity(value: 25.0, unit: Units.celsius), tolerance: 1e-3))
+
+        // Composite unit (m/s)
+        let speed = Quantity(value: 10.0, unit: Units.meter) / Quantity(value: 2.0, unit: Units.second)
+        let speedData = try JSONEncoder().encode(speed)
+        let speedDecoded = try JSONDecoder().decode(Quantity<CompositeUnit>.self, from: speedData)
+        #expect(speedDecoded == speed)
+
+        // A recipe-style dictionary round-trips as a whole
+        let recipe: [String: Quantity<NamedUnit<MathDimension.mass>>] = [
+            "flour": Quantity(value: 500.0, unit: Units.gram),
+            "sugar": Quantity(value: 200.0, unit: Units.gram),
+        ]
+        let recipeData = try JSONEncoder().encode(recipe)
+        let recipeDecoded = try JSONDecoder().decode(
+            [String: Quantity<NamedUnit<MathDimension.mass>>].self, from: recipeData)
+        #expect(recipeDecoded == recipe)
+    }
 }
 
 // MARK: - Compilation Test for PlaceService
