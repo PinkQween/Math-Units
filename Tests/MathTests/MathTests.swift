@@ -594,6 +594,33 @@ import Foundation
         let peso = Quantity(value: 100, unit: .currency.mxn)
         #expect(peso.unit == Units.mxn)
     }
+
+    @Test func testContextDependentDram() {
+        // The same word means different physical things per dimension.
+        let massDram = Quantity(value: 1, unit: Units.Mass.dram)
+        #expect(massDram.unit.dimension == .mass)
+
+        // Bare `.dram` keeps resolving to the mass unit.
+        let bareDram = Quantity(value: 1, unit: .dram)
+        #expect(bareDram.unit.dimension == .mass)
+
+        // Weight-reading dram is dram-force: 256 to the pound-force.
+        let weightDram = Quantity(value: 1, unit: .weight.dram)
+        #expect(weightDram.unit.dimension == .force)
+        let pounds = Quantity(value: 256, unit: .weight.dram)
+        #expect(abs(pounds.converted(to: Units.poundForce).value - 1) < 1e-12)
+
+        // Volume-reading dram is the fluid dram: 8 to the US fluid ounce.
+        let volumeDram = Quantity(value: 1, unit: .volume.dram)
+        #expect(volumeDram.unit.dimension == .volume)
+        let fluidOunces = Quantity(value: 8, unit: .volume.fluidDram)
+        #expect(fluidOunces.unit.dimension == .volume)
+        #expect(abs(fluidOunces.converted(to: Units.usFluidOunce).value - 1) < 1e-12)
+
+        // Pickers surface the context-dependent extras too.
+        #expect(Units.units(for: .force).contains { ($0 as? NamedUnit<MathDimension.force>)?.symbol == "dramf" })
+        #expect(Units.units(for: .volume).contains { ($0 as? NamedUnit<MathDimension.volume>)?.symbol == "fl_dr" })
+    }
 }
 
 // MARK: - Compilation Test for PlaceService

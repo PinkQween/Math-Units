@@ -358,6 +358,32 @@ public struct Units {
     public static let forint = huf
     public static let lira = `try`
 
+    // MARK: - Context-Dependent Units
+
+    // A single colloqial name can mean different physical things depending on
+    // context, so the same word is available per dimension: `dram` is mass in
+    // `Units.Mass`, the weight (force) equivalent in `Units.Weight`, and a
+    // volume (`fluid dram`) in `Units.Volume`. Same for `ounce`/`pound` in Mass
+    // vs Weight.
+
+    /// The unit of force equal to the weight of one avoirdupois dram, i.e.
+    /// 1/256 of a pound-force. The "weight" reading of `dram`, mirroring
+    /// `Units.Mass.dram` (mass).
+    public static let dramForce = NamedUnit<MathDimension.force>(
+        symbol: "dramf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.017375865684611328),
+        symbolPosition: .suffix
+    )
+
+    /// The US fluid dram, one eighth of a US fluid ounce (~3.7 mL).
+    public static let fluidDram = NamedUnit<MathDimension.volume>(
+        symbol: "fl_dr",
+        dimension: .volume,
+        converter: LinearConverter(coefficient: 3.6966911953125e-6),
+        symbolPosition: .suffix
+    )
+
     // MARK: - Currency Resolution
 
     /// A dictionary mapping ISO 4217 uppercase currency codes to their corresponding ``NamedUnit``.
@@ -504,7 +530,7 @@ public extension Units {
         if dimension == .area { return Units.Area.all }
         if dimension == .data { return Units.Data.all }
         if dimension == .energy { return Units.Energy.all + Units.Energy.extras }
-        if dimension == .force { return Units.Weight.all }
+        if dimension == .force { return Units.Weight.all + Units.Weight.extras }
         if dimension == .pressure { return Units.Pressure.all }
         if dimension == .power { return Units.Power.all }
         if dimension == .speed { return Units.Speed.all }
@@ -525,7 +551,7 @@ public extension Units {
         if dimension == .specificEnergy { return Units.SpecificEnergy.all }
         if dimension == .amountOfSubstance { return Units.AmountOfSubstance.all }
         if dimension == .dimensionless { return Units.Dimensionless.all }
-        if dimension == .volume { return Units.Volume.all }
+        if dimension == .volume { return Units.Volume.all + Units.Volume.extras }
         if dimension == .currency { return Units.Currency.all }
         return []
     }
@@ -565,6 +591,21 @@ public extension Units.Energy {
 public extension Units.Weight {
     static let ounce = Units.ounceForce
     static let pound = Units.poundForce
+    static let dram = Units.dramForce
+
+    /// The colloquial weight-force units not represented in ``Units/Weight/all``.
+    static let extras: [any MathUnit] = [dram]
+}
+
+/// The volume reading of dram. `Units.Volume.dram` (and `.fluidDram`) is the US
+/// fluid dram, one eighth of a US fluid ounce — distinct from the mass `dram`
+/// in ``Units.Mass`` and the weight (force) `dram` in ``Units.Weight``.
+public extension Units.Volume {
+    static let fluidDram = Units.fluidDram
+    static let dram = Units.fluidDram
+
+    /// The hand-built volume units not represented in ``Units/Volume/all``.
+    static let extras: [any MathUnit] = [fluidDram]
 }
 
 // MARK: - Dimension-Scoped Member Lookup

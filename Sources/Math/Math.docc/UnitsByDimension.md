@@ -55,11 +55,19 @@ explicit so the two can never be mixed up.
   "weight" — `Units.Weight.ounce` is the ounce-force (symbol `ozf`), and
   `Units.Weight.pound` is the pound-force (symbol `lbf`).
 
+Some words mean different physical things in different contexts. Beyond
+`ounce` and `pound`, `dram` is available as a mass unit (`Units.Mass.dram`),
+a weight/force unit (`Units.Weight.dram`, the dram-force), and a volume unit
+(`Units.Volume.dram`, the US fluid dram, one eighth of a US fluid ounce).
+
 Because they live in different namespaces, the compiler keeps the two apart:
 
 ```swift
 let flour = Quantity(16, Units.Mass.ounce)   // 16 oz of mass
 let force = Quantity(16, Units.Weight.ounce) // 16 ozf of force
+let sack = Quantity(2, Units.Mass.dram)      // 2 dr of mass
+let pull = Quantity(2, Units.Weight.dram)    // 2 dram-force
+let dose = Quantity(2, Units.Volume.dram)    // 2 fl dr of volume
 ```
 
 ## Leading-dot lookup
