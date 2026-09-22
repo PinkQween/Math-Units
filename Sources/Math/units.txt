@@ -51,7 +51,7 @@
 @PrefixedUnits(name: "stone", symbol: "st", dimension: .mass, baseCoefficient: 6.35029318)
 @PrefixedUnits(name: "shortTon", symbol: "ton", dimension: .mass, baseCoefficient: 907.18474)
 @PrefixedUnits(name: "longTon", symbol: "lton", dimension: .mass, baseCoefficient: 1016.0469088)
-@PrefixedUnits(name: "slug", symbol: "slug", dimension: .mass, baseCoefficient: 14.5939029)
+@PrefixedUnits(name: "slug", symbol: "slug", dimension: .mass, baseCoefficient: 14.5939029372064)
 @PrefixedUnits(name: "carat", symbol: "ct", dimension: .mass, baseCoefficient: 0.0002)
 @PrefixedUnits(name: "dram", symbol: "dr", dimension: .mass, baseCoefficient: 0.0017718451953125)
 @PrefixedUnits(name: "troyDram", symbol: "dr_t", dimension: .mass, baseCoefficient: 0.0038879346)
@@ -89,7 +89,7 @@
 @PrefixedUnits(name: "poundForce", symbol: "lbf", dimension: .force, baseCoefficient: 4.4482216152605)
 @PrefixedUnits(name: "ounceForce", symbol: "ozf", dimension: .force, baseCoefficient: 0.27801385095378125)
 @PrefixedUnits(name: "kip", symbol: "kip", dimension: .force, baseCoefficient: 4448.2216152605)
-@PrefixedUnits(name: "tonForce", symbol: "tnf", dimension: .force, baseCoefficient: 8896.44323)
+@PrefixedUnits(name: "tonForce", symbol: "tnf", dimension: .force, baseCoefficient: 8896.443230521)
 @PrefixedUnits(name: "kilogramForce", symbol: "kgf", dimension: .force, baseCoefficient: 9.80665)
 
 // MARK: - Pressure

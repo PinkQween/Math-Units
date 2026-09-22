@@ -81,6 +81,19 @@ explicit so the two can never be mixed up.
   "weight" — `Units.Weight.ounce` is the ounce-force (symbol `ozf`), and
   `Units.Weight.pound` is the pound-force (symbol `lbf`).
 
+Every avoirdupois mass unit has a matching weight (force) reading in
+``Units/Weight``: `grain`, `ounce`, `pound`, `dram`, `stone`, `shortTon`,
+`longTon`, `hundredweight`, and `longHundredweight` there are all force units
+(`grf`, `ozf`, `lbf`, `dramf`, `stf`, `stnf`, `ltnf`, `cwtf`, `lcwtf`), each
+equal to the standard-gravity weight of its mass counterpart — `W = mg`. The
+mass readings themselves stay in ``Units/Mass``, where `slug` is the canonical
+imperial unit of mass (1 slug ≈ 32.17 lbm).
+
+```swift
+let force = Quantity(value: 1, unit: .weight.stone) // 1 stf = 14 lbf
+let mass  = Quantity(value: 1, unit: .mass.stone)   // 1 st  = 14 lbm
+```
+
 Some words mean different physical things in different contexts. Beyond
 `ounce` and `pound`, `dram` is available as a mass unit (`Units.Mass.dram`),
 a weight/force unit (`Units.Weight.dram`, the dram-force), and a volume unit
@@ -94,6 +107,29 @@ let force = Quantity(16, Units.Weight.ounce) // 16 ozf of force
 let sack = Quantity(2, Units.Mass.dram)      // 2 dr of mass
 let pull = Quantity(2, Units.Weight.dram)    // 2 dram-force
 let dose = Quantity(2, Units.Volume.dram)    // 2 fl dr of volume
+```
+
+For code that has to be unambiguous, the mass readings also come with explicit
+names: ``Units/poundMass`` (symbol `lbm`) and ``Units/ounceMass`` (symbol
+`ozm`) spell out that they are masses, never forces.
+
+### Computing weight from mass
+
+Weight is a force, `W = mg`. Any mass quantity exposes that via
+``Quantity/weight``, which converts a mass to its weight at standard gravity
+and returns a force quantity:
+
+```swift
+let person = Quantity(value: 150, unit: Units.pound) // 150 lbm
+print(person.weight.converted(to: Units.poundForce).value) // ≈ 150.0 lbf
+```
+
+Use ``Quantity/weight(on:)`` for another gravitational field and
+``Quantity/weight(in:)`` to request a particular force unit:
+
+```swift
+let probe = Quantity(value: 100, unit: Units.kilogram)
+print(probe.weight(on: 1.62).converted(to: Units.newton).value) // ≈ 162 N on the Moon
 ```
 
 ## Leading-dot lookup

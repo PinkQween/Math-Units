@@ -4752,61 +4752,61 @@ public extension Units {
         symbol: "Kilton", dimension: .mass, converter: LinearConverter(coefficient: 1040432.0346112), symbolPosition: .suffix
     )
     static let slug = NamedUnit<MathDimension.mass>(
-        symbol: "slug", dimension: .mass, converter: LinearConverter(coefficient: 14.5939029), symbolPosition: .suffix
+        symbol: "slug", dimension: .mass, converter: LinearConverter(coefficient: 14.5939029372064), symbolPosition: .suffix
     )
     static let quettaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Qslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000000000000000000000.0000000), symbolPosition: .suffix
+        symbol: "Qslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206400000000000000000.0000000000000), symbolPosition: .suffix
     )
     static let ronnaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Rslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000000000000000000.0000000), symbolPosition: .suffix
+        symbol: "Rslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206400000000000000.0000000000000), symbolPosition: .suffix
     )
     static let yottaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Yslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000000000000000.0000000), symbolPosition: .suffix
+        symbol: "Yslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206400000000000.0000000000000), symbolPosition: .suffix
     )
     static let zettaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Zslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000000000000.0000000), symbolPosition: .suffix
+        symbol: "Zslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206400000000.0000000000000), symbolPosition: .suffix
     )
     static let exaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Eslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000000000.0000000), symbolPosition: .suffix
+        symbol: "Eslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206400000.0000000000000), symbolPosition: .suffix
     )
     static let petaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Pslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000000.0000000), symbolPosition: .suffix
+        symbol: "Pslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206400.0000000000000), symbolPosition: .suffix
     )
     static let teraslug = NamedUnit<MathDimension.mass>(
-        symbol: "Tslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900000.0000000), symbolPosition: .suffix
+        symbol: "Tslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937206.4000000000000), symbolPosition: .suffix
     )
     static let gigaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Gslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902900.0000000), symbolPosition: .suffix
+        symbol: "Gslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902937.2064000000000), symbolPosition: .suffix
     )
     static let megaslug = NamedUnit<MathDimension.mass>(
-        symbol: "Mslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902.9000000), symbolPosition: .suffix
+        symbol: "Mslug", dimension: .mass, converter: LinearConverter(coefficient: 14593902.9372064000000), symbolPosition: .suffix
     )
     static let kiloslug = NamedUnit<MathDimension.mass>(
-        symbol: "kslug", dimension: .mass, converter: LinearConverter(coefficient: 14593.9029000), symbolPosition: .suffix
+        symbol: "kslug", dimension: .mass, converter: LinearConverter(coefficient: 14593.9029372064000), symbolPosition: .suffix
     )
     static let hectoslug = NamedUnit<MathDimension.mass>(
-        symbol: "hslug", dimension: .mass, converter: LinearConverter(coefficient: 1459.3902900), symbolPosition: .suffix
+        symbol: "hslug", dimension: .mass, converter: LinearConverter(coefficient: 1459.3902937206400), symbolPosition: .suffix
     )
     static let decaslug = NamedUnit<MathDimension.mass>(
-        symbol: "daslug", dimension: .mass, converter: LinearConverter(coefficient: 145.9390290), symbolPosition: .suffix
+        symbol: "daslug", dimension: .mass, converter: LinearConverter(coefficient: 145.9390293720640), symbolPosition: .suffix
     )
     static let decislug = NamedUnit<MathDimension.mass>(
-        symbol: "dslug", dimension: .mass, converter: LinearConverter(coefficient: 1.45939029), symbolPosition: .suffix
+        symbol: "dslug", dimension: .mass, converter: LinearConverter(coefficient: 1.45939029372064), symbolPosition: .suffix
     )
     static let centislug = NamedUnit<MathDimension.mass>(
-        symbol: "cslug", dimension: .mass, converter: LinearConverter(coefficient: 0.145939029), symbolPosition: .suffix
+        symbol: "cslug", dimension: .mass, converter: LinearConverter(coefficient: 0.145939029372064), symbolPosition: .suffix
     )
     static let millislug = NamedUnit<MathDimension.mass>(
-        symbol: "mslug", dimension: .mass, converter: LinearConverter(coefficient: 0.0145939029), symbolPosition: .suffix
+        symbol: "mslug", dimension: .mass, converter: LinearConverter(coefficient: 0.0145939029372064), symbolPosition: .suffix
     )
     static let microslug = NamedUnit<MathDimension.mass>(
-        symbol: "uslug", dimension: .mass, converter: LinearConverter(coefficient: 0.0000145939029), symbolPosition: .suffix
+        symbol: "uslug", dimension: .mass, converter: LinearConverter(coefficient: 0.0000145939029372064), symbolPosition: .suffix
     )
     static let nanoslug = NamedUnit<MathDimension.mass>(
-        symbol: "nslug", dimension: .mass, converter: LinearConverter(coefficient: 0.0000000145939029), symbolPosition: .suffix
+        symbol: "nslug", dimension: .mass, converter: LinearConverter(coefficient: 0.00000001459390293720), symbolPosition: .suffix
     )
     static let picoslug = NamedUnit<MathDimension.mass>(
-        symbol: "pslug", dimension: .mass, converter: LinearConverter(coefficient: 0.0000000000145939029), symbolPosition: .suffix
+        symbol: "pslug", dimension: .mass, converter: LinearConverter(coefficient: 0.00000000001459390293), symbolPosition: .suffix
     )
     static let femtoslug = NamedUnit<MathDimension.mass>(
         symbol: "fslug", dimension: .mass, converter: LinearConverter(coefficient: 0.00000000000001459390), symbolPosition: .suffix
@@ -4827,28 +4827,28 @@ public extension Units {
         symbol: "qslug", dimension: .mass, converter: LinearConverter(coefficient: 0.000000000000000000000000000014), symbolPosition: .suffix
     )
     static let yobislug = NamedUnit<MathDimension.mass>(
-        symbol: "Yislug", dimension: .mass, converter: LinearConverter(coefficient: 17642946024758813595169068.5743104), symbolPosition: .suffix
+        symbol: "Yislug", dimension: .mass, converter: LinearConverter(coefficient: 17642946069738591210078807.5000982667264), symbolPosition: .suffix
     )
     static let zebislug = NamedUnit<MathDimension.mass>(
-        symbol: "Zislug", dimension: .mass, converter: LinearConverter(coefficient: 17229439477303528901532.2935296), symbolPosition: .suffix
+        symbol: "Zislug", dimension: .mass, converter: LinearConverter(coefficient: 17229439521229092978592.5854493147136), symbolPosition: .suffix
     )
     static let exbislug = NamedUnit<MathDimension.mass>(
-        symbol: "Eislug", dimension: .mass, converter: LinearConverter(coefficient: 16825624489554227442.9026304), symbolPosition: .suffix
+        symbol: "Eislug", dimension: .mass, converter: LinearConverter(coefficient: 16825624532450286111.9068217278464), symbolPosition: .suffix
     )
     static let pebislug = NamedUnit<MathDimension.mass>(
-        symbol: "Pislug", dimension: .mass, converter: LinearConverter(coefficient: 16431273915580300.2372096), symbolPosition: .suffix
+        symbol: "Pislug", dimension: .mass, converter: LinearConverter(coefficient: 16431273957470982.5311590055936), symbolPosition: .suffix
     )
     static let tebislug = NamedUnit<MathDimension.mass>(
-        symbol: "Tislug", dimension: .mass, converter: LinearConverter(coefficient: 16046165933183.8869504), symbolPosition: .suffix
+        symbol: "Tislug", dimension: .mass, converter: LinearConverter(coefficient: 16046165974092.7563780849664), symbolPosition: .suffix
     )
     static let gibislug = NamedUnit<MathDimension.mass>(
-        symbol: "Gislug", dimension: .mass, converter: LinearConverter(coefficient: 15670083919.1248896), symbolPosition: .suffix
+        symbol: "Gislug", dimension: .mass, converter: LinearConverter(coefficient: 15670083959.0749574004736), symbolPosition: .suffix
     )
     static let mebislug = NamedUnit<MathDimension.mass>(
-        symbol: "Mislug", dimension: .mass, converter: LinearConverter(coefficient: 15302816.3272704), symbolPosition: .suffix
+        symbol: "Mislug", dimension: .mass, converter: LinearConverter(coefficient: 15302816.3662841380864), symbolPosition: .suffix
     )
     static let kibislug = NamedUnit<MathDimension.mass>(
-        symbol: "Kislug", dimension: .mass, converter: LinearConverter(coefficient: 14944.1565696), symbolPosition: .suffix
+        symbol: "Kislug", dimension: .mass, converter: LinearConverter(coefficient: 14944.1566076993536), symbolPosition: .suffix
     )
     static let carat = NamedUnit<MathDimension.mass>(
         symbol: "ct", dimension: .mass, converter: LinearConverter(coefficient: 0.0002), symbolPosition: .suffix
@@ -7749,61 +7749,61 @@ public extension Units {
         symbol: "Kikip", dimension: .force, converter: LinearConverter(coefficient: 4554978.9340267520), symbolPosition: .suffix
     )
     static let tonForce = NamedUnit<MathDimension.force>(
-        symbol: "tnf", dimension: .force, converter: LinearConverter(coefficient: 8896.44323), symbolPosition: .suffix
+        symbol: "tnf", dimension: .force, converter: LinearConverter(coefficient: 8896.443230521), symbolPosition: .suffix
     )
     static let quettatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Qtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000000000000000000000.00000), symbolPosition: .suffix
+        symbol: "Qtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000000000000000000000.000000000), symbolPosition: .suffix
     )
     static let ronnatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Rtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000000000000000000.00000), symbolPosition: .suffix
+        symbol: "Rtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000000000000000000.000000000), symbolPosition: .suffix
     )
     static let yottatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Ytnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000000000000000.00000), symbolPosition: .suffix
+        symbol: "Ytnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000000000000000.000000000), symbolPosition: .suffix
     )
     static let zettatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Ztnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000000000000.00000), symbolPosition: .suffix
+        symbol: "Ztnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000000000000.000000000), symbolPosition: .suffix
     )
     static let exatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Etnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000000000.00000), symbolPosition: .suffix
+        symbol: "Etnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000000000.000000000), symbolPosition: .suffix
     )
     static let petatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Ptnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000000.00000), symbolPosition: .suffix
+        symbol: "Ptnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000000.000000000), symbolPosition: .suffix
     )
     static let teratonForce = NamedUnit<MathDimension.force>(
-        symbol: "Ttnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000000.00000), symbolPosition: .suffix
+        symbol: "Ttnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521000.000000000), symbolPosition: .suffix
     )
     static let gigatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Gtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230000.00000), symbolPosition: .suffix
+        symbol: "Gtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230521.000000000), symbolPosition: .suffix
     )
     static let megatonForce = NamedUnit<MathDimension.force>(
-        symbol: "Mtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230.00000), symbolPosition: .suffix
+        symbol: "Mtnf", dimension: .force, converter: LinearConverter(coefficient: 8896443230.521000000), symbolPosition: .suffix
     )
     static let kilotonForce = NamedUnit<MathDimension.force>(
-        symbol: "ktnf", dimension: .force, converter: LinearConverter(coefficient: 8896443.23000), symbolPosition: .suffix
+        symbol: "ktnf", dimension: .force, converter: LinearConverter(coefficient: 8896443.230521000), symbolPosition: .suffix
     )
     static let hectotonForce = NamedUnit<MathDimension.force>(
-        symbol: "htnf", dimension: .force, converter: LinearConverter(coefficient: 889644.32300), symbolPosition: .suffix
+        symbol: "htnf", dimension: .force, converter: LinearConverter(coefficient: 889644.323052100), symbolPosition: .suffix
     )
     static let decatonForce = NamedUnit<MathDimension.force>(
-        symbol: "datnf", dimension: .force, converter: LinearConverter(coefficient: 88964.43230), symbolPosition: .suffix
+        symbol: "datnf", dimension: .force, converter: LinearConverter(coefficient: 88964.432305210), symbolPosition: .suffix
     )
     static let decitonForce = NamedUnit<MathDimension.force>(
-        symbol: "dtnf", dimension: .force, converter: LinearConverter(coefficient: 889.644323), symbolPosition: .suffix
+        symbol: "dtnf", dimension: .force, converter: LinearConverter(coefficient: 889.6443230521), symbolPosition: .suffix
     )
     static let centitonForce = NamedUnit<MathDimension.force>(
-        symbol: "ctnf", dimension: .force, converter: LinearConverter(coefficient: 88.9644323), symbolPosition: .suffix
+        symbol: "ctnf", dimension: .force, converter: LinearConverter(coefficient: 88.96443230521), symbolPosition: .suffix
     )
     static let millitonForce = NamedUnit<MathDimension.force>(
-        symbol: "mtnf", dimension: .force, converter: LinearConverter(coefficient: 8.89644323), symbolPosition: .suffix
+        symbol: "mtnf", dimension: .force, converter: LinearConverter(coefficient: 8.896443230521), symbolPosition: .suffix
     )
     static let microtonForce = NamedUnit<MathDimension.force>(
-        symbol: "utnf", dimension: .force, converter: LinearConverter(coefficient: 0.00889644323), symbolPosition: .suffix
+        symbol: "utnf", dimension: .force, converter: LinearConverter(coefficient: 0.008896443230521), symbolPosition: .suffix
     )
     static let nanotonForce = NamedUnit<MathDimension.force>(
-        symbol: "ntnf", dimension: .force, converter: LinearConverter(coefficient: 0.00000889644323), symbolPosition: .suffix
+        symbol: "ntnf", dimension: .force, converter: LinearConverter(coefficient: 0.000008896443230521), symbolPosition: .suffix
     )
     static let picotonForce = NamedUnit<MathDimension.force>(
-        symbol: "ptnf", dimension: .force, converter: LinearConverter(coefficient: 0.00000000889644323), symbolPosition: .suffix
+        symbol: "ptnf", dimension: .force, converter: LinearConverter(coefficient: 0.00000000889644323052), symbolPosition: .suffix
     )
     static let femtotonForce = NamedUnit<MathDimension.force>(
         symbol: "ftnf", dimension: .force, converter: LinearConverter(coefficient: 0.00000000000889644323), symbolPosition: .suffix
@@ -7824,28 +7824,28 @@ public extension Units {
         symbol: "qtnf", dimension: .force, converter: LinearConverter(coefficient: 0.000000000000000000000000008896), symbolPosition: .suffix
     )
     static let yobitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Yitnf", dimension: .force, converter: LinearConverter(coefficient: 10755139923482768930275246714.38848), symbolPosition: .suffix
+        symbol: "Yitnf", dimension: .force, converter: LinearConverter(coefficient: 10755139924112619282294468514.410397696), symbolPosition: .suffix
     )
     static let zebitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Zitnf", dimension: .force, converter: LinearConverter(coefficient: 10503066331526141533471920.61952), symbolPosition: .suffix
+        symbol: "Zitnf", dimension: .force, converter: LinearConverter(coefficient: 10503066332141229767865691.908603904), symbolPosition: .suffix
     )
     static let exbitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Eitnf", dimension: .force, converter: LinearConverter(coefficient: 10256900714380997591281.17248), symbolPosition: .suffix
+        symbol: "Eitnf", dimension: .force, converter: LinearConverter(coefficient: 10256900714981669695181.339754496), symbolPosition: .suffix
     )
     static let pebitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Pitnf", dimension: .force, converter: LinearConverter(coefficient: 10016504603887692960.23552), symbolPosition: .suffix
+        symbol: "Pitnf", dimension: .force, converter: LinearConverter(coefficient: 10016504604474286811.700527104), symbolPosition: .suffix
     )
     static let tebitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Titnf", dimension: .force, converter: LinearConverter(coefficient: 9781742777234075.15648), symbolPosition: .suffix
+        symbol: "Titnf", dimension: .force, converter: LinearConverter(coefficient: 9781742777806920.714551296), symbolPosition: .suffix
     )
     static let gibitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Gitnf", dimension: .force, converter: LinearConverter(coefficient: 9552483180892.65152), symbolPosition: .suffix
+        symbol: "Gitnf", dimension: .force, converter: LinearConverter(coefficient: 9552483181452.071010304), symbolPosition: .suffix
     )
     static let mebitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Mitnf", dimension: .force, converter: LinearConverter(coefficient: 9328596856.34048), symbolPosition: .suffix
+        symbol: "Mitnf", dimension: .force, converter: LinearConverter(coefficient: 9328596856.886788096), symbolPosition: .suffix
     )
     static let kibitonForce = NamedUnit<MathDimension.force>(
-        symbol: "Kitnf", dimension: .force, converter: LinearConverter(coefficient: 9109957.86752), symbolPosition: .suffix
+        symbol: "Kitnf", dimension: .force, converter: LinearConverter(coefficient: 9109957.868053504), symbolPosition: .suffix
     )
     static let kilogramForce = NamedUnit<MathDimension.force>(
         symbol: "kgf", dimension: .force, converter: LinearConverter(coefficient: 9.80665), symbolPosition: .suffix

@@ -595,6 +595,108 @@ import Foundation
         #expect(peso.unit == Units.mxn)
     }
 
+    @Test func testWeightIsForce() {
+        // Weight is a force: W = mg. One pound-mass weighs exactly one
+        // pound-force at standard gravity.
+        let pound = Quantity(value: 1, unit: Units.pound)
+        let poundForce = pound.weight.converted(to: Units.poundForce)
+        #expect(pound.unit.dimension == .mass)
+        #expect(poundForce.unit.dimension == .force)
+        #expect(abs(poundForce.value - 1.0) < 1e-12)
+
+        // 150 lbm weigh 150 lbf; the mass reading can't be mixed with force.
+        let person = Quantity(value: 150, unit: Units.pound)
+        #expect(abs(person.weight.converted(to: Units.poundForce).value - 150) < 1e-9)
+
+        // 10 kg weigh roughly 98.07 N under standard gravity.
+        let sack = Quantity(value: 10, unit: Units.kilogram)
+        #expect(abs(sack.weight.converted(to: Units.newton).value - 9.80665 * 10) < 1e-12)
+
+        // weight(on:) accepts a custom gravity, in m/s² or as a quantity.
+        let probe = Quantity(value: 100, unit: Units.kilogram)
+        #expect(abs(probe.weight(on: 1.62).converted(to: Units.newton).value - 162) < 1e-12)
+        #expect(abs(probe.weight(on: Quantity(value: 1, unit: Units.gravity)).converted(to: Units.newton).value - 980.665) < 1e-9)
+
+        // weight(in:) returns the force in a requested force unit.
+        let car = Quantity(value: 1, unit: Units.slug)
+        #expect(abs(car.weight(in: Units.poundForce).value - 32.1740485564) < 1e-6)
+
+        // Explicit pound-mass names a mass; its weight is lbf, never lb.
+        let explicit = Quantity(value: 1, unit: Units.poundMass)
+        #expect(explicit.unit.dimension == .mass)
+        #expect(abs(explicit.weight(in: Units.poundForce).value - 1.0) < 1e-12)
+    }
+
+    @Test func testAvoirdupoisWeightCatalog() {
+        // Every avoirdupois mass unit has a force (weight) reading in the
+        // Weight namespace, derived from W = mg at standard gravity.
+        #expect(Units.Weight.grain.dimension == .force)
+        #expect(Units.Weight.stone.dimension == .force)
+        #expect(Units.Weight.shortTon.dimension == .force)
+        #expect(Units.Weight.longTon.dimension == .force)
+        #expect(Units.Weight.hundredweight.dimension == .force)
+        #expect(Units.Weight.longHundredweight.dimension == .force)
+
+        #expect(Units.Weight.grain == Units.grainForce)
+        #expect(Units.Weight.stone == Units.stoneForce)
+        #expect(Units.Weight.shortTon == Units.shortTonForce)
+        #expect(Units.Weight.longTon == Units.longTonForce)
+        #expect(Units.Weight.hundredweight == Units.hundredweightForce)
+        #expect(Units.Weight.longHundredweight == Units.longHundredweightForce)
+
+        // Multiples of pound-force are exact.
+        #expect(abs(Quantity(value: 1, unit: Units.grainForce).converted(to: Units.poundForce).value - 1.0 / 7000.0) < 1e-15)
+        #expect(abs(Quantity(value: 1, unit: Units.stoneForce).converted(to: Units.poundForce).value - 14.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.hundredweightForce).converted(to: Units.poundForce).value - 100.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.longHundredweightForce).converted(to: Units.poundForce).value - 112.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.shortTonForce).converted(to: Units.poundForce).value - 2000.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.longTonForce).converted(to: Units.poundForce).value - 2240.0) < 1e-12)
+
+        // The short ton-force and the long-standing ton-force agree.
+        #expect(Quantity(value: 1, unit: Units.shortTonForce).isEquivalent(to: Quantity(value: 1, unit: Units.tonForce), tolerance: 1e-15))
+        #expect(Units.tonForce.symbol == "tnf")
+
+        // The mass counterparts stay in Mass and convert as masses.
+        #expect(Units.Mass.stone.dimension == .mass)
+        #expect(abs(Quantity(value: 1, unit: Units.stone).converted(to: Units.pound).value - 14.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.longTon).converted(to: Units.shortTon).value - 1.12) < 1e-12)
+    }
+
+    @Test func testExplicitMassAliases() {
+        // poundMass/ounceMass are unmistakably mass units.
+        #expect(Units.poundMass.symbol == "lbm")
+        #expect(Units.poundMass.dimension == .mass)
+        #expect(Units.ounceMass.symbol == "ozm")
+        #expect(Units.ounceMass.dimension == .mass)
+        #expect(Units.Mass.poundMass == Units.poundMass)
+        #expect(Units.Mass.ounceMass == Units.ounceMass)
+
+        // 16 ounces of mass are exactly one pound of mass.
+        #expect(abs(Quantity(value: 16, unit: Units.ounceMass).converted(to: Units.poundMass).value - 1.0) < 1e-12)
+        #expect(Quantity(value: 1, unit: Units.pound).isEquivalent(to: Quantity(value: 1, unit: Units.poundMass), tolerance: 1e-15))
+
+        // Mass pickers surface the aliases; force pickers only see force units.
+        #expect(Units.units(for: .mass).contains { $0.symbol == "lbm" })
+        #expect(Units.units(for: .mass).contains { $0.symbol == "ozm" })
+        #expect(!Units.units(for: .force).contains { $0.symbol == "lbm" })
+        #expect(!Units.units(for: .force).contains { $0.symbol == "lb" })
+        #expect(Units.units(for: .force).contains { $0.symbol == "stf" })
+        #expect(Units.units(for: .force).contains { $0.symbol == "ltnf" })
+        #expect(Units.units(for: .force).contains { $0.symbol == "cwtf" })
+        #expect(Units.units(for: .force).contains { $0.symbol == "lcwtf" })
+        #expect(Units.units(for: .force).contains { $0.symbol == "grf" })
+
+        // Leading-dot lookup reaches the new units in both styles.
+        let lifted = Quantity(value: 1, unit: .weight.stone)
+        #expect(lifted.unit == Units.stoneForce)
+        let bagged = Quantity(value: 1, unit: .mass.poundMass)
+        #expect(bagged.unit == Units.poundMass)
+        let barePoundMass = Quantity(value: 1, unit: .poundMass)
+        #expect(barePoundMass.unit == Units.poundMass)
+        let bareOunceMass = Quantity(value: 1, unit: .ounceMass)
+        #expect(bareOunceMass.unit == Units.ounceMass)
+    }
+
     @Test func testContextDependentDram() {
         // The same word means different physical things per dimension.
         let massDram = Quantity(value: 1, unit: Units.Mass.dram)

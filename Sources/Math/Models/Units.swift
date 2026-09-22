@@ -23,8 +23,11 @@
 /// same groups with leading-dot syntax: `Quantity(value: 1, unit: .volume.cup)`.
 ///
 /// The namespaces keep mass and weight explicitly separate: `Units.Mass.ounce`
-/// is the ounce of mass, while `Units.Weight.ounce` is the ounce-force. See
-/// <doc:UnitsByDimension>.
+/// is the ounce of mass, while `Units.Weight.ounce` is the ounce-force. Every
+/// avoirdupois mass unit has a matching force reading in ``Units/Weight``
+/// (`pound`, `ounce`, `stone`, `shortTon`, `longTon`, `hundredweight`, ...),
+/// and any mass quantity's weight can be computed as a force with
+/// ``Quantity/weight`` — see <doc:UnitsByDimension>.
 ///
 /// Use a unit to create a ``Quantity``:
 ///
@@ -376,11 +379,102 @@ public struct Units {
         symbolPosition: .suffix
     )
 
+    // MARK: - Weight (Force) Readings of the Avoirdupois Mass Family
+
+    // Weight is a force: W = mg. Each unit below is the standard-gravity weight
+    // of its mass counterpart in `Units.Mass`, so `stoneForce` is the weight of
+    // one stone (14 lbf), `hundredweightForce` of one short hundredweight
+    // (100 lbf), and `longTonForce` of one long ton (2240 lbf). `Units.Weight`
+    // exposes them so every common "weight" name has a force reading that is
+    // genuinely in the force dimension instead of only existing as a mass.
+
+    /// The force exerted by one avoirdupois grain at standard gravity, i.e.
+    /// 1/7000 of a pound-force. The "weight" reading of `grain`.
+    public static let grainForce = NamedUnit<MathDimension.force>(
+        symbol: "grf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.0006354602307515),
+        symbolPosition: .suffix
+    )
+
+    /// The force exerted by one stone at standard gravity — 14 pound-force.
+    /// The "weight" reading of `stone`.
+    public static let stoneForce = NamedUnit<MathDimension.force>(
+        symbol: "stf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 62.275102613647),
+        symbolPosition: .suffix
+    )
+
+    /// The US short ton-force (2000 pound-force). Identical to ``Units/tonForce``
+    /// and exposed under the mass name `shortTon` for symmetry.
+    public static let shortTonForce = NamedUnit<MathDimension.force>(
+        symbol: "stnf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 8896.443230521),
+        symbolPosition: .suffix
+    )
+
+    /// The long (imperial) ton-force (2240 pound-force). The "weight" reading of
+    /// ``Units/longTon``.
+    public static let longTonForce = NamedUnit<MathDimension.force>(
+        symbol: "ltnf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 9964.01641818352),
+        symbolPosition: .suffix
+    )
+
+    /// The short (US) hundredweight-force — 100 pound-force. The "weight"
+    /// reading of ``Units/hundredweight``.
+    public static let hundredweightForce = NamedUnit<MathDimension.force>(
+        symbol: "cwtf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 444.82216152605),
+        symbolPosition: .suffix
+    )
+
+    /// The long (imperial) hundredweight-force — 112 pound-force. The "weight"
+    /// reading of ``Units/longHundredweight``.
+    public static let longHundredweightForce = NamedUnit<MathDimension.force>(
+        symbol: "lcwtf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 498.200820909176),
+        symbolPosition: .suffix
+    )
+
     /// The US fluid dram, one eighth of a US fluid ounce (~3.7 mL).
     public static let fluidDram = NamedUnit<MathDimension.volume>(
         symbol: "fl_dr",
         dimension: .volume,
         converter: LinearConverter(coefficient: 3.6966911953125e-6),
+        symbolPosition: .suffix
+    )
+
+    // MARK: - Explicit Mass Aliases
+
+    // The avoirdupois pound and ounce really are units of mass (1 lb ≡ exactly
+    // 0.45359237 kg), so the plain `Units.pound`/`Units.ounce` stay mass and
+    // `Units.Weight.pound`/`Units.Weight.ounce` are pound-force/ounce-force.
+    // These aliases make the mass reading unmistakable in code: `poundMass` is
+    // `lbm` (pound-mass), distinct from `lbf` (pound-force).
+
+    /// The avoirdupois pound-mass (`lbm`), exactly 0.45359237 kg. Same
+    /// conversion as ``Units/pound``, with a name that cannot be confused with
+    /// ``Units/poundForce``.
+    public static let poundMass = NamedUnit<MathDimension.mass>(
+        symbol: "lbm",
+        dimension: .mass,
+        converter: LinearConverter(coefficient: 0.45359237),
+        symbolPosition: .suffix
+    )
+
+    /// The avoirdupois ounce-mass (`ozm`), exactly 1/16 of a pound-mass. Same
+    /// conversion as ``Units/ounce``, with a name that cannot be confused with
+    /// ``Units/ounceForce``.
+    public static let ounceMass = NamedUnit<MathDimension.mass>(
+        symbol: "ozm",
+        dimension: .mass,
+        converter: LinearConverter(coefficient: 0.028349523125),
         symbolPosition: .suffix
     )
 
@@ -598,7 +692,7 @@ public extension Units {
     public static func units(for dimension: PhysicalDimension) -> [any MathUnit] {
         if dimension == .length { return Units.Length.all }
         if dimension == .time { return Units.Time.all }
-        if dimension == .mass { return Units.Mass.all }
+        if dimension == .mass { return Units.Mass.all + Units.Mass.extras }
         if dimension == .area { return Units.Area.all }
         if dimension == .data { return Units.Data.all }
         if dimension == .energy { return Units.Energy.all + Units.Energy.extras }
@@ -656,17 +750,36 @@ public extension Units.Energy {
     static let extras: [any MathUnit] = [celsius, fahrenheit, planckTemperature]
 }
 
-/// Colloquial weight names. These are force units, not mass: `ounce` here is
-/// ounce-force and `pound` is pound-force. For the mass units use
-/// `Units.Weight.ounce`'s sibling namespace `Units.Mass.ounce` and
-/// `Units.Mass.pound`.
+/// Colloquial weight names. Every one is a force unit, not mass: `ounce` here is
+/// ounce-force, `pound` is pound-force, `stone` is stone-force, and so on. For
+/// the mass units use the sibling namespace `Units.Mass` — `Units.Mass.ounce`,
+/// `Units.Mass.pound`, `Units.Mass.stone`, … The weight of any mass is `W = mg`
+/// (see ``Quantity/weight``).
 public extension Units.Weight {
     static let ounce = Units.ounceForce
     static let pound = Units.poundForce
     static let dram = Units.dramForce
+    static let grain = Units.grainForce
+    static let stone = Units.stoneForce
+    static let shortTon = Units.shortTonForce
+    static let longTon = Units.longTonForce
+    static let hundredweight = Units.hundredweightForce
+    static let longHundredweight = Units.longHundredweightForce
 
     /// The colloquial weight-force units not represented in ``Units/Weight/all``.
-    static let extras: [any MathUnit] = [dram]
+    static let extras: [any MathUnit] = [
+        dram, grain, stone, shortTon, longTon, hundredweight, longHundredweight
+    ]
+}
+
+/// Explicit mass aliases for the pounds and ounces that share a name with their
+/// force readings. `poundMass` is `lbm`, `ounceMass` is `ozm`.
+public extension Units.Mass {
+    static let poundMass = Units.poundMass
+    static let ounceMass = Units.ounceMass
+
+    /// The explicit mass aliases not represented in ``Units/Mass/all``.
+    static let extras: [any MathUnit] = [poundMass, ounceMass]
 }
 
 /// The volume reading of dram. `Units.Volume.dram` (and `.fluidDram`) is the US
@@ -802,6 +915,13 @@ public extension MathUnit where Self == Units.Currency {
 public extension MathUnit where Self == Units.Dimensionless {
     static var bel: NamedUnit<MathDimension.dimensionless> { Units.bel }
     static var decibel: NamedUnit<MathDimension.dimensionless> { Units.decibel }
+}
+
+// MARK: - Mass Alias Leading-Dot Lookup
+
+public extension MathUnit where Self == Units.Mass {
+    static var poundMass: NamedUnit<MathDimension.mass> { Units.poundMass }
+    static var ounceMass: NamedUnit<MathDimension.mass> { Units.ounceMass }
 }
 
 public extension MathUnit where Self == Units.Power {

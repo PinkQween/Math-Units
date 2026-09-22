@@ -391,3 +391,67 @@ public extension Quantity where U.Dimension == MathDimension.energy {
     }
 }
 
+// MARK: - Weight (W = mg)
+public extension Quantity where U.Dimension == MathDimension.mass {
+    /// The weight of this mass: the force gravity exerts on it, `W = mg`.
+    ///
+    /// Weight is a **force**, not a mass. This property computes
+    /// `W = m × g` for this quantity of mass at standard gravity
+    /// (`g = 9.80665 m/s²`) and returns the result as a force quantity in
+    /// newtons:
+    ///
+    /// ```swift
+    /// let sack = Quantity(value: 10, unit: Units.kilogram)
+    /// sack.weight.converted(to: Units.newton).value // ≈ 98.0665
+    ///
+    /// // One pound-mass weighs exactly one pound-force on Earth:
+    /// let pound = Quantity(value: 1, unit: Units.poundMass)
+    /// pound.weight.converted(to: Units.poundForce).value // 1.0
+    /// ```
+    ///
+    /// Use ``weight(on:)`` for a non-standard gravitational field and
+    /// ``weight(in:)`` to express the result in a specific force unit (such as
+    /// ``Units/poundForce``).
+    ///
+    /// The base unit of this force quantity is the newton (kg·m/s²).
+    var weight: Quantity<NamedUnit<MathDimension.force>> {
+        weight(on: 9.80665)
+    }
+
+    /// The weight of this mass under a gravitational acceleration, `W = mg`.
+    ///
+    /// - Parameter g: The local gravitational acceleration in meters per
+    ///   second squared. Defaults to the standard gravity `9.80665` via the
+    ///   ``Quantity/weight`` property.
+    /// - Returns: This quantity of mass converted to the force it weighs.
+    ///
+    /// ```swift
+    /// let probe = Quantity(value: 100, unit: Units.kilogram)
+    /// probe.weight(on: 1.62).converted(to: Units.newton).value // ≈ 162 (Moon)
+    /// ```
+    func weight(on g: Double) -> Quantity<NamedUnit<MathDimension.force>> {
+        weight(on: Quantity<NamedUnit<MathDimension.acceleration>>(value: g, unit: Units.meterPerSecondSquared))
+    }
+
+    /// The weight of this mass under a given gravitational acceleration
+    /// quantity, `W = mg`.
+    ///
+    /// - Parameter g: A gravitational acceleration quantity such as
+    ///   ``Units/gravity`` (standard gravity) or ``Units/meterPerSecondSquared``.
+    /// - Returns: This quantity of mass converted to the force it weighs.
+    func weight(on g: Quantity<NamedUnit<MathDimension.acceleration>>) -> Quantity<NamedUnit<MathDimension.force>> {
+        let massInKilograms = unit.converter.convertToBase(value)
+        let acceleration = g.unit.converter.convertToBase(g.value)
+        return Quantity<NamedUnit<MathDimension.force>>(value: massInKilograms * acceleration, unit: Units.newton)
+    }
+
+    /// The weight of this mass, expressed in a given force unit.
+    ///
+    /// - Parameter unit: A force unit to express the result in, such as
+    ///   ``Units/poundForce`` or ``Units/newton``.
+    /// - Returns: This quantity's weight at standard gravity, converted to `unit`.
+    func weight(in unit: NamedUnit<MathDimension.force>) -> Quantity<NamedUnit<MathDimension.force>> {
+        weight.converted(to: unit)
+    }
+}
+
