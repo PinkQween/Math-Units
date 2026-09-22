@@ -637,6 +637,7 @@ import Foundation
         #expect(Units.Weight.hundredweight.dimension == .force)
         #expect(Units.Weight.longHundredweight.dimension == .force)
 
+        #expect(Units.Weight.gram == Units.gramForce)
         #expect(Units.Weight.grain == Units.grainForce)
         #expect(Units.Weight.stone == Units.stoneForce)
         #expect(Units.Weight.shortTon == Units.shortTonForce)
@@ -645,6 +646,7 @@ import Foundation
         #expect(Units.Weight.longHundredweight == Units.longHundredweightForce)
 
         // Multiples of pound-force are exact.
+        #expect(abs(Quantity(value: 1, unit: Units.gramForce).converted(to: Units.newton).value - 0.00980665) < 1e-15)
         #expect(abs(Quantity(value: 1, unit: Units.grainForce).converted(to: Units.poundForce).value - 1.0 / 7000.0) < 1e-15)
         #expect(abs(Quantity(value: 1, unit: Units.stoneForce).converted(to: Units.poundForce).value - 14.0) < 1e-12)
         #expect(abs(Quantity(value: 1, unit: Units.hundredweightForce).converted(to: Units.poundForce).value - 100.0) < 1e-12)
@@ -660,6 +662,13 @@ import Foundation
         #expect(Units.Mass.stone.dimension == .mass)
         #expect(abs(Quantity(value: 1, unit: Units.stone).converted(to: Units.pound).value - 14.0) < 1e-12)
         #expect(abs(Quantity(value: 1, unit: Units.longTon).converted(to: Units.shortTon).value - 1.12) < 1e-12)
+
+        // One gram of mass weighs exactly one gram-force at standard gravity.
+        let gram = Quantity(value: 1, unit: Units.gram)
+        #expect(gram.unit.dimension == .mass)
+        #expect(abs(gram.weight(in: Units.gramForce).value - 1.0) < 1e-12)
+        // The gram-force symbol is "gf" and the mass gram is "g".
+        #expect(Units.gramForce.symbol == "gf")
     }
 
     @Test func testExplicitMassAliases() {

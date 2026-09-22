@@ -388,6 +388,15 @@ public struct Units {
     // exposes them so every common "weight" name has a force reading that is
     // genuinely in the force dimension instead of only existing as a mass.
 
+    /// The force exerted by one gram at standard gravity — `0.001 kg × 9.80665 m/s²`
+    /// = 9.80665 millinewton. The "weight" reading of `gram`.
+    public static let gramForce = NamedUnit<MathDimension.force>(
+        symbol: "gf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.00980665),
+        symbolPosition: .suffix
+    )
+
     /// The force exerted by one avoirdupois grain at standard gravity, i.e.
     /// 1/7000 of a pound-force. The "weight" reading of `grain`.
     public static let grainForce = NamedUnit<MathDimension.force>(
@@ -756,6 +765,7 @@ public extension Units.Energy {
 /// `Units.Mass.pound`, `Units.Mass.stone`, … The weight of any mass is `W = mg`
 /// (see ``Quantity/weight``).
 public extension Units.Weight {
+    static let gram = Units.gramForce
     static let ounce = Units.ounceForce
     static let pound = Units.poundForce
     static let dram = Units.dramForce
@@ -768,7 +778,7 @@ public extension Units.Weight {
 
     /// The colloquial weight-force units not represented in ``Units/Weight/all``.
     static let extras: [any MathUnit] = [
-        dram, grain, stone, shortTon, longTon, hundredweight, longHundredweight
+        gram, dram, grain, stone, shortTon, longTon, hundredweight, longHundredweight
     ]
 }
 

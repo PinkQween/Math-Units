@@ -82,16 +82,17 @@ explicit so the two can never be mixed up.
   `Units.Weight.pound` is the pound-force (symbol `lbf`).
 
 Every avoirdupois mass unit has a matching weight (force) reading in
-``Units/Weight``: `grain`, `ounce`, `pound`, `dram`, `stone`, `shortTon`,
-`longTon`, `hundredweight`, and `longHundredweight` there are all force units
-(`grf`, `ozf`, `lbf`, `dramf`, `stf`, `stnf`, `ltnf`, `cwtf`, `lcwtf`), each
-equal to the standard-gravity weight of its mass counterpart — `W = mg`. The
-mass readings themselves stay in ``Units/Mass``, where `slug` is the canonical
-imperial unit of mass (1 slug ≈ 32.17 lbm).
+``Units/Weight``: `gram`, `grain`, `ounce`, `pound`, `dram`, `stone`,
+`shortTon`, `longTon`, `hundredweight`, and `longHundredweight` there are all
+force units (`gf`, `grf`, `ozf`, `lbf`, `dramf`, `stf`, `stnf`, `ltnf`,
+`cwtf`, `lcwtf`), each equal to the standard-gravity weight of its mass
+counterpart — `W = mg`. The mass readings themselves stay in ``Units/Mass``,
+where `slug` is the canonical imperial unit of mass (1 slug ≈ 32.17 lbm).
 
 ```swift
 let force = Quantity(value: 1, unit: .weight.stone) // 1 stf = 14 lbf
 let mass  = Quantity(value: 1, unit: .mass.stone)   // 1 st  = 14 lbm
+let gramF = Quantity(value: 1, unit: .weight.gram)  // 1 gf   = 9.80665 mN
 ```
 
 Some words mean different physical things in different contexts. Beyond
