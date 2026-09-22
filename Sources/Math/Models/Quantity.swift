@@ -56,6 +56,28 @@ public struct Quantity<U: MathUnit>: CustomStringConvertible {
     public init(_ value: Double, _ unit: U) {
         self.init(value: value, unit: unit)
     }
+
+    /// A quantity of nothing: value `0` in the base catalog unit of `U`'s
+    /// dimension.
+    ///
+    /// Because `Quantity` is generic, `.zero` is a computed property that
+    /// resolves to the dimension asked for by the type, so arithmetic still
+    /// checks dimensions at compile time:
+    ///
+    /// ```swift
+    /// let start: Quantity<NamedUnit<MathDimension.length>> = .zero
+    /// let total = start + Quantity(value: 5, unit: Units.meter)  // 5 m
+    /// ```
+    public static var zero: Quantity<U> {
+        let units = Units.units(for: U.Dimension.dimension)
+        guard let unit = units.first(where: { $0 is U }) as? U
+        else {
+            preconditionFailure(
+                "Cannot create Quantity.zero for a unit type with no catalog entry: \(U.self)"
+            )
+        }
+        return Quantity(value: 0, unit: unit)
+    }
     
     /// Converts this quantity to another unit of the same dimension.
     ///

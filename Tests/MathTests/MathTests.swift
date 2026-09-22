@@ -673,6 +673,24 @@ import Foundation
         #expect(rope.simplified().isEquivalent(to: rope, tolerance: 1e-9))
     }
 
+    @Test func testQuantityZero() {
+        // Quantity.zero is a quantity of nothing in the catalog base unit of
+        // the dimension fixed by the generic type.
+        let start: Quantity<NamedUnit<MathDimension.length>> = .zero
+        #expect(start.value == 0)
+        #expect(start.unit.dimension == .length)
+
+        let total = start + Quantity(value: 5, unit: Units.meter)
+        #expect(total.unit == Units.meter)
+        #expect(abs(total.value - 5.0) < 1e-12)
+
+        // Zero arithmetic behaves as expected in any dimension.
+        let nothing: Quantity<NamedUnit<MathDimension.force>> = .zero
+        let lifted = nothing + Quantity(value: 3, unit: Units.newton)
+        #expect(lifted.unit == Units.newton)
+        #expect(abs(lifted.value - 3.0) < 1e-12)
+    }
+
     @Test func testAvoirdupoisWeightCatalog() {
         // Every avoirdupois mass unit has a force (weight) reading in the
         // Weight namespace, derived from W = mg at standard gravity.
