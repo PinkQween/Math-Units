@@ -669,6 +669,25 @@ import Foundation
         #expect(abs(gram.weight(in: Units.gramForce).value - 1.0) < 1e-12)
         // The gram-force symbol is "gf" and the mass gram is "g".
         #expect(Units.gramForce.symbol == "gf")
+
+        // The troy and jewelry weight units also read as forces: every common
+        // name in Units.Weight is MathDimension.force.
+        for unit in Units.Weight.extras {
+            #expect(unit.dimension == .force)
+        }
+        #expect(Units.Weight.carat == Units.caratForce)
+        #expect(Units.Weight.pennyweight == Units.pennyweightForce)
+        #expect(Units.Weight.troyOunce == Units.troyOunceForce)
+        #expect(Units.Weight.troyPound == Units.troyPoundForce)
+        #expect(Units.Weight.troyDram == Units.troyDramForce)
+
+        // Force readings equal their mass counterparts' standard-gravity weight.
+        #expect(abs(Quantity(value: 1, unit: Units.troyPound).weight(in: Units.troyPoundForce).value - 1.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.carat).weight(in: Units.caratForce).value - 1.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.pennyweight).weight(in: Units.pennyweightForce).value - 1.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.troyOunce).weight(in: Units.troyOunceForce).value - 1.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.troyDram).weight(in: Units.troyDramForce).value - 1.0) < 1e-12)
+        #expect(abs(Quantity(value: 1, unit: Units.troyPound).weight(in: Units.troyPoundForce).value - 1.0) < 1e-12)
     }
 
     @Test func testExplicitMassAliases() {

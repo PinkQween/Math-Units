@@ -86,13 +86,17 @@ Every avoirdupois mass unit has a matching weight (force) reading in
 `shortTon`, `longTon`, `hundredweight`, and `longHundredweight` there are all
 force units (`gf`, `grf`, `ozf`, `lbf`, `dramf`, `stf`, `stnf`, `ltnf`,
 `cwtf`, `lcwtf`), each equal to the standard-gravity weight of its mass
-counterpart — `W = mg`. The mass readings themselves stay in ``Units/Mass``,
-where `slug` is the canonical imperial unit of mass (1 slug ≈ 32.17 lbm).
+counterpart — `W = mg`. The troy and jewelry systems get the same treatment:
+`troyOunce`, `troyPound`, `troyDram`, `pennyweight`, and `carat` also resolve
+as forces (`ozf_t`, `lbf_t`, `drf_t`, `dwtf`, `ctf`). The mass readings
+themselves stay in ``Units/Mass``, where `slug` is the canonical imperial unit
+of mass (1 slug ≈ 32.17 lbm).
 
 ```swift
 let force = Quantity(value: 1, unit: .weight.stone) // 1 stf = 14 lbf
 let mass  = Quantity(value: 1, unit: .mass.stone)   // 1 st  = 14 lbm
 let gramF = Quantity(value: 1, unit: .weight.gram)  // 1 gf   = 9.80665 mN
+let troyF = Quantity(value: 1, unit: .weight.pennyweight) // 1 dwtf
 ```
 
 Some words mean different physical things in different contexts. Beyond

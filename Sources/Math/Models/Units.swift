@@ -451,6 +451,53 @@ public struct Units {
         symbolPosition: .suffix
     )
 
+    // MARK: - Weight (Force) Readings of the Troy and Jewelry Weight Families
+
+    /// The force exerted by one troy ounce (31.1034768 g) at standard gravity.
+    /// The "weight" reading of ``Units/troyOunce``.
+    public static let troyOunceForce = NamedUnit<MathDimension.force>(
+        symbol: "ozf_t",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.305020910760720),
+        symbolPosition: .suffix
+    )
+
+    /// The force exerted by one troy pound (12 troy ounces) at standard gravity.
+    /// The "weight" reading of ``Units/troyPound``.
+    public static let troyPoundForce = NamedUnit<MathDimension.force>(
+        symbol: "lbf_t",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 3.660250929128640),
+        symbolPosition: .suffix
+    )
+
+    /// The force exerted by one troy dram at standard gravity. The "weight"
+    /// reading of ``Units/troyDram``.
+    public static let troyDramForce = NamedUnit<MathDimension.force>(
+        symbol: "drf_t",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.038127613845090),
+        symbolPosition: .suffix
+    )
+
+    /// The force exerted by one pennyweight (24 troy grains) at standard
+    /// gravity. The "weight" reading of ``Units/pennyweight``.
+    public static let pennyweightForce = NamedUnit<MathDimension.force>(
+        symbol: "dwtf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.0152510455380360),
+        symbolPosition: .suffix
+    )
+
+    /// The force exerted by one carat (200 milligrams) at standard gravity. The
+    /// "weight" reading of ``Units/carat``.
+    public static let caratForce = NamedUnit<MathDimension.force>(
+        symbol: "ctf",
+        dimension: .force,
+        converter: LinearConverter(coefficient: 0.00196133),
+        symbolPosition: .suffix
+    )
+
     /// The US fluid dram, one eighth of a US fluid ounce (~3.7 mL).
     public static let fluidDram = NamedUnit<MathDimension.volume>(
         symbol: "fl_dr",
@@ -775,10 +822,16 @@ public extension Units.Weight {
     static let longTon = Units.longTonForce
     static let hundredweight = Units.hundredweightForce
     static let longHundredweight = Units.longHundredweightForce
+    static let troyOunce = Units.troyOunceForce
+    static let troyPound = Units.troyPoundForce
+    static let troyDram = Units.troyDramForce
+    static let pennyweight = Units.pennyweightForce
+    static let carat = Units.caratForce
 
     /// The colloquial weight-force units not represented in ``Units/Weight/all``.
     static let extras: [any MathUnit] = [
-        gram, dram, grain, stone, shortTon, longTon, hundredweight, longHundredweight
+        gram, dram, grain, stone, shortTon, longTon, hundredweight, longHundredweight,
+        troyOunce, troyPound, troyDram, pennyweight, carat
     ]
 }
 
