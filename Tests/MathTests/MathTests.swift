@@ -627,6 +627,52 @@ import Foundation
         #expect(abs(explicit.weight(in: Units.poundForce).value - 1.0) < 1e-12)
     }
 
+    @Test func testSimplifiedPicksCleanestReading() {
+        // Whole-number readings are preferred, and among a positive amount the
+        // smallest positive whole number wins.
+        let rope = Quantity(value: 1000, unit: Units.meter)
+        #expect(rope.simplified().unit == Units.kilometer)
+        #expect(abs(rope.simplified().value - 1.0) < 1e-12)
+
+        let ride = Quantity(value: 3600, unit: Units.second)
+        #expect(ride.simplified().unit == Units.hour)
+        #expect(abs(ride.simplified().value - 1.0) < 1e-12)
+
+        // Positive whole numbers prefer the smallest: 2000 N → 2 kN (not
+        // 2000 N, not 0.002 MN).
+        let thrust = Quantity(value: 2000, unit: Units.newton)
+        #expect(thrust.simplified().unit == Units.kilonewton)
+        #expect(abs(thrust.simplified().value - 2.0) < 1e-12)
+
+        // A positive whole amount that is already clean and small stays put.
+        let tidy = Quantity(value: 3, unit: Units.poundForce)
+        #expect(tidy.simplified().unit == Units.poundForce)
+        #expect(abs(tidy.simplified().value - 3.0) < 1e-12)
+
+        // A whole reading always beats a fractional one; among whole readings
+        // the smallest magnitude wins. 42.195 km reads as a whole number in
+        // meters (42195), so meter is preferred over the 26.2-mile fraction.
+        let cake = Quantity(value: 42.195, unit: Units.kilometer)
+        #expect(cake.simplified().unit == Units.meter)
+        #expect(abs(cake.simplified().value - 42195.0) < 1e-9)
+
+        // Accuracy never changes: the value is converted exactly, the unit
+        // picker only restates it in another catalog unit.
+        let precise = Quantity(value: 9.80665, unit: Units.newton)
+        let clean = precise.simplified()
+        #expect(clean.unit == Units.kilogramForce)
+        // Re-converting back to the base unit must return the input.
+        #expect(abs(clean.converted(to: Units.newton).value - 9.80665) < 1e-12)
+
+        // Zero keeps the base unit.
+        let nothing = Quantity(value: 0, unit: Units.meter)
+        #expect(nothing.simplified().unit.dimension == .length)
+        #expect(abs(nothing.simplified().value) < 1e-12)
+
+        // The naïve multiple (1000 m) is exact; so is the clean 1 km.
+        #expect(rope.simplified().isEquivalent(to: rope, tolerance: 1e-9))
+    }
+
     @Test func testAvoirdupoisWeightCatalog() {
         // Every avoirdupois mass unit has a force (weight) reading in the
         // Weight namespace, derived from W = mg at standard gravity.

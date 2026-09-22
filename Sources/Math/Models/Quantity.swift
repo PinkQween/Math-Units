@@ -88,7 +88,147 @@ public struct Quantity<U: MathUnit>: CustomStringConvertible {
         
         preconditionFailure("Cannot convert quantity to a unit of a different dimension. Source dimension: \(self.unit.dimension), Target dimension: \(targetUnit.dimension)")
     }
-    
+
+    /// Returns this quantity restated in the unit that gives the *cleanest*
+    /// reading, chosen automatically from the dimension's catalog.
+    ///
+    /// The picker scans ``Units/units(for:)`` for the quantity's dimension —
+    /// including the SI-prefixed metric siblings of every unit, so `1000 m`
+    /// can become `1 km` — and prefers, in order:
+    ///
+    /// 1. A reading that is a **whole number**, and when the amount is positive
+    ///    the **smallest** positive whole number (e.g. `1 km` rather than
+    ///    `1000 m` or `0.001 Mm`). Any whole reading beats every fractional one,
+    ///    so a huge unit like the parsec can never steal the win.
+    /// 2. Otherwise the reading **closest to a whole number** (fewest decimal
+    ///    places), breaking ties by smallest magnitude.
+    ///
+    /// The value is never rounded or truncated — only the *unit* is chosen, and
+    /// the conversion stays exact. A zero quantity returns the base unit, and a
+    /// quantity whose dimension has no catalog lookup converts to a unit with
+    /// the same symbol and coefficient as its current one.
+    ///
+    /// ```swift
+    /// let rope = Quantity(value: 1000, unit: Units.meter)
+    /// rope.simplified()                   // 1 km
+    ///
+    /// let thrust = Quantity(value: 2000, unit: Units.poundForce)
+    /// thrust.simplified()                 // 1 shortTonForce
+    ///
+    /// let ride = Quantity(value: 3600, unit: Units.second)
+    /// ride.simplified()                   // 1 hour
+    /// ```
+    public func simplified() -> Quantity<NamedUnit<U.Dimension>> {
+        if value == 0 {
+            let base = baseNamedUnit()
+            return Quantity<NamedUnit<U.Dimension>>(value: 0, unit: base.unit)
+        }
+
+        let tolerance = 1e-9
+        let baseValue = unit.converter.convertToBase(value)
+        let candidates = simplifiedCandidates()
+
+        // Whole-number readings are absolutely preferred; among them pick the
+        // smallest magnitude (smallest positive whole for a positive amount).
+        var whole: (unit: NamedUnit<U.Dimension>, reading: Double)?
+        var wholeMagnitude = Double.infinity
+
+        // Only when NO unit reads as a whole number does the fallback run:
+        // closest to a whole number (fewest decimals), then smallest magnitude.
+        var fractional: (unit: NamedUnit<U.Dimension>, reading: Double)?
+        var fractionalDistance = Double.infinity
+        var fractionalMagnitude = Double.infinity
+
+        for candidate in candidates {
+            let reading = candidate.converter.convertFromBase(baseValue)
+            let rounded = reading.rounded()
+            let distance = abs(reading - rounded)
+            let isWhole = distance <= tolerance * max(1.0, abs(rounded))
+            let magnitude = abs(reading)
+
+            if isWhole && magnitude >= 1 {
+                if magnitude < wholeMagnitude { // prefer smallest |n|
+                    wholeMagnitude = magnitude
+                    whole = (candidate, reading)
+                }
+            } else if distance < fractionalDistance - tolerance
+                || (abs(distance - fractionalDistance) <= tolerance && magnitude < fractionalMagnitude) {
+                fractionalDistance = distance
+                fractionalMagnitude = magnitude
+                fractional = (candidate, reading)
+            }
+        }
+
+        if let whole {
+            return Quantity<NamedUnit<U.Dimension>>(value: whole.reading, unit: whole.unit)
+        }
+        if let fractional {
+            return Quantity<NamedUnit<U.Dimension>>(value: fractional.reading, unit: fractional.unit)
+        }
+        let base = baseNamedUnit()
+        return Quantity<NamedUnit<U.Dimension>>(value: base.reading, unit: base.unit)
+    }
+
+    /// The catalog units for this dimension plus every SI-prefixed metric
+    /// sibling of the base catalog units (kilo-, milli-, …). The synthesized
+    /// units use the same symbols and coefficients as the generated
+    /// ``Units.kilometer``-style statics, so they compare equal to them.
+    private func simplifiedCandidates() -> [NamedUnit<U.Dimension>] {
+        // Mirror the metric prefixes and symbols used by the unit generator
+        // (see Sources/Math/units.sh: si_prefixes).
+        let prefixes: [(symbol: String, value: Double)] = [
+            ("Q", 1e30), ("R", 1e27), ("Y", 1e24), ("Z", 1e21), ("E", 1e18),
+            ("P", 1e15), ("T", 1e12), ("G", 1e9), ("M", 1e6), ("k", 1e3),
+            ("h", 1e2), ("da", 1e1), ("d", 1e-1), ("c", 1e-2), ("m", 1e-3),
+            ("u", 1e-6), ("n", 1e-9), ("p", 1e-12), ("f", 1e-15), ("a", 1e-18),
+            ("z", 1e-21), ("y", 1e-24), ("r", 1e-27), ("q", 1e-30)
+        ]
+
+        var seen = Set<String>()
+        var result: [NamedUnit<U.Dimension>] = []
+
+        func add(_ unit: NamedUnit<U.Dimension>) {
+            guard !seen.contains(unit.symbol) else { return }
+            seen.insert(unit.symbol)
+            result.append(unit)
+        }
+
+        for candidate in Units.units(for: unit.dimension) {
+            guard let named = candidate as? NamedUnit<U.Dimension> else { continue }
+            add(named)
+
+            // Only genuine metric base units (a power-of-ten coefficient, like
+            // "m", "g", "s", "N", "J", "Pa", "W") get SI siblings. Folding a
+            // hundredweight or a poronkusema would only fabricate nonsense
+            // symbols that can never beat a real reading.
+            let baseCoefficient = named.converter.convertToBase(1.0)
+            guard isMetricPowerOfTen(baseCoefficient) else { continue }
+            for prefix in prefixes {
+                add(NamedUnit<U.Dimension>(
+                    symbol: prefix.symbol + named.symbol,
+                    dimension: named.dimension,
+                    converter: LinearConverter(coefficient: baseCoefficient * prefix.value)
+                ))
+            }
+        }
+        return result
+    }
+
+    private func isMetricPowerOfTen(_ value: Double) -> Bool {
+        guard value > 0 else { return false }
+        let exponent = log10(value)
+        return abs(exponent - exponent.rounded()) < 1e-9
+    }
+
+    private func baseNamedUnit() -> (unit: NamedUnit<U.Dimension>, reading: Double) {
+        let base = Units.units(for: unit.dimension).first as? NamedUnit<U.Dimension>
+        if let base {
+            return (base, base.converter.convertFromBase(unit.converter.convertToBase(value)))
+        }
+        let named = NamedUnit<U.Dimension>(symbol: unit.symbol, dimension: unit.dimension, converter: unit.converter)
+        return (named, value)
+    }
+
     public var description: String {
         return self.formatted()
     }
@@ -353,6 +493,54 @@ public extension Quantity where U.Dimension == MathDimension.energy {
         let newValue = lhs.value / rhs.value
         
         return Quantity<NamedUnit<MathDimension.power>>(value: newValue, unit: newUnit)
+    }
+}
+
+// MARK: - Force from Mass × Acceleration (F = ma)
+
+public extension Quantity where U.Dimension == MathDimension.mass {
+    /// Multiplies a mass quantity by an acceleration quantity, producing a force
+    /// quantity whose unit is the standard `F = ma` composite (for example
+    /// `(kg*(m/s²))`). This overload lets you write
+    /// `mass * Units.gravity` and get a real force reading:
+    ///
+    /// ```swift
+    /// let bag = Quantity(value: 5, unit: Units.kilogram)
+    /// let pull = bag * Quantity(value: 1, unit: Units.gravity)
+    /// pull.converted(to: Units.newton).value // ≈ 49.03
+    /// ```
+    static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.force>> where U2.Dimension == MathDimension.acceleration {
+        let newDimension = MathDimension.force.dimension
+        let newSymbol = "(\(lhs.unit.symbol)*\(rhs.unit.symbol))"
+        
+        let lhsCoeff = lhs.unit.converter.convertToBase(1.0)
+        let rhsCoeff = rhs.unit.converter.convertToBase(1.0)
+        let compositeCoeff = lhsCoeff * rhsCoeff
+        
+        let newConverter = LinearConverter(coefficient: compositeCoeff)
+        let newUnit = NamedUnit<MathDimension.force>(symbol: newSymbol, dimension: newDimension, converter: newConverter)
+        let newValue = lhs.value * rhs.value
+        
+        return Quantity<NamedUnit<MathDimension.force>>(value: newValue, unit: newUnit)
+    }
+}
+
+public extension Quantity where U.Dimension == MathDimension.acceleration {
+    /// Multiplies an acceleration quantity by a mass quantity, producing a force
+    /// quantity (commutative form of `F = ma`).
+    static func * <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<NamedUnit<MathDimension.force>> where U2.Dimension == MathDimension.mass {
+        let newDimension = MathDimension.force.dimension
+        let newSymbol = "(\(lhs.unit.symbol)*\(rhs.unit.symbol))"
+        
+        let lhsCoeff = lhs.unit.converter.convertToBase(1.0)
+        let rhsCoeff = rhs.unit.converter.convertToBase(1.0)
+        let compositeCoeff = lhsCoeff * rhsCoeff
+        
+        let newConverter = LinearConverter(coefficient: compositeCoeff)
+        let newUnit = NamedUnit<MathDimension.force>(symbol: newSymbol, dimension: newDimension, converter: newConverter)
+        let newValue = lhs.value * rhs.value
+        
+        return Quantity<NamedUnit<MathDimension.force>>(value: newValue, unit: newUnit)
     }
 }
 

@@ -118,6 +118,34 @@ For code that has to be unambiguous, the mass readings also come with explicit
 names: ``Units/poundMass`` (symbol `lbm`) and ``Units/ounceMass`` (symbol
 `ozm`) spell out that they are masses, never forces.
 
+Multiplying a mass by an acceleration already produces a force — both operand
+orders work, so `mass × earth's gravity` and `earth's gravity × mass` give a
+force quantity. The picker then restates it in whatever force unit reads
+clearest.
+
+```swift
+let mass = Quantity(value: 1, unit: .kilogram)
+let weight = mass * Quantity(value: 1, unit: .gravity) // force quantity
+print(weight.simplified())  // 1 kgf — the cleanest reading
+```
+
+Mathematics in `Math` lets you request the most readable unit for a result
+directly with ``Quantity/simplified()``, which scans the dimension's catalog
+(including the SI-prefixed metric siblings) and picks the reading that is a
+whole number (smallest positive whole for a positive amount), falling back to
+the reading with the fewest decimal places.
+
+```swift
+let rope = Quantity(value: 1000, unit: .meter)
+print(rope.simplified())     // 1 km
+
+let thrust = Quantity(value: 2000, unit: .newton)
+print(thrust.simplified())   // 2 kN
+
+let ride = Quantity(value: 3600, unit: .second)
+print(ride.simplified())     // 1 hour
+```
+
 ### Computing weight from mass
 
 Weight is a force, `W = mg`. Any mass quantity exposes that via
