@@ -84,9 +84,10 @@ print(total) // 1.85 kg
 
 ### Multiply and Divide Quantities
 
-Multiplying or dividing two quantities combines their dimensions and produces a
-new ``CompositeUnit``. The framework adjusts both the numeric value and the
-coefficient so results stay physically correct:
+Multiplying or dividing two quantities combines their dimensions. Multiplication
+produces a ``CompositeUnit``; division produces a typed ``RatioUnit`` that
+remembers which operand was on top. The framework adjusts both the numeric value
+and the coefficient so results stay physically correct:
 
 ```swift
 let area = Quantity(value: 3.0, unit: Units.meter) * Quantity(value: 2.0, unit: Units.meter)
@@ -127,11 +128,13 @@ remember which side of a ratio something is on. A ``CompositeUnit`` like
 
 ``RatioUnit`` keeps the numerator and denominator as two distinct generic
 parameters, so `USD / kg` is a *different type* from `kg / USD`. Build one with
-``MathUnit/per(_:)`` or the initializer:
+``MathUnit/per(_:)`, the initializer, or just divide two quantities:
 
 ```swift
 let price = Units.usd.per(Units.kilogram)            // (usd/kg)
 let hoursPerDollar = Units.hour.per(Units.usd)       // (h/$)
+let fromDivision = Quantity(value: 40, unit: Units.usd)
+                / Quantity(value: 5, unit: Units.Weight.pound)  // ($/lbf)
 ```
 
 Because the ordering is baked into the type, a generic function can require a

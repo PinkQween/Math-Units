@@ -65,8 +65,9 @@ print(distanceInMiles.unit.symbol) // "mi"
 ### Combine Quantities
 
 `Math` supports dimensional arithmetic. When you multiply or divide two
-quantities, the framework combines their dimensions and produces a new
-``CompositeUnit``:
+quantities, the framework combines their dimensions into a new unit —
+``CompositeUnit`` for multiplication, and a typed ``RatioUnit`` for division
+(so the numerator and denominator units stay on the correct sides):
 
 ```swift
 // 10.5 km in 1.5 hours

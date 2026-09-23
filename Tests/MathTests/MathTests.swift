@@ -453,7 +453,9 @@ import Foundation
         // Composite unit (m/s)
         let speed = Quantity(value: 10.0, unit: Units.meter) / Quantity(value: 2.0, unit: Units.second)
         let speedData = try JSONEncoder().encode(speed)
-        let speedDecoded = try JSONDecoder().decode(Quantity<CompositeUnit>.self, from: speedData)
+        let speedDecoded = try JSONDecoder().decode(
+            Quantity<RatioUnit<NamedUnit<MathDimension.length>, NamedUnit<MathDimension.time>>>.self,
+            from: speedData)
         #expect(speedDecoded == speed)
 
         // A recipe-style dictionary round-trips as a whole

@@ -7,19 +7,19 @@
 
 /// A unit representing a derived, dynamically-created combination of other units.
 ///
-/// Multiplying or dividing quantities (or units) produces a `CompositeUnit`.
-/// For example, dividing a meter by a second yields the composite unit `(m/s)`
-/// with a speed dimension, and multiplying two meters yields `(m*m)` with an
-/// area dimension.
+/// Multiplying quantities (or units) produces a `CompositeUnit`. For example,
+/// multiplying two meters yields `(m*m)` with an area dimension. Dividing
+/// quantities produces the typed ``RatioUnit`` instead, so the numerator and
+/// denominator units stay on the correct sides.
 ///
 /// Composite units carry no specific compile-time dimension: their type-level
 /// dimension is always ``MathDimension/unknown``. You typically encounter them
-/// as the result of dimensional arithmetic and then convert the result into a
-/// named unit when you know what it should be:
+/// as the result of multiplication and then convert the result into a named
+/// unit when you know what it should be:
 ///
 /// ```swift
-/// let speed = distance / duration          // Quantity<CompositeUnit>, (m/s)
-/// let inMilesPerHour = speed.converted(to: Units.mile / Units.hour)
+/// let area = width * height          // Quantity<CompositeUnit>, (m*m)
+/// let inSquareFeet = area.converted(to: Units.squareFoot)
 /// ```
 public struct CompositeUnit: MathUnit, CustomStringConvertible {
     /// The compile-time dimension type associated with this unit, defaults to `unknown`.

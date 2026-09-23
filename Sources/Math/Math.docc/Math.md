@@ -79,7 +79,7 @@ reject mismatched dimensions when you build your app—not when it runs. Read
 - ``Quantity/*(_:_:)->Quantity<CompositeUnit>``
 - ``Quantity//(_:_:)->Quantity<U>``
 - ``Quantity//(_:_:)-(Double,_)``
-- ``Quantity//(_:_:)-(Quantity<U>,_)->Quantity<CompositeUnit>``
+- ``Quantity//(_:_:)->Quantity<RatioUnit>``
 - ``Quantity/thermalEnergy``
 - ``Quantity/thermalEnergy(in:)``
 

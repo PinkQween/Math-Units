@@ -434,21 +434,20 @@ public extension Quantity {
     }
     
     /// Divides two quantities, dividing their dimensions. The result is a
-    /// ``CompositeUnit`` (for example `(m/s)` when dividing meters by seconds),
-    /// and both the value and the unit coefficient are adjusted correctly.
-    static func / <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<CompositeUnit> {
-        let newDimension = lhs.unit.dimension - rhs.unit.dimension
-        let newSymbol = "(\(lhs.unit.symbol)/\(rhs.unit.symbol))"
-        
-        let lhsCoeff = lhs.unit.converter.convertToBase(1.0)
-        let rhsCoeff = rhs.unit.converter.convertToBase(1.0)
-        let compositeCoeff = lhsCoeff / rhsCoeff
-        
-        let newConverter = LinearConverter(coefficient: compositeCoeff)
-        let newUnit = CompositeUnit(symbol: newSymbol, dimension: newDimension, converter: newConverter)
+    /// ``RatioUnit`` whose numerator and denominator are the operands' units,
+    /// (for example `(m/s)` when dividing meters by seconds), and both the
+    /// value and the unit coefficients are adjusted correctly. Because the
+    /// ratio keeps both unit types, the compiler can tell `m/s` from `s/m`
+    /// apart — and can cancel them later:
+    ///
+    /// ```swift
+    /// let price = Quantity(value: 40, unit: Units.usd)
+    ///            / Quantity(value: 5, unit: Units.Weight.pound)  // ($/lbf)
+    /// ```
+    static func / <U2: MathUnit>(lhs: Quantity<U>, rhs: Quantity<U2>) -> Quantity<RatioUnit<U, U2>> {
+        let newUnit = RatioUnit(numerator: lhs.unit, denominator: rhs.unit)
         let newValue = lhs.value / rhs.value
-        
-        return Quantity<CompositeUnit>(value: newValue, unit: newUnit)
+        return Quantity<RatioUnit<U, U2>>(value: newValue, unit: newUnit)
     }
 }
 
