@@ -903,6 +903,7 @@ public extension Units.Pressure {
 // extension, returning the namespace metatype for the second member
 // (`.fluidOunce`) to chain onto. The hand-maintained currency namespace gets its
 // proxy here.
+
 public extension MathUnit where Self == Units.Currency {
     /// The `currency` unit namespace, e.g. `Units.Currency.usd`.
     static var currency: Units.Currency.Type { Units.Currency.self }
@@ -999,4 +1000,196 @@ public extension MathUnit where Self == Units.Voltage {
 
 public extension MathUnit where Self == Units.Pressure {
     static var decibelSoundPressureLevel: NamedUnit<MathDimension.pressure> { Units.decibelSoundPressureLevel }
+}
+
+// MARK: - Concrete Unit Type Namespace Lookup
+
+// The `Self == Units.X` proxies above let a leading-dot chain start from an
+// open generic `U: MathUnit`. When the unit type is *already decided* (an
+// annotated constant, or a generic parameter pinned by surrounding code like
+// `Quantity<RatioUnit<NamedUnit<...>, Amount>>`), SE-0299 instead looks the
+// first member up on the concrete type — so the three library unit types get
+// the same namespace accessors directly. This is what lets
+// `.currency.usd.per(.weight.pound)` type-check in a fully-typed context.
+public extension NamedUnit {
+    /// The `Length` unit namespace, e.g. `Units.Length.all`.
+    static var length: Units.Length.Type { Units.Length.self }
+    /// The `Time` unit namespace, e.g. `Units.Time.all`.
+    static var time: Units.Time.Type { Units.Time.self }
+    /// The `Mass` unit namespace, e.g. `Units.Mass.all`.
+    static var mass: Units.Mass.Type { Units.Mass.self }
+    /// The `Weight` (force) unit namespace, e.g. `Units.Weight.all`.
+    static var weight: Units.Weight.Type { Units.Weight.self }
+    /// The `Currency` unit namespace, e.g. `Units.Currency.usd`.
+    static var currency: Units.Currency.Type { Units.Currency.self }
+    /// The `Area` unit namespace, e.g. `Units.Area.all`.
+    static var area: Units.Area.Type { Units.Area.self }
+    /// The `Data` unit namespace, e.g. `Units.Data.all`.
+    static var data: Units.Data.Type { Units.Data.self }
+    /// The `Energy` unit namespace, e.g. `Units.Energy.all`.
+    static var energy: Units.Energy.Type { Units.Energy.self }
+    /// The `Pressure` unit namespace, e.g. `Units.Pressure.all`.
+    static var pressure: Units.Pressure.Type { Units.Pressure.self }
+    /// The `Power` unit namespace, e.g. `Units.Power.all`.
+    static var power: Units.Power.Type { Units.Power.self }
+    /// The `Speed` unit namespace, e.g. `Units.Speed.all`.
+    static var speed: Units.Speed.Type { Units.Speed.self }
+    /// The `Acceleration` unit namespace, e.g. `Units.Acceleration.all`.
+    static var acceleration: Units.Acceleration.Type { Units.Acceleration.self }
+    /// The `ElectricCurrent` unit namespace, e.g. `Units.ElectricCurrent.all`.
+    static var electricCurrent: Units.ElectricCurrent.Type { Units.ElectricCurrent.self }
+    /// The `Charge` unit namespace, e.g. `Units.Charge.all`.
+    static var charge: Units.Charge.Type { Units.Charge.self }
+    /// The `Voltage` unit namespace, e.g. `Units.Voltage.all`.
+    static var voltage: Units.Voltage.Type { Units.Voltage.self }
+    /// The `Resistance` unit namespace, e.g. `Units.Resistance.all`.
+    static var resistance: Units.Resistance.Type { Units.Resistance.self }
+    /// The `Capacitance` unit namespace, e.g. `Units.Capacitance.all`.
+    static var capacitance: Units.Capacitance.Type { Units.Capacitance.self }
+    /// The `Inductance` unit namespace, e.g. `Units.Inductance.all`.
+    static var inductance: Units.Inductance.Type { Units.Inductance.self }
+    /// The `Conductance` unit namespace, e.g. `Units.Conductance.all`.
+    static var conductance: Units.Conductance.Type { Units.Conductance.self }
+    /// The `Frequency` unit namespace, e.g. `Units.Frequency.all`.
+    static var frequency: Units.Frequency.Type { Units.Frequency.self }
+    /// The `LuminousIntensity` unit namespace, e.g. `Units.LuminousIntensity.all`.
+    static var luminousIntensity: Units.LuminousIntensity.Type { Units.LuminousIntensity.self }
+    /// The `MagneticFlux` unit namespace, e.g. `Units.MagneticFlux.all`.
+    static var magneticFlux: Units.MagneticFlux.Type { Units.MagneticFlux.self }
+    /// The `MagneticFluxDensity` unit namespace, e.g. `Units.MagneticFluxDensity.all`.
+    static var magneticFluxDensity: Units.MagneticFluxDensity.Type { Units.MagneticFluxDensity.self }
+    /// The `LuminousFlux` unit namespace, e.g. `Units.LuminousFlux.all`.
+    static var luminousFlux: Units.LuminousFlux.Type { Units.LuminousFlux.self }
+    /// The `Illuminance` unit namespace, e.g. `Units.Illuminance.all`.
+    static var illuminance: Units.Illuminance.Type { Units.Illuminance.self }
+    /// The `SpecificEnergy` unit namespace, e.g. `Units.SpecificEnergy.all`.
+    static var specificEnergy: Units.SpecificEnergy.Type { Units.SpecificEnergy.self }
+    /// The `AmountOfSubstance` unit namespace, e.g. `Units.AmountOfSubstance.all`.
+    static var amountOfSubstance: Units.AmountOfSubstance.Type { Units.AmountOfSubstance.self }
+    /// The `Dimensionless` unit namespace, e.g. `Units.Dimensionless.all`.
+    static var dimensionless: Units.Dimensionless.Type { Units.Dimensionless.self }
+    /// The `Volume` unit namespace, e.g. `Units.Volume.all`.
+    static var volume: Units.Volume.Type { Units.Volume.self }
+}
+
+public extension RatioUnit {
+    /// The `Length` unit namespace, e.g. `Units.Length.all`.
+    static var length: Units.Length.Type { Units.Length.self }
+    /// The `Time` unit namespace, e.g. `Units.Time.all`.
+    static var time: Units.Time.Type { Units.Time.self }
+    /// The `Mass` unit namespace, e.g. `Units.Mass.all`.
+    static var mass: Units.Mass.Type { Units.Mass.self }
+    /// The `Weight` (force) unit namespace, e.g. `Units.Weight.all`.
+    static var weight: Units.Weight.Type { Units.Weight.self }
+    /// The `Currency` unit namespace, e.g. `Units.Currency.usd`.
+    static var currency: Units.Currency.Type { Units.Currency.self }
+    /// The `Area` unit namespace, e.g. `Units.Area.all`.
+    static var area: Units.Area.Type { Units.Area.self }
+    /// The `Data` unit namespace, e.g. `Units.Data.all`.
+    static var data: Units.Data.Type { Units.Data.self }
+    /// The `Energy` unit namespace, e.g. `Units.Energy.all`.
+    static var energy: Units.Energy.Type { Units.Energy.self }
+    /// The `Pressure` unit namespace, e.g. `Units.Pressure.all`.
+    static var pressure: Units.Pressure.Type { Units.Pressure.self }
+    /// The `Power` unit namespace, e.g. `Units.Power.all`.
+    static var power: Units.Power.Type { Units.Power.self }
+    /// The `Speed` unit namespace, e.g. `Units.Speed.all`.
+    static var speed: Units.Speed.Type { Units.Speed.self }
+    /// The `Acceleration` unit namespace, e.g. `Units.Acceleration.all`.
+    static var acceleration: Units.Acceleration.Type { Units.Acceleration.self }
+    /// The `ElectricCurrent` unit namespace, e.g. `Units.ElectricCurrent.all`.
+    static var electricCurrent: Units.ElectricCurrent.Type { Units.ElectricCurrent.self }
+    /// The `Charge` unit namespace, e.g. `Units.Charge.all`.
+    static var charge: Units.Charge.Type { Units.Charge.self }
+    /// The `Voltage` unit namespace, e.g. `Units.Voltage.all`.
+    static var voltage: Units.Voltage.Type { Units.Voltage.self }
+    /// The `Resistance` unit namespace, e.g. `Units.Resistance.all`.
+    static var resistance: Units.Resistance.Type { Units.Resistance.self }
+    /// The `Capacitance` unit namespace, e.g. `Units.Capacitance.all`.
+    static var capacitance: Units.Capacitance.Type { Units.Capacitance.self }
+    /// The `Inductance` unit namespace, e.g. `Units.Inductance.all`.
+    static var inductance: Units.Inductance.Type { Units.Inductance.self }
+    /// The `Conductance` unit namespace, e.g. `Units.Conductance.all`.
+    static var conductance: Units.Conductance.Type { Units.Conductance.self }
+    /// The `Frequency` unit namespace, e.g. `Units.Frequency.all`.
+    static var frequency: Units.Frequency.Type { Units.Frequency.self }
+    /// The `LuminousIntensity` unit namespace, e.g. `Units.LuminousIntensity.all`.
+    static var luminousIntensity: Units.LuminousIntensity.Type { Units.LuminousIntensity.self }
+    /// The `MagneticFlux` unit namespace, e.g. `Units.MagneticFlux.all`.
+    static var magneticFlux: Units.MagneticFlux.Type { Units.MagneticFlux.self }
+    /// The `MagneticFluxDensity` unit namespace, e.g. `Units.MagneticFluxDensity.all`.
+    static var magneticFluxDensity: Units.MagneticFluxDensity.Type { Units.MagneticFluxDensity.self }
+    /// The `LuminousFlux` unit namespace, e.g. `Units.LuminousFlux.all`.
+    static var luminousFlux: Units.LuminousFlux.Type { Units.LuminousFlux.self }
+    /// The `Illuminance` unit namespace, e.g. `Units.Illuminance.all`.
+    static var illuminance: Units.Illuminance.Type { Units.Illuminance.self }
+    /// The `SpecificEnergy` unit namespace, e.g. `Units.SpecificEnergy.all`.
+    static var specificEnergy: Units.SpecificEnergy.Type { Units.SpecificEnergy.self }
+    /// The `AmountOfSubstance` unit namespace, e.g. `Units.AmountOfSubstance.all`.
+    static var amountOfSubstance: Units.AmountOfSubstance.Type { Units.AmountOfSubstance.self }
+    /// The `Dimensionless` unit namespace, e.g. `Units.Dimensionless.all`.
+    static var dimensionless: Units.Dimensionless.Type { Units.Dimensionless.self }
+    /// The `Volume` unit namespace, e.g. `Units.Volume.all`.
+    static var volume: Units.Volume.Type { Units.Volume.self }
+}
+
+public extension CompositeUnit {
+    /// The `Length` unit namespace, e.g. `Units.Length.all`.
+    static var length: Units.Length.Type { Units.Length.self }
+    /// The `Time` unit namespace, e.g. `Units.Time.all`.
+    static var time: Units.Time.Type { Units.Time.self }
+    /// The `Mass` unit namespace, e.g. `Units.Mass.all`.
+    static var mass: Units.Mass.Type { Units.Mass.self }
+    /// The `Weight` (force) unit namespace, e.g. `Units.Weight.all`.
+    static var weight: Units.Weight.Type { Units.Weight.self }
+    /// The `Currency` unit namespace, e.g. `Units.Currency.usd`.
+    static var currency: Units.Currency.Type { Units.Currency.self }
+    /// The `Area` unit namespace, e.g. `Units.Area.all`.
+    static var area: Units.Area.Type { Units.Area.self }
+    /// The `Data` unit namespace, e.g. `Units.Data.all`.
+    static var data: Units.Data.Type { Units.Data.self }
+    /// The `Energy` unit namespace, e.g. `Units.Energy.all`.
+    static var energy: Units.Energy.Type { Units.Energy.self }
+    /// The `Pressure` unit namespace, e.g. `Units.Pressure.all`.
+    static var pressure: Units.Pressure.Type { Units.Pressure.self }
+    /// The `Power` unit namespace, e.g. `Units.Power.all`.
+    static var power: Units.Power.Type { Units.Power.self }
+    /// The `Speed` unit namespace, e.g. `Units.Speed.all`.
+    static var speed: Units.Speed.Type { Units.Speed.self }
+    /// The `Acceleration` unit namespace, e.g. `Units.Acceleration.all`.
+    static var acceleration: Units.Acceleration.Type { Units.Acceleration.self }
+    /// The `ElectricCurrent` unit namespace, e.g. `Units.ElectricCurrent.all`.
+    static var electricCurrent: Units.ElectricCurrent.Type { Units.ElectricCurrent.self }
+    /// The `Charge` unit namespace, e.g. `Units.Charge.all`.
+    static var charge: Units.Charge.Type { Units.Charge.self }
+    /// The `Voltage` unit namespace, e.g. `Units.Voltage.all`.
+    static var voltage: Units.Voltage.Type { Units.Voltage.self }
+    /// The `Resistance` unit namespace, e.g. `Units.Resistance.all`.
+    static var resistance: Units.Resistance.Type { Units.Resistance.self }
+    /// The `Capacitance` unit namespace, e.g. `Units.Capacitance.all`.
+    static var capacitance: Units.Capacitance.Type { Units.Capacitance.self }
+    /// The `Inductance` unit namespace, e.g. `Units.Inductance.all`.
+    static var inductance: Units.Inductance.Type { Units.Inductance.self }
+    /// The `Conductance` unit namespace, e.g. `Units.Conductance.all`.
+    static var conductance: Units.Conductance.Type { Units.Conductance.self }
+    /// The `Frequency` unit namespace, e.g. `Units.Frequency.all`.
+    static var frequency: Units.Frequency.Type { Units.Frequency.self }
+    /// The `LuminousIntensity` unit namespace, e.g. `Units.LuminousIntensity.all`.
+    static var luminousIntensity: Units.LuminousIntensity.Type { Units.LuminousIntensity.self }
+    /// The `MagneticFlux` unit namespace, e.g. `Units.MagneticFlux.all`.
+    static var magneticFlux: Units.MagneticFlux.Type { Units.MagneticFlux.self }
+    /// The `MagneticFluxDensity` unit namespace, e.g. `Units.MagneticFluxDensity.all`.
+    static var magneticFluxDensity: Units.MagneticFluxDensity.Type { Units.MagneticFluxDensity.self }
+    /// The `LuminousFlux` unit namespace, e.g. `Units.LuminousFlux.all`.
+    static var luminousFlux: Units.LuminousFlux.Type { Units.LuminousFlux.self }
+    /// The `Illuminance` unit namespace, e.g. `Units.Illuminance.all`.
+    static var illuminance: Units.Illuminance.Type { Units.Illuminance.self }
+    /// The `SpecificEnergy` unit namespace, e.g. `Units.SpecificEnergy.all`.
+    static var specificEnergy: Units.SpecificEnergy.Type { Units.SpecificEnergy.self }
+    /// The `AmountOfSubstance` unit namespace, e.g. `Units.AmountOfSubstance.all`.
+    static var amountOfSubstance: Units.AmountOfSubstance.Type { Units.AmountOfSubstance.self }
+    /// The `Dimensionless` unit namespace, e.g. `Units.Dimensionless.all`.
+    static var dimensionless: Units.Dimensionless.Type { Units.Dimensionless.self }
+    /// The `Volume` unit namespace, e.g. `Units.Volume.all`.
+    static var volume: Units.Volume.Type { Units.Volume.self }
 }

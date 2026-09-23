@@ -184,7 +184,11 @@ echo "}" >> "$OUTPUT_FILE"
 # `where Self ==`-constrained extension of the protocol, so each namespace gets a
 # proxy returning its metatype plus one alias for every unit that exists flat in
 # that dimension (base and SI/binary prefixed). Because the aliases live in the
-# extension, both `.voltage.nanovolt` and bare `.nanovolt` resolve.
+# extension, both `.voltage.nanovolt` and bare `.nanovolt` resolve. The
+# `Self ==`-only declaration is important: with no constraint, the leading dot
+# would no longer resolve from an open generic `U: MathUnit`. The counterpart —
+# a fully-typed base like `NamedUnit<...>` or `RatioUnit<...>` — is handled by
+# the same accessors declared directly on the concrete unit types in Units.swift.
 for ns in "${ns_order[@]}"; do
     proxy="$(printf '%s' "$ns" | tr '[:upper:]' '[:lower:]' | cut -c1)$(printf '%s' "$ns" | cut -c2-)"
     if [[ "$ns" == "Weight" ]]; then
