@@ -118,6 +118,43 @@ let runTime = Quantity(value: 3.0, unit: Units.hour)
 let energy  = power * runTime    // 6 kWh, dimension = energy
 ```
 
+### Typed Ratio Units
+
+Sometimes you don't just want a measurement — you want the *type system* to
+remember which side of a ratio something is on. A ``CompositeUnit`` like
+`(usd/kg)` erases that detail (its compile-time dimension is always
+`unknown`), so `USD per kilogram` and `kilogram per USD` become the same type.
+
+``RatioUnit`` keeps the numerator and denominator as two distinct generic
+parameters, so `USD / kg` is a *different type* from `kg / USD`. Build one with
+``MathUnit/per(_:)`` or the initializer:
+
+```swift
+let price = Units.usd.per(Units.kilogram)            // (usd/kg)
+let hoursPerDollar = Units.hour.per(Units.usd)       // (h/$)
+```
+
+Because the ordering is baked into the type, a generic function can require a
+specific arrangement. Here the denominator must *be* a currency unit:
+
+```swift
+func denominatedInCurrency<Num: MathUnit>(
+    _ value: Quantity<RatioUnit<Num, NamedUnit<MathDimension.currency>>>
+) -> Bool { ... }
+
+denominatedInCurrency(Quantity(value: 2, unit: Units.hour.per(Units.usd)))  // ✔
+denominatedInCurrency(Quantity(value: 20, unit: Units.usd.per(Units.hour))) // ✘ won't compile
+```
+
+Multiplying a ratio by its denominator cancels the denominator and returns the
+numerator: `price * amount → money`. Both operand orders work, and the
+math always runs through base units so coefficients stay exact:
+
+```swift
+let cost = Quantity(value: 3.5, unit: Units.usd.per(Units.kilogram))
+         * Quantity(value: 2, unit: Units.kilogram)   // $7.00
+```
+
 ### Format Quantities
 
 ``Quantity`` conforms to `CustomStringConvertible`, so it prints a formatted

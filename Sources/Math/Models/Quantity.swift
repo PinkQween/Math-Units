@@ -518,6 +518,45 @@ public extension Quantity where U.Dimension == MathDimension.energy {
     }
 }
 
+public extension Quantity {
+    /// Multiplies a ratio quantity by a denominator quantity, cancelling the
+    /// denominator and leaving the numerator (for example
+    /// `USD/kg × kg → USD`). The generic parameters make this type-safe: the
+    /// denominator of the ratio must *exactly* be the second operand's unit
+    /// type, so `kg` cancels but `USD` cannot.
+    ///
+    /// ```swift
+    /// let price = Quantity(value: 3.5, unit: Units.usd.per(Units.kilogram))
+    /// let bag = Quantity(value: 2, unit: Units.kilogram)
+    /// let cost = price * bag          // $7.00
+    /// ```
+    static func * <Num: MathUnit, Den: MathUnit>(
+        lhs: Quantity<U>,
+        rhs: Quantity<Den>
+    ) -> Quantity<Num> where U == RatioUnit<Num, Den> {
+        let ratio = lhs.unit
+        let numeratorUnit = ratio.numerator
+        let baseValue = ratio.converter.convertToBase(lhs.value)
+            * rhs.unit.converter.convertToBase(rhs.value)
+        let value = numeratorUnit.converter.convertFromBase(baseValue)
+        return Quantity<Num>(value: value, unit: numeratorUnit)
+    }
+
+    /// Multiplies a denominator quantity by a ratio quantity (commutative form
+    /// of the ratio overload: `kg × USD/kg → USD`).
+    static func * <Num: MathUnit, Den: MathUnit>(
+        lhs: Quantity<Den>,
+        rhs: Quantity<U>
+    ) -> Quantity<Num> where U == RatioUnit<Num, Den> {
+        let ratio = rhs.unit
+        let numeratorUnit = ratio.numerator
+        let baseValue = lhs.unit.converter.convertToBase(lhs.value)
+            * ratio.converter.convertToBase(rhs.value)
+        let value = numeratorUnit.converter.convertFromBase(baseValue)
+        return Quantity<Num>(value: value, unit: numeratorUnit)
+    }
+}
+
 // MARK: - Force from Mass × Acceleration (F = ma)
 
 public extension Quantity where U.Dimension == MathDimension.mass {

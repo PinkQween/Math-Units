@@ -691,6 +691,64 @@ import Foundation
         #expect(abs(lifted.value - 3.0) < 1e-12)
     }
 
+    @Test func testRatioUnit() {
+        // .per() builds a RatioUnit whose generic parameters encode which side
+        // is the numerator and which is the denominator.
+        let pricePerMass = Units.usd.per(Units.kilogram)
+        #expect(pricePerMass.symbol == "($/kg)")
+
+        // Converting through base units keeps the ratio exact: 3.5 USD/kg is
+        // the same ratio whether we think in terms of kg or pounds.
+        let price = Quantity(value: 3.5, unit: Units.usd.per(Units.kilogram))
+        let bag = Quantity(value: 2, unit: Units.kilogram)
+        let cost = price * bag
+        #expect(cost.unit == Units.usd)
+        #expect(abs(cost.value - 7.0) < 1e-12)
+
+        // The commutative order also cancels correctly.
+        let again = bag * price
+        #expect(again.unit == Units.usd)
+        #expect(abs(again.value - 7.0) < 1e-12)
+
+        // The denominator's unit type determines which operands cancel: the
+        // compiler refuses kg × (USD/kg) only if the amount isn't the exact
+        // denominator type — reversed exponents cannot cancel.
+        let perPound = Units.usd.per(Units.pound)
+        let meat = Quantity(value: 3, unit: Units.pound)
+        let butcher = Quantity(value: 0.549, unit: perPound)
+        let total = meat * butcher
+        #expect(total.unit == Units.usd)
+        #expect(abs(total.value - 1.647) < 1e-9)
+
+        // A RatioUnit can be named, compared, and hashed like any MathUnit.
+        let same = Units.usd.per(Units.kilogram)
+        #expect(pricePerMass == same)
+        #expect(Set([pricePerMass]).contains(same))
+    }
+
+    // Generic functions can demand that a ratio's denominator be a specific
+    // unit shape: here the denominator must *be* a currency unit type, which
+    // the compiler proves before this body ever runs.
+    private func denominatedInCurrency<Num: MathUnit>(
+        _ value: Quantity<RatioUnit<Num, NamedUnit<MathDimension.currency>>>
+    ) -> Bool {
+        value.unit.denominator.dimension.exponents["currency"] ?? 0 == 1
+    }
+
+    @Test func testRatioUnitCurrencyEnforcement() {
+        // Two hours per dollar is a ratio denominated in currency.
+        let hoursPerDollar = Units.hour.per(Units.usd)
+        #expect(denominatedInCurrency(Quantity(value: 2, unit: hoursPerDollar)))
+
+        // A dollar per hour is the *inverse* ordering: the denominator is the
+        // time unit, so it does not fit the currency-denominated signature.
+        let doarsPerHour = Units.usd.per(Units.hour)
+        // NOTE: the following line would not compile as written — it exists
+        // only to document that the ordering is enforced:
+        // let ok = denominatedInCurrency(Quantity(value: 20, unit: doarsPerHour))
+        #expect(doarsPerHour.symbol == "($/h)")
+    }
+
     @Test func testAvoirdupoisWeightCatalog() {
         // Every avoirdupois mass unit has a force (weight) reading in the
         // Weight namespace, derived from W = mg at standard gravity.
