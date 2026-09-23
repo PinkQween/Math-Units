@@ -449,6 +449,35 @@ public extension Quantity {
         let newValue = lhs.value / rhs.value
         return Quantity<RatioUnit<U, U2>>(value: newValue, unit: newUnit)
     }
+
+    /// Divides a ratio quantity by a *same-typed* ratio quantity, collapsing the
+    /// units to a dimensionless `Double`.
+    ///
+    /// Because a ``RatioUnit``'s numerator and denominator are both fixed at the
+    /// type level, two values of the *same* `RatioUnit<N, D>` type always
+    /// represent the same unit — so they cancel cleanly and the result is a
+    /// plain number, for example a profit margin, an efficiency, or a scale
+    /// factor:
+    ///
+    /// ```swift
+    /// let retail = Quantity(value: 5.00, unit: Units.usd.per(Units.kilogram))
+    /// let cost   = Quantity(value: 1.25, unit: Units.usd.per(Units.kilogram))
+    /// let margin = (retail - cost) / retail                    // 0.75
+    /// let pct    = (retail - cost) / retail * 100              // 75.0
+    /// ```
+    ///
+    /// The compiler prefers this overload over the general quotient (which would
+    /// otherwise build a `Quantity<RatioUnit<R, R>>`), so same-unit ratios
+    /// collapse while different ratios like `$/kg` vs `€/kg` still demand an
+    /// explicit typed quotient. ("Plain" units such as two dollar amounts stay
+    /// typed too — see ``NamedUnit``, where runtime-extensible units need an
+    /// explicit ``converted(to:)`` before they compare.)
+    static func / <Num: MathUnit, Den: MathUnit>(
+        lhs: Quantity<U>,
+        rhs: Quantity<U>
+    ) -> Double where U == RatioUnit<Num, Den> {
+        lhs.value / rhs.value
+    }
 }
 
 // MARK: - Smart Dimensional Overloads

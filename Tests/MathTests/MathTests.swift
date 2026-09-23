@@ -751,6 +751,118 @@ import Foundation
         #expect(doarsPerHour.symbol == "($/h)")
     }
 
+    @Test func testSameUnitRatioDivisionIsDimensionless() {
+        // Dividing two same-typed ratio quantities collapses to a Double: the
+        // (unit/unit) ratio cancels to a plain number.
+        let retailPerKg = Quantity(value: 5.00, unit: Units.usd.per(Units.kilogram))
+        let costPerKg = Quantity(value: 1.25, unit: Units.usd.per(Units.kilogram))
+        let margin = (retailPerKg - costPerKg) / retailPerKg
+        #expect(type(of: margin) == Double.self)
+        #expect(abs(margin - 0.75) < 1e-12)
+
+        // Scale factors work the same way.
+        let alpha = Quantity(value: 1.5, unit: Units.usd.per(Units.kilogram))
+        let beta = Quantity(value: 0.5, unit: Units.usd.per(Units.kilogram))
+        #expect(alpha / beta == 3.0)
+
+        // Plain (NamedUnit) quantities still produce a typed ratio, not a
+        // Double — their units are runtime-extensible, so the compiler keeps
+        // the ratio instead of guessing they cancel.
+        let dollars = Quantity(value: 4.50, unit: Units.usd)
+        let cents = Quantity(value: 3.00, unit: Units.usd)
+        let typedMargin = dollars / cents
+        #expect(type(of: typedMargin) == Quantity<RatioUnit<NamedUnit<MathDimension.currency>, NamedUnit<MathDimension.currency>>>.self)
+
+        // Different unit types still produce a typed ratio, not a Double.
+        let seconds = Quantity(value: 5.0, unit: Units.second)
+        let meters = Quantity(value: 10.0, unit: Units.meter)
+        let speed = meters / seconds
+        #expect(type(of: speed) == Quantity<RatioUnit<NamedUnit<MathDimension.length>, NamedUnit<MathDimension.time>>>.self)
+    }
+
+    @Test func testBlendableProfitMarginScenario() {
+        // Reproduces the playground scenario: a price-per-unit ratio must be
+        // able to flow through division and cancel back down to a Double.
+        protocol Blendable<AmountUnit> {
+            associatedtype AmountUnit: MathUnit
+            typealias CostUnit = RatioUnit<NamedUnit<MathDimension.currency>, AmountUnit>
+            var name: String { get }
+            var amount: Quantity<AmountUnit> { get }
+            var cost: Quantity<CostUnit> { get }
+        }
+
+        struct BaseIngredient<Amount: MathUnit>: Blendable {
+            typealias AmountUnit = Amount
+            let name: String
+            let amount: Quantity<Amount>
+            let cost: Quantity<RatioUnit<NamedUnit<MathDimension.currency>, Amount>>
+        }
+
+        struct Blend<Amount: MathUnit>: Blendable {
+            typealias AmountUnit = Amount
+            let name: String
+            let ingredients: [any Blendable]
+
+            var amount: Quantity<Amount> {
+                var acc: Quantity<Amount>?
+                for ingredient in ingredients {
+                    guard let matched = ingredient as? any Blendable<Amount> else { continue }
+                    if let current = acc {
+                        acc = current + matched.amount
+                    } else {
+                        acc = matched.amount
+                    }
+                }
+                guard let acc else {
+                    preconditionFailure("Blend \(name) has no ingredients measured in \(Amount.Dimension.dimension)")
+                }
+                return acc
+            }
+
+            var cost: Quantity<CostUnit> {
+                let batch = amount
+                var spend: Quantity<NamedUnit<MathDimension.currency>>?
+                for ingredient in ingredients {
+                    guard let matched = ingredient as? any Blendable<Amount> else { continue }
+                    let line = matched.cost * matched.amount
+                    spend = spend.map { $0 + line } ?? line
+                }
+                guard let spend else {
+                    preconditionFailure("Blend \(name) has no ingredients priced per \(Amount.Dimension.dimension)")
+                }
+                return spend / batch
+            }
+        }
+
+        struct POSItem<Product: Blendable> {
+            let id: String
+            let product: Product
+
+            var name: String { product.name }
+            var unitCost: Quantity<Product.CostUnit> { product.cost }
+
+            var retailValue: Quantity<Product.CostUnit>
+
+            var profitMarginPercentage: Double {
+                let costValue = unitCost.value
+                return ((retailValue - unitCost) / retailValue) * 100.0
+            }
+        }
+
+        let flour = BaseIngredient(
+            name: "Flour",
+            amount: Quantity(value: 2, unit: Units.kilogram),
+            cost: Quantity(value: 1.25, unit: Units.usd.per(Units.kilogram))
+        )
+        let batch: Blend<NamedUnit<MathDimension.mass>> = Blend(name: "Dough", ingredients: [flour])
+        let item = POSItem(id: "dough-1", product: batch, retailValue: Quantity(value: 5.00, unit: batch.cost.unit))
+
+        // Every ingredient sweeps into a single spend, then the same-unit
+        // division turns ($/kg) ÷ ($/kg) into a plain Double margin.
+        #expect(item.name == "Dough")
+        #expect(abs(item.profitMarginPercentage - 75.0) < 1e-12)
+    }
+
     @Test func testAvoirdupoisWeightCatalog() {
         // Every avoirdupois mass unit has a force (weight) reading in the
         // Weight namespace, derived from W = mg at standard gravity.
